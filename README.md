@@ -10,14 +10,29 @@
 
 ```
 
-01_plan(企画書)
-└── 要件定義段階の企画書ドキュメント等を作成する 
-02_document(設計・共有資料) 
-└── README.mdやリサーチ資料等 
-03_report(発表資料) 
-└── (プレゼン者のスライド等) 
-04_project(作品データ) 
-└── 後述
+web
+├── 01_pages
+│   ├── html
+│   │   ├── login.html(ログイン画面)
+│   │   ├── safety
+│   │   │   ├── safety_register.html(安否登録画面)
+│   │   │   ├── safety_list.html(安否一覧画面)
+│   │   │   ├── safety_detail.html(安否詳細画面)
+│   │   │   └── safety_delete.html(安否削除画面)
+│   │   └── admin
+│   │       ├── admin_menu.html(管理者用メニュー画面)
+│   │       ├── employee_list.html(社員一覧画面)
+│   │       └── employee_detail.html(社員詳細画面)
+│   └── css
+│       ├── master.css
+│       └── login.css
+└── 02_componets
+    ├── html
+    │   └── logout.html
+    └── css
+backend(共通システム)
+├── 01_php
+└── 02_db
 
 ```
 
