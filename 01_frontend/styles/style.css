@@ -30,6 +30,15 @@ header {
 
 .logo {
     color: #ffffff;
+    font-weight: 700;
+}
+
+button{
+    font-family: BIZUDPGothic;
+}
+
+.logout-btn{
+    font-weight: 700;
 }
 
 /* モバイル(768px以上)のデザインを記述する */
