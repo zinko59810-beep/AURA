@@ -1,0 +1,19 @@
+/* 表示の統一のためにフォントをアットルールで定義します */
+/* 環境差異がないように基本的に相対パスで記述します */
+@font-face {
+    font-family: BIZUDPGothic;
+    src: url(../assets/fonts/BIZ_UDPGothic/BIZUDPGothic-Regular.ttf) format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: BIZUDPGothic;
+    src: url(../assets/fonts/BIZ_UDPGothic/BIZUDPGothic-Bold.ttf) format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* ここにフォントを設定しないと反映されないので設定します */
+body {
+    font-family: BIZUDPGothic;
+}

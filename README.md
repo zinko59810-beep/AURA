@@ -8,29 +8,36 @@
 
 ```
 
-web
-├── 01_pages
-│   ├── html
-│   │   ├── login.html(ログイン画面)
-│   │   ├── safety
-│   │   │   ├── safety_register.html(安否登録画面)
-│   │   │   ├── safety_list.html(安否一覧画面)
-│   │   │   ├── safety_detail.html(安否詳細画面)
-│   │   │   └── safety_delete.html(安否削除画面)
-│   │   └── admin
-│   │       ├── admin_menu.html(管理者用メニュー画面)
-│   │       ├── employee_list.html(社員一覧画面)
-│   │       └── employee_detail.html(社員詳細画面)
-│   └── css
-│       ├── master.css
-│       └── login.css
-└── 02_componets
-    ├── html
-    │   └── logout.html
-    └── css
-backend(共通システム)
-├── 01_php
-└── 02_db
+01_frontend
+  pages/
+    assets/
+    public/
+      admin_php（管理者用ページ）/
+        admin_menu.php(管理者用メニュー)
+        employee_list.php(社員一覧画面)
+        employee_detail.php(社員詳細画面)
+        safety_delete.php(安否情報削除)
+      safety_php(安否情報ページ)/
+        safety_register.php(安否登録画面)
+        safety_list.php(社員安否一覧画面)
+        safety_detail.php(安否詳細画面)
+      login.php(ログイン画面)
+    styles/
+      admin_css(管理者用ページ別CSS)/
+        admin_menu.css
+        employee_list.css
+        employee_detail.css
+        safety_delete.css
+      safety_css(安否情報ページ別CSS)/
+        safety_register.css
+        safety_list.css
+        safety_detail.css
+      login.css
+      reset.css(CSS表示の統一)
+      style.css(ベースのCSS)
+02_backend/
+03_db/
+README.md
 
 ```
 
