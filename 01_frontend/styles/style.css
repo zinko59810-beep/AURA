@@ -1,4 +1,5 @@
-/* 表示の統一のためにフォントをアットルールで定義します */
+/* 表示の統一のためにフォントをアットルールで定義 */
+/* 安否情報の可読性を重視して、UDフォントを選定 */
 /* 環境差異がないように基本的に相対パスで記述します */
 @font-face {
     font-family: BIZUDPGothic;
@@ -6,6 +7,7 @@
     font-weight: 400;
     font-style: normal;
 }
+
 @font-face {
     font-family: BIZUDPGothic;
     src: url(../assets/fonts/BIZ_UDPGothic/BIZUDPGothic-Bold.ttf) format('truetype');
@@ -13,7 +15,25 @@
     font-style: normal;
 }
 
-/* ここにフォントを設定しないと反映されないので設定します */
+
 body {
     font-family: BIZUDPGothic;
+    background-color: #ffffff;
+
 }
+
+header {
+    /* デザインに設定されていたヘッダー色に変更 */
+    background-color: #006fb4;
+
+}
+
+.logo {
+    color: #ffffff;
+}
+
+/* モバイル(768px以上)のデザインを記述する */
+@media screen and (max-width: 768px) {}
+
+/* PC(1024px以上)のデザインを記述する */
+@media screen and (min-width: 1024px) {}
