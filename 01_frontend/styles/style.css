@@ -1,6 +1,9 @@
-/* 表示の統一のためにフォントをアットルールで定義 */
-/* 安否情報の可読性を重視して、UDフォントを選定 */
-/* 環境差異がないように基本的に相対パスで記述します */
+/* ===========================================
+表示の統一のためにフォントをアットルールで定義 
+ 安否情報の可読性を重視して、UDフォントを選定 
+ 環境差異がないように基本的に相対パスで記述します 
+ ========================================== */
+
 @font-face {
     font-family: BIZUDPGothic;
     src: url(../assets/fonts/BIZ_UDPGothic/BIZUDPGothic-Regular.ttf) format('truetype');
@@ -18,31 +21,46 @@
 
 body {
     font-family: BIZUDPGothic;
-    background-color: #ffffff;
-
 }
 
-header {
-    /* デザインに設定されていたヘッダー色に変更 */
-    background-color: #006fb4;
-
+header{
+    background-color: #006fb4; /* Figmaに設定されていた背景色を指定 */
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
     color: #ffffff;
     font-weight: 700;
+    white-space: nowrap; /* 文字が改行されるのを防止する */
+    position: absolute;
+    left: 1.5%;
 }
 
-button{
-    font-family: BIZUDPGothic;
-}
-
-.logout-btn{
+.logout-btn {
     font-weight: 700;
+    background-color: #80c7f4;
+    border-color: transparent; /* ボーダー色を透過 */
+    position: absolute;
+    right: 1.5%;
 }
+
+/* ===========================================
+                レスポンシブ対応
+ ========================================== */
 
 /* モバイル(768px以上)のデザインを記述する */
-@media screen and (max-width: 768px) {}
+@media screen and (max-width: 768px) {
+    header{
+    background-color: #006fb4; /* Figmaに設定されていた背景色を指定 */
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+}
 
-/* PC(1024px以上)のデザインを記述する */
-@media screen and (min-width: 1024px) {}

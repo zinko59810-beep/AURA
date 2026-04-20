@@ -13,8 +13,11 @@
 
 <body>
     <header>
-        <a>災害安否報告システム</a>
+        <a href="#" class="logo">災害安否報告システム</a>
+
+
     <header />
+    
         ログイン
 </body>
 

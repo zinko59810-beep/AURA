@@ -13,11 +13,11 @@
 <body>
     <header>
         
-        <p class="logo">災害安否報告システム</a>
-
-<!-- ログイン画面以外にはログアウトボタンを設置します -->
-
-        <button class="logout-btn">ログアウト</button>
+        <a href="#" class="logo">災害安否報告システム</a>
+        
+        
+        <!-- ログイン画面以外にはログアウトボタンを設置します -->
+        <a href="#" class="logout-btn">ログアウト</a>
     <header />
     
     <main>
