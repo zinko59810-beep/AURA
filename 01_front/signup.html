@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="signup.css">
+    <title>SIGN and LOG</title>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form action="registerfrom.php" method="post">
+                
+                <h1>Create Account</h1>
+                
+                <input type="text" name="Username" placeholder="Username">
+
+                <input type="password" name="Password" placeholder="Password" required>
+
+                <input type="text" name="Student_id" placeholder="Student Id" required>
+
+                <select name="class" id="class">
+                    <option value="">--Select Class--</option>
+                    <option value="sk2a">SK2A</option>
+                    <option value="sk1a">SK1A</option>
+                    <option value="ie1a">IE2A</option>
+                    <option value="ie2a">IE1A</option>
+                </select>
+                <select name="Hobby" id="hobby">
+                    <option value="">--Select Hobby--</option>
+                    <option value="sing">Singing</option>
+                    <option value="dance">Dancing</option>
+                    <option value="shop">Shopping</option>
+                    <option value="rolling">Nightout</option>
+                </select>
+                <select name="Favourite_Subject" id="subject">
+                    <option value="">--Favourite Subject--</option>
+                    <option value="front">HTML/CSS/Javascrip</option>
+                    <option value="backend">PHP</option>
+                    <option value="java">java</option>
+                    <option value="Database">Database</option>
+                </select>
+                    <button type="summit">Register</button>
+                    <p>Got an account?<a href="#" onclick="showForm('Login-form')">Login</a></p>
+            </form>
+        </div>
+        <div class="form-container log-in">
+            <form action="">
+
+                <h1>SIGN IN</h1>
+                
+                <input type="text" name="Username" placeholder="Username" required>
+
+                <input type="password" name="password" placeholder="Password" required>
+            
+                <button type="summit">Login</button>
+                <p>Don't have an account? <a href="#" onclick="showForm('signin-form')">Register</a></p>
+            </form>
+        </div>
+        <div class="toggle-contatiner">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back</h1>
+                    <p>let's build a new world!</p>
+                    <button class="hidden" id="login">SIGN IN</button>
+                </div>
+            </div>
+        </div>
+        <div class="toggle-contatiner">
+            <div class="toggle">
+                <div class="toggle-panel toggle-right">
+                    <h1>Hello DUDE!</h1>
+                    <p>no account register first!</p>
+                    <button class="hidden" id="register">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+     </div>
+    <script src="scrip.js"></script>
+</body>
+</html> 
