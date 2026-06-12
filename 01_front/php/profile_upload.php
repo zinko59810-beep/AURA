@@ -26,26 +26,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $file_path = $upload_dir . $file_name;
 
-        move_uploaded_file(
-            $_FILES['profile_image']['tmp_name'],
-            $file_path
-        );
+        if (!move_uploaded_file($_FILES['profile_image']['tmp_name'], $file_path)) {
+            $message = "画像のアップロードに失敗しました。uploads/profile の権限を確認してください。";
+        } else {
 
-        $dbh = db_connect();
+            $dbh = db_connect();
 
-        $stmt = $dbh->prepare("
-            UPDATE users
-            SET profile_image = ?
-            WHERE id = ?
-        ");
+            $stmt = $dbh->prepare("
+        UPDATE users
+        SET profile_image = ?
+        WHERE id = ?
+    ");
 
-        $stmt->execute([
-            $file_path,
-            $_SESSION['user_id']
-        ]);
+            $stmt->execute([
+                $file_path,
+                $_SESSION['user_id']
+            ]);
 
-        header("Location: profile.php");
-        exit;
+            header("Location: profile.php");
+            exit;
+        }
     }
 
     $message = "画像を選択してください";
@@ -62,106 +62,106 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="bg-light aura-app">
 
-<aside class="aura-sidebar">
-    <a href="question_list.php" class="aura-brand">
-        <span class="aura-brand-mark">A</span>
-        <span>AURA Study</span>
-    </a>
-
-    <nav class="aura-menu">
-        <a href="question_list.php" class="aura-menu-link">
-            <i class="bi bi-house-door"></i>
-            <span>Home</span>
+    <aside class="aura-sidebar">
+        <a href="question_list.php" class="aura-brand">
+            <span class="aura-brand-mark">A</span>
+            <span>AURA Study</span>
         </a>
-        <a href="question_post.php" class="aura-menu-link">
-            <i class="bi bi-plus-square"></i>
-            <span>Post</span>
+
+        <nav class="aura-menu">
+            <a href="question_list.php" class="aura-menu-link">
+                <i class="bi bi-house-door"></i>
+                <span>Home</span>
+            </a>
+            <a href="question_post.php" class="aura-menu-link">
+                <i class="bi bi-plus-square"></i>
+                <span>Post</span>
+            </a>
+            <a href="notification.php" class="aura-menu-link">
+                <i class="bi bi-bell"></i>
+                <span>Notice</span>
+            </a>
+            <a href="ranking.php" class="aura-menu-link">
+                <i class="bi bi-trophy"></i>
+                <span>Ranking</span>
+            </a>
+            <a href="profile.php" class="aura-menu-link active">
+                <i class="bi bi-person-circle"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <a href="logout.php" class="aura-logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
         </a>
-        <a href="notification.php" class="aura-menu-link">
-            <i class="bi bi-bell"></i>
-            <span>Notice</span>
-        </a>
-        <a href="ranking.php" class="aura-menu-link">
-            <i class="bi bi-trophy"></i>
-            <span>Ranking</span>
-        </a>
-        <a href="profile.php" class="aura-menu-link active">
-            <i class="bi bi-person-circle"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-
-    <a href="logout.php" class="aura-logout">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Logout</span>
-    </a>
-</aside>
+    </aside>
 
 
-<div class="container mt-5 aura-content">
+    <div class="container mt-5 aura-content">
 
-    <div class="card shadow-sm rounded-4">
+        <div class="card shadow-sm rounded-4">
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <h2 class="mb-4">
-                プロフィール画像変更
-            </h2>
+                <h2 class="mb-4">
+                    プロフィール画像変更
+                </h2>
 
-            <?php if (!empty($message)): ?>
+                <?php if (!empty($message)): ?>
 
-                <div class="alert alert-danger">
-                    <?= htmlspecialchars($message) ?>
-                </div>
+                    <div class="alert alert-danger">
+                        <?= htmlspecialchars($message) ?>
+                    </div>
 
-            <?php endif; ?>
+                <?php endif; ?>
 
-            <form
-                action="profile_upload.php"
-                method="POST"
-                enctype="multipart/form-data">
+                <form
+                    action="profile_upload.php"
+                    method="POST"
+                    enctype="multipart/form-data">
 
-                <div class="mb-3">
+                    <div class="mb-3">
 
-                    <label class="form-label">
-                        画像を選択
-                    </label>
+                        <label class="form-label">
+                            画像を選択
+                        </label>
 
-                    <input
-                        type="file"
-                        name="profile_image"
-                        class="form-control">
+                        <input
+                            type="file"
+                            name="profile_image"
+                            class="form-control">
 
-                </div>
+                    </div>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
 
-                    Upload
+                        Upload
 
-                </button>
+                    </button>
 
-                <a
-                    href="profile.php"
-                    class="btn btn-secondary">
+                    <a
+                        href="profile.php"
+                        class="btn btn-secondary">
 
-                    戻る
+                        戻る
 
-                </a>
+                    </a>
 
-            </form>
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 </body>
 

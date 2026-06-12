@@ -252,10 +252,15 @@ if (!$is_own_profile) {
 
                     <img
                         src="<?= htmlspecialchars($user['profile_image']) ?>"
-                        class="rounded-circle mb-3"
+                        class="rounded-circle d-block mx-auto mb-3"
                         width="120"
                         height="120"
                         style="object-fit:cover;">
+
+
+                    <!-- <p>
+                        <?= htmlspecialchars($user['profile_image']) ?>
+                    </p> -->
 
                 <?php else: ?>
 
@@ -477,6 +482,7 @@ if (!$is_own_profile) {
                                     src="<?= htmlspecialchars($project['image_path']) ?>"
                                     class="card-img-top"
                                     style="height:180px; object-fit:cover;">
+                                    <?= "/01_front/php/" . $project['image_path'] ?>
 
                             <?php endif; ?>
 
