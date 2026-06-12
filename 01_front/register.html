@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録</title>
+    <link rel="stylesheet" href="./css/yaju.css">
+</head>
+<body>
+
+<div class="register-container">
+
+    <div class="register-box">
+
+        <a href="yaju.html" class="back-btn">← 戻る</a>
+
+        <h1>新規登録</h1>
+
+        <p class="register-text">
+            学習コミュニティサイトへようこそ。<br>
+            必要事項を入力してアカウントを作成してください。
+        </p>
+
+        <form onsubmit="showComplete(event)">
+            <input type="text" placeholder="ユーザー名" required>
+
+            <input type="email" placeholder="メールアドレス" required>
+
+            <input type="password" placeholder="パスワード" required>
+
+            <input type="password" placeholder="パスワード確認" required>
+
+            <button type="submit">
+                登録する
+            </button>
+        </form>
+
+        <div class="login-link">
+            <p>登録済みですか？</p>
+            <a href="login.html">ログインはこちらから</a>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="complete-modal" class="modal">
+    <div class="modal-content">
+        <h2>登録が完了しました</h2>
+
+        <a href="login.html" class="modal-btn">
+            ログインへ
+        </a>
+    </div>
+</div>
+
+<script>
+function showComplete(event){
+    event.preventDefault();
+    document.getElementById("complete-modal").style.display = "flex";
+}
+</script>
+
+</body>
+</html>
