@@ -113,7 +113,7 @@ $users = $stmt->fetchAll();
 
 <head>
     <meta charset="UTF-8">
-    <title>Chat</title>
+    <title>Message</title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">

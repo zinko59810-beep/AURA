@@ -90,22 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Read messages
-$msg_stmt = $dbh->prepare("
-    SELECT *
-    FROM direct_messages
-    WHERE
-        (
-            sender_id = ?
-            AND receiver_id = ?
-        )
-        OR
-        (
-            sender_id = ?
-            AND receiver_id = ?
-        )
-    ORDER BY created_at ASC
-");
+
 
 $notice_stmt = $dbh->prepare("
     SELECT COUNT(*) AS total
@@ -133,14 +118,9 @@ $chat_stmt->execute([
 
 $chat_count = $chat_stmt->fetch()['total'];
 
-$msg_stmt->execute([
-    $_SESSION['user_id'],
-    $other_user_id,
-    $other_user_id,
-    $_SESSION['user_id']
-]);
 
-$messages = $msg_stmt->fetchAll();
+
+
 
 // Mark as read
 $read_stmt = $dbh->prepare("
@@ -287,56 +267,11 @@ $read_stmt->execute([
 
             </div>
 
-            <div class="card-body" style="height:520px; overflow-y:auto;">
-
-                <?php if (empty($messages)): ?>
-
-                    <div class="text-center text-muted mt-5">
-                        <i class="bi bi-chat-dots fs-1"></i>
-                        <p class="mt-3">
-                            メッセージを送って会話を始めましょう
-                        </p>
-                    </div>
-
-                <?php else: ?>
-
-                    <?php foreach ($messages as $msg): ?>
-
-                        <?php $is_me = $msg['sender_id'] == $_SESSION['user_id']; ?>
-
-                        <div class="d-flex mb-3 <?= $is_me ? 'justify-content-end' : 'justify-content-start' ?>">
-
-                            <div
-                                class="<?= $is_me ? 'bg-primary text-white' : 'bg-light text-dark' ?>"
-                                style="
-                max-width:70%;
-                padding:10px 14px;
-                border-radius:18px;
-                box-shadow:0 2px 8px rgba(0,0,0,.08);
-            ">
-
-                                <?= nl2br(htmlspecialchars($msg['message'])) ?>
-
-                                <div class="<?= $is_me ? 'text-white-50' : 'text-muted' ?> small mt-1">
-                                    <?= htmlspecialchars($msg['created_at']) ?>
-                                </div>
-
-                                <?php if ($is_me): ?>
-                                    <div class="small text-white-50">
-                                        <?= $msg['is_read'] == 1 ? '✓✓ Seen' : '✓ Sent' ?>
-                                    </div>
-                                <?php endif; ?>
-
-                            </div>
-
-                        </div>
-
-                    <?php endforeach; ?>
-
-                <?php endif; ?>
-
+            <div id="chat-box"
+                class="card-body"
+                style="height:520px; overflow-y:auto;">
             </div>
-
+            
             <div class="card-footer bg-white">
 
                 <form method="POST" class="d-flex gap-2">
@@ -362,5 +297,26 @@ $read_stmt->execute([
     </div>
 
 </body>
+<script>
+    function loadMessages() {
+
+        fetch("chat_messages.php?id=<?= $other_user_id ?>")
+            .then(response => response.text())
+            .then(data => {
+
+                const box =
+                    document.getElementById("chat-box");
+
+                box.innerHTML = data;
+
+                box.scrollTop =
+                    box.scrollHeight;
+            });
+    }
+
+    loadMessages();
+
+    setInterval(loadMessages, 2000);
+</script>
 
 </html>

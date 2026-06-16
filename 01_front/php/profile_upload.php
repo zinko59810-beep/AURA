@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['user_id']
             ]);
 
+            // echo $file_path;
             header("Location: profile.php");
             exit;
         }

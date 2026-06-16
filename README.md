@@ -217,9 +217,9 @@ http://localhost/AURA/
 
 ---
 
-## 🔗 URL
+ URL
 
-### GitHub
+GitHub
 
 https://github.com/zinko59810-beep/AURA
 
