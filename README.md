@@ -1,9 +1,9 @@
 # AURA - 学習コミュニティサイト
 
-![PHP](https://img.shields.io/badge/PHP-8.x-blue)
+<!-- ![PHP](https://img.shields.io/badge/PHP-8.x-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-8.x-orange)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
-![License](https://img.shields.io/badge/License-Educational-green)
+![License](https://img.shields.io/badge/License-Educational-green) -->
 
 ---
 
