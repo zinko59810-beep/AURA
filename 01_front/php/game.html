@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>JLPT Vocabulary Hunter</title>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
 body{
@@ -34,6 +39,39 @@ body{
     text-align:center;
 }
  
+.back-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:10px 16px;
+
+    background:
+        radial-gradient(circle at top left, rgba(20, 23, 204, 0.856), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(114, 228, 21, 0.705), transparent 30%),
+        #a3d0ee;
+
+    text-decoration:none;
+    border-radius:12px;
+
+    font-size:14px;
+    font-weight:600;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:0.2s ease;
+}
+
+.back-btn:hover{
+    background:#374151;
+    color:#fff;
+    transform:translateY(-1px);
+}
+
+.back-btn i{
+    font-size:16px;
+}
+
 h1{
     color:#333;
 }
@@ -191,8 +229,9 @@ h1{
 <body>
  
     <div style="position:absolute; top:20px; left:20px;">
-        <a href="javascript:history.back()" class="text-decoration-none text-muted">
-            ← 戻る
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            戻る
         </a>
     </div>
 

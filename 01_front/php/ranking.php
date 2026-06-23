@@ -141,9 +141,9 @@ $users = $stmt->fetchAll();
     <div class="container-fluid py-4 px-4 aura-content">
 
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <a href="profile.php" class="text-decoration-none text-muted">
-                ←
-            </a>
+            <!-- <a href="profile.php" class="text-decoration-none text-muted">
+                ←戻る
+            </a> -->
 
             <h4 class="fw-bold mb-0">
                 <i class="bi bi-trophy"></i> ランキング

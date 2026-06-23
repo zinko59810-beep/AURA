@@ -198,9 +198,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="container py-4 aura-content" style="max-width:700px;">
 
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <a href="question_list.php" class="text-decoration-none text-muted">
-                ←
-            </a>
+            <!-- <a href="question_list.php" class="text-decoration-none text-muted">
+                ←戻る
+            </a> -->
 
             <h4 class="fw-bold mb-0">
                 <i class="bi bi-question-circle"></i> 質問投稿

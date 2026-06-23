@@ -259,38 +259,53 @@ if ($keyword !== '') {
         <?php endif; ?>
 
 
-        <?php foreach ($questions as $question): ?>
+       <?php foreach ($questions as $question): ?>
 
-            <div class="card border-0 shadow-sm rounded-4 mb-3">
-                <div class="card-body">
+    <div class="card border-0 shadow-sm rounded-4 mb-3">
+        <div class="card-body">
 
-                    <span class="badge bg-primary mb-2">
-                        <?= htmlspecialchars($question['subject_name']) ?>
-                    </span>
+            <!-- ✅ DELETE BUTTON (ONLY OWNER) -->
+            <?php if ($_SESSION['user_id'] == $question['user_id']): ?>
+                <form action="question_delete.php" method="POST" style="position:absolute; top:15px; right:15px;">
+                    
+                    <input type="hidden" name="id" value="<?= $question['id'] ?>">
 
-                    <a href="profile.php?id=<?= $question['user_id'] ?>">
-                        <?= htmlspecialchars($question['name']) ?>
-                    </a>
+                    <button type="submit"
+                            class="delete-btn"
+                            onclick="return confirm('本当に削除しますか？');">
+                        <i class="bi bi-trash"></i>
+                    </button>
 
-                    <p class="text-muted">
-                        <?= htmlspecialchars(mb_strimwidth($question['goal'], 0, 100, "...")) ?>
-                    </p>
+                </form>
+            <?php endif; ?>
 
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <?= htmlspecialchars($question['name']) ?>
-                        </small>
+            <span class="badge bg-primary mb-2">
+                <?= htmlspecialchars($question['subject_name']) ?>
+            </span>
 
-                        <a href="question_detail.php?id=<?= $question['id'] ?>"
-                            class="btn btn-sm btn-primary rounded-pill">
-                            詳細
-                        </a>
-                    </div>
+            <a href="profile.php?id=<?= $question['user_id'] ?>">
+                <?= htmlspecialchars($question['name']) ?>
+            </a>
 
-                </div>
+            <p class="text-muted">
+                <?= htmlspecialchars(mb_strimwidth($question['goal'], 0, 100, "...")) ?>
+            </p>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    <?= htmlspecialchars($question['name']) ?>
+                </small>
+
+                <a href="question_detail.php?id=<?= $question['id'] ?>"
+                    class="btn btn-sm btn-primary rounded-pill">
+                    詳細
+                </a>
             </div>
 
-        <?php endforeach; ?>
+        </div>
+    </div>
+
+<?php endforeach; ?>
 
     </div>
 </body>

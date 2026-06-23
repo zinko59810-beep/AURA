@@ -247,9 +247,9 @@ if (!$is_own_profile) {
 
     <div class="container py-4 aura-content" style="max-width:700px;">
 
-        <a href="javascript:history.back()" class="text-decoration-none text-muted">
+        <!-- <a href="javascript:history.back()" class="text-decoration-none text-muted">
             ← 戻る
-        </a>
+        </a> -->
 
         <div class=" rounded-4 mt-3 mb-4">
 

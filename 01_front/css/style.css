@@ -6,19 +6,19 @@ body {
     min-height: 100vh;
 }
 
-.card {
-    backdrop-filter: blur(8px);
-}
-
-img.rounded-circle {
-    object-fit: cover;
-}
+/* Layout basics */
 .container {
     width: 100%;
 }
 
 .card {
     width: 100%;
+    border: 0;
+    backdrop-filter: blur(8px);
+}
+
+img.rounded-circle {
+    object-fit: cover;
 }
 
 /* AURA professional shell */
@@ -35,6 +35,7 @@ body.aura-app {
     padding-bottom: 0 !important;
 }
 
+/* Sidebar */
 .aura-sidebar {
     position: fixed;
     top: 0;
@@ -73,6 +74,7 @@ body.aura-app {
     font-weight: 900;
 }
 
+/* Menu */
 .aura-menu {
     display: flex;
     flex-direction: column;
@@ -113,20 +115,46 @@ body.aura-app {
     color: #b91c1c;
 }
 
+/* Content */
 .aura-content {
     max-width: 780px;
-}
-
-.card {
-    border: 0;
 }
 
 .btn {
     font-weight: 600;
 }
 
+
 /* @media (max-width: 768px) {
 
+=======
+/* ✅ DELETE BUTTON POSITION + BLUE STYLE */
+.card-body {
+    position: relative;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: none;
+    background: #e0f2fe;   /* light blue background */
+    color: #0284c7;        /* blue icon */
+    font-size: 16px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.delete-btn:hover {
+    background: #bae6fd;   /* darker background */
+    color: #0369a1;        /* darker blue */
+    transform: scale(1.05); /* small animation */
+}
+
+/* 📱 Mobile responsive */
+@media (max-width: 768px) {
     body.aura-app {
         padding-left: 0;
         padding-top: 74px;
@@ -199,4 +227,5 @@ body.aura-app {
     .aura-content {
         max-width: 100% !important;
     }
-} */
+} 
+
