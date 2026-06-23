@@ -156,7 +156,9 @@ $read_stmt->execute([
 
     <aside class="aura-sidebar">
         <a href="question_list.php" class="aura-brand">
-            <span class="aura-brand-mark">A</span>
+            <span class="aura-brand-mark">
+                <i class="bi bi-fire"></i>
+            </span>
             <span>AURA Study</span>
         </a>
 
@@ -203,6 +205,10 @@ $read_stmt->execute([
                 <i class="bi bi-person-circle"></i>
                 <span>Profile</span>
             </a>
+            <a href="game.html" class="aura-menu-link">
+                <i class="bi bi-controller"></i>
+                <span>Arcade</span>
+            </a>
         </nav>
 
         <a href="logout.php" class="aura-logout">
@@ -213,7 +219,7 @@ $read_stmt->execute([
 
     <div class="container py-4 aura-content" style="max-width:700px;">
 
-        <div class="card border-0 shadow-sm rounded-4">
+        <div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
 
             <div class="card-header bg-white d-flex align-items-center">
 
@@ -268,8 +274,7 @@ $read_stmt->execute([
             </div>
 
             <div id="chat-box"
-                class="card-body"
-                style="height:520px; overflow-y:auto;">
+                class="card-body flex-grow-1 overflow-auto">
             </div>
             
             <div class="card-footer bg-white">

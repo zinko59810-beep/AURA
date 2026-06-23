@@ -137,7 +137,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <aside class="aura-sidebar">
         <a href="question_list.php" class="aura-brand">
-            <span class="aura-brand-mark">A</span>
+            <span class="aura-brand-mark">
+                <i class="bi bi-fire"></i>
+            </span>
             <span>AURA Study</span>
         </a>
 
@@ -179,6 +181,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <a href="profile.php" class="aura-menu-link">
                 <i class="bi bi-person-circle"></i>
                 <span>Profile</span>
+            </a>
+            <a href="game.html" class="aura-menu-link">
+                <i class="bi bi-controller"></i>
+                <span>Arcade</span>
             </a>
         </nav>
 
