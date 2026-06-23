@@ -3,6 +3,9 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 
 session_start();
 
+$last_student_id = $_SESSION['last_student_id'] ?? '';
+unset($_SESSION['last_student_id']);
+
 if (isset($_SESSION['user_id'])) {
     header("Location: profile.php");
     exit;
@@ -82,7 +85,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <form action="login.php" method="POST">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Student ID</label>
-                        <input type="text" name="students_id" class="form-control rounded-3" placeholder="student id">
+                        <input
+                            type="text"
+                            name="students_id"
+                            class="form-control rounded-3"
+                            placeholder="student id"
+                            value="<?= htmlspecialchars($last_student_id) ?>">
                     </div>
 
                     <div class="mb-4">

@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+session_start();
 
 $message = "";
 $is_success = false;
@@ -55,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $class_id
             ]);
 
+            $_SESSION['last_student_id'] = $students_id;
             header("Location: login.php");
             exit;
         }
@@ -115,8 +117,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <label class="form-label fw-bold">Class</label>
                     <select name="class_id" class="form-select rounded-3">
                         <option value="">クラスを選択してください</option>
-                        <option value="1">SK2A</option>
-                        <option value="2">SK2B</option>
+                        <option value="1">SK1A</option>
+                        <option value="2">SK2A</option>
+                        <option value="3">SK3A</option>
+                        <option value="4">IE1A</option>
+                        <option value="5">IE2A</option>
+                        <option value="6">IE3A</option>
+                        <option value="7">IE4A</option>
+                        <option value="8">SE1A</option>
+                        <option value="9">SE2A</option>
                     </select>
                 </div>
 
