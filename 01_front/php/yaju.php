@@ -1,9 +1,5 @@
 <?php
 session_start();
-
-echo "<pre>";
-var_dump(isset($_SESSION['user_id']));
-echo "</pre>";
 ?>
 
 <!DOCTYPE html>

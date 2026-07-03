@@ -1,3 +1,3 @@
 <?php
-header("Location: 01_front/yaju.html");
+header("Location: 01_front/yaju.php");
 exit;
