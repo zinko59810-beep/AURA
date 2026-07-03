@@ -11,7 +11,7 @@ if (!isset($notice_count)) {
 ?>
 
 <aside class="aura-sidebar">
-    <a href="question_list.php" class="aura-brand">
+    <a href="yaju.php" class="aura-brand">
         <span class="aura-brand-mark">
             <i class="bi bi-fire"></i>
         </span>
