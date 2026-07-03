@@ -126,64 +126,8 @@ $chat_count = $chat_stmt->fetch()['total'];
 </head>
 
 <body class="bg-light aura-app">
-
-<aside class="aura-sidebar">
-    <a href="question_list.php" class="aura-brand">
-        <span class="aura-brand-mark">A</span>
-        <span>AURA Study</span>
-    </a>
-
-    <nav class="aura-menu">
-        <a href="question_list.php" class="aura-menu-link">
-            <i class="bi bi-house-door"></i>
-            <span>Home</span>
-        </a>
-
-        <a href="question_post.php" class="aura-menu-link">
-            <i class="bi bi-plus-square"></i>
-            <span>Post</span>
-        </a>
-
-        <a href="chat_list.php" class="aura-menu-link">
-            <i class="bi bi-chat-dots"></i>
-            <span>
-                Chat
-                <?php if ($chat_count > 0): ?>
-                    <span class="badge bg-danger rounded-pill">
-                        <?= $chat_count ?>
-                    </span>
-                <?php endif; ?>
-            </span>
-        </a>
-
-        <a href="notification.php" class="aura-menu-link">
-            <i class="bi bi-bell"></i>
-            <span>
-                Notice
-                <?php if ($notice_count > 0): ?>
-                    <span class="badge bg-danger rounded-pill">
-                        <?= $notice_count ?>
-                    </span>
-                <?php endif; ?>
-            </span>
-        </a>
-
-        <a href="ranking.php" class="aura-menu-link">
-            <i class="bi bi-trophy"></i>
-            <span>Ranking</span>
-        </a>
-
-        <a href="profile.php" class="aura-menu-link active">
-            <i class="bi bi-person-circle"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
-
-    <a href="logout.php" class="aura-logout">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Logout</span>
-    </a>
-</aside>
+    <?php $currentPage = 'post'; ?>
+    <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
 <div class="container py-4 aura-content" style="max-width:700px;">
 

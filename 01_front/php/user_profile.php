@@ -99,44 +99,10 @@ $following_count = $following_stmt->fetch()['total'];
 </head>
 
 <body class="aura-app">
+    <?php $currentPage = 'profile'; ?>
+    <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-    <aside class="aura-sidebar">
-        <a href="question_list.php" class="aura-brand">
-            <span class="aura-brand-mark">A</span>
-            <span>AURA Study</span>
-        </a>
-
-        <nav class="aura-menu">
-            <a href="question_list.php" class="aura-menu-link active">
-                <i class="bi bi-house-door"></i>
-                <span>Home</span>
-            </a>
-            <a href="question_post.php" class="aura-menu-link">
-                <i class="bi bi-plus-square"></i>
-                <span>Post</span>
-            </a>
-            <a href="notification.php" class="aura-menu-link">
-                <i class="bi bi-bell"></i>
-                <span>Notice</span>
-            </a>
-            <a href="ranking.php" class="aura-menu-link">
-                <i class="bi bi-trophy"></i>
-                <span>Ranking</span>
-            </a>
-            <a href="profile.php" class="aura-menu-link">
-                <i class="bi bi-person-circle"></i>
-                <span>Profile</span>
-            </a>
-        </nav>
-
-        <a href="logout.php" class="aura-logout">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Logout</span>
-        </a>
-    </aside>
-
-
-    <div class="container py-4 aura-content" style="max-width:500px;">
+<div class="container py-4 aura-content" style="max-width:500px;">
 
 
         <a href="question_list.php"

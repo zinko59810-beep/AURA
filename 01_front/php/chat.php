@@ -153,71 +153,10 @@ $read_stmt->execute([
 </head>
 
 <body class="aura-app">
+    <?php $currentPage = 'chat'; ?>
+    <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-    <aside class="aura-sidebar">
-        <a href="question_list.php" class="aura-brand">
-            <span class="aura-brand-mark">
-                <i class="bi bi-fire"></i>
-            </span>
-            <span>AURA Study</span>
-        </a>
-
-        <nav class="aura-menu">
-            <a href="question_list.php" class="aura-menu-link">
-                <i class="bi bi-house-door"></i>
-                <span>Home</span>
-            </a>
-
-            <a href="question_post.php" class="aura-menu-link">
-                <i class="bi bi-plus-square"></i>
-                <span>Post</span>
-            </a>
-            <a href="chat_list.php" class="aura-menu-link active">
-                <i class="bi bi-chat-dots"></i>
-                <span>
-                    Chat
-                    <?php if ($chat_count > 0): ?>
-                        <span class="badge bg-danger rounded-pill">
-                            <?= $chat_count ?>
-                        </span>
-                    <?php endif; ?>
-                </span>
-            </a>
-
-            <a href="notification.php" class="aura-menu-link">
-                <i class="bi bi-bell"></i>
-                <span>
-                    Notice
-                    <?php if ($notice_count > 0): ?>
-                        <span class="badge bg-danger rounded-pill">
-                            <?= $notice_count ?>
-                        </span>
-                    <?php endif; ?>
-                </span>
-            </a>
-
-            <a href="ranking.php" class="aura-menu-link">
-                <i class="bi bi-trophy"></i>
-                <span>Ranking</span>
-            </a>
-
-            <a href="profile.php" class="aura-menu-link">
-                <i class="bi bi-person-circle"></i>
-                <span>Profile</span>
-            </a>
-            <a href="game.html" class="aura-menu-link">
-                <i class="bi bi-controller"></i>
-                <span>Arcade</span>
-            </a>
-        </nav>
-
-        <a href="logout.php" class="aura-logout">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Logout</span>
-        </a>
-    </aside>
-
-    <div class="container py-4 aura-content" style="max-width:700px;">
+<div class="container py-4 aura-content" style="max-width:700px;">
 
         <div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
 
