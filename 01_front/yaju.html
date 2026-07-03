@@ -19,14 +19,19 @@
 </header>
 
 <section class="hero">
-    <h2>学生同士で学び、つながる場所</h2>
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="video/176098-854875299_medium.mp4" type="video/mp4">
+    </video>
 
-    <p>
+    <div class="hero-content">
+        <h2>学生同士で学び、つながる場所</h2>
+        <p>
         プログラミングや授業で分からないことを質問したり、
         同じ分野を学ぶ仲間や先輩と交流できる学習コミュニティです。
     </p>
-
-<a href="./php/register.php" class="start-btn">今すぐ始める</a></section>
+        <a href="./php/register.php" class="start-btn">今すぐ始める</a>
+    </div>
+</section>
 
 <section class="features">
 
@@ -75,33 +80,10 @@
     <p>© 学習コミュニティサイト</p>
 </footer>
 
-<nav class="bottom-nav">
-
-    <a href="#">
-        <span>👪</span>
-        <p>トーク</p>
-    </a>
-
-    <a href="#">
-        <span>📚</span>
-        <p>質問</p>
-    </a>
-
-    <a href="#" class="center-btn">
-        <span>🏠</span>
-    </a>
-
-    <a href="#">
-        <span>🏆</span>
-        <p>順位</p>
-    </a>
-
-    <a href="#">
-        <span>👤</span>
-        <p>マイページ</p>
-    </a>
-
-</nav>
-
+<script>
+    const video = document.querySelector(".bg-video");
+    video.playbackRate = 0.3;
+</script>
+</body>
 </body>
 </html>
