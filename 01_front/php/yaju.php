@@ -21,17 +21,28 @@ session_start();
         <div class="btns">
 
             <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="profile.php" class="login">ログイン</a>
-            <?php else: ?>
-                <a href="auth.php" class="login">ログイン</a>
-            <?php endif; ?>
 
-            <a href="auth.php?mode=register" class="register">
-                新規登録
-            </a>
+                <a href="profile.php" class="user-btn">
+
+                    👤 <?= htmlspecialchars($_SESSION['name']) ?>
+
+                </a>
+
+            <?php else: ?>
+
+                <a href="auth.php" class="login">
+                    ログイン
+                </a>
+
+                <a href="auth.php?mode=register" class="register">
+                    新規登録
+                </a>
+
+            <?php endif; ?>
 
         </div>
 
+    </header>
     </header>
 
     <section class="hero">
