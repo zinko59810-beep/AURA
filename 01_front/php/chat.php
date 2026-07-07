@@ -10,6 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $dbh = db_connect();
 
+// Update online status
 $active_stmt = $dbh->prepare("
     UPDATE users
     SET last_active_at = NOW()
@@ -27,9 +28,9 @@ if ($other_user_id == $_SESSION['user_id']) {
     exit;
 }
 
-// Chat partner info
+// Get chat partner
 $stmt = $dbh->prepare("
-    SELECT
+SELECT
     id,
     name,
     students_id,
@@ -39,19 +40,17 @@ FROM users
 WHERE id = ?
 ");
 
-$stmt->execute([
-    $other_user_id
-]);
-
+$stmt->execute([$other_user_id]);
 $other_user = $stmt->fetch();
 
 if (!$other_user) {
-    echo "User Not Found";
-    exit;
+    exit("User Not Found");
 }
+
 $is_online = false;
 
 if (!empty($other_user['last_active_at'])) {
+
     $last_active = strtotime($other_user['last_active_at']);
 
     if ((time() - $last_active) < 300) {
@@ -62,9 +61,9 @@ if (!empty($other_user['last_active_at'])) {
 // Send message
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $message = trim($_POST['message'] ?? "");
+    $message = trim($_POST['message'] ?? '');
 
-    if ($message !== "") {
+    if ($message !== '') {
 
         $send_stmt = $dbh->prepare("
             INSERT INTO direct_messages
@@ -85,18 +84,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message
         ]);
 
-        header("Location: chat.php?id=" . urlencode($other_user_id));
+        header("Location: chat.php?id=".$other_user_id);
         exit;
     }
 }
 
-
-
+// Notification count
 $notice_stmt = $dbh->prepare("
-    SELECT COUNT(*) AS total
-    FROM notifications
-    WHERE user_id = ?
-    AND is_read = 0
+SELECT COUNT(*) total
+FROM notifications
+WHERE user_id=?
+AND is_read=0
 ");
 
 $notice_stmt->execute([
@@ -105,11 +103,12 @@ $notice_stmt->execute([
 
 $notice_count = $notice_stmt->fetch()['total'];
 
+// Chat unread count
 $chat_stmt = $dbh->prepare("
-    SELECT COUNT(*) AS total
-    FROM direct_messages
-    WHERE receiver_id = ?
-    AND is_read = 0
+SELECT COUNT(*) total
+FROM direct_messages
+WHERE receiver_id=?
+AND is_read=0
 ");
 
 $chat_stmt->execute([
@@ -118,16 +117,12 @@ $chat_stmt->execute([
 
 $chat_count = $chat_stmt->fetch()['total'];
 
-
-
-
-
-// Mark as read
+// Read messages
 $read_stmt = $dbh->prepare("
-    UPDATE direct_messages
-    SET is_read = 1
-    WHERE sender_id = ?
-    AND receiver_id = ?
+UPDATE direct_messages
+SET is_read=1
+WHERE sender_id=?
+AND receiver_id=?
 ");
 
 $read_stmt->execute([
@@ -140,127 +135,244 @@ $read_stmt->execute([
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Chat</title>
 
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+<meta charset="UTF-8">
 
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<title>Chat</title>
 
-    <link rel="stylesheet" href="../css/style.css">
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link
+rel="stylesheet"
+href="../css/style.css">
+
+<script type="module"
+src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js">
+</script>
+
 </head>
 
 <body class="aura-app">
-    <?php $currentPage = 'chat'; ?>
-    <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
+
+<?php
+$currentPage='chat';
+require_once __DIR__.'/partials/sidebar.php';
+?>
 
 <div class="container py-4 aura-content" style="max-width:700px;">
 
-        <div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
+<div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
 
-            <div class="card-header bg-white d-flex align-items-center">
+<div class="card-header bg-white d-flex align-items-center">
 
-                <a href="profile.php?id=<?= htmlspecialchars($other_user['id']) ?>"
-                    class="text-decoration-none text-muted me-3">
-                    ←
-                </a>
+<a
+href="profile.php?id=<?= $other_user['id']?>"
+class="text-decoration-none text-muted me-3">
 
-                <?php if (!empty($other_user['profile_image'])): ?>
+←
 
-                    <img
-                        src="<?= htmlspecialchars($other_user['profile_image']) ?>"
-                        class="rounded-circle me-3"
-                        width="45"
-                        height="45"
-                        style="object-fit:cover;">
+</a>
 
+<?php if(!empty($other_user['profile_image'])): ?>
 
+<img
+src="<?= htmlspecialchars($other_user['profile_image']) ?>"
+class="rounded-circle me-3"
+width="45"
+height="45"
+style="object-fit:cover;">
 
-                <?php else: ?>
+<?php else: ?>
 
-                    <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
-                        style="width:45px;height:45px;">
-                        <i class="bi bi-person"></i>
-                    </div>
+<div
+class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
+style="width:45px;height:45px;">
 
+<i class="bi bi-person"></i>
 
-                <?php endif; ?>
+</div>
 
-                <div>
-                    <strong>
-                        <?= htmlspecialchars($other_user['name']) ?>
-                    </strong>
+<?php endif; ?>
 
-                    <br>
+<div>
 
-                    <small class="text-muted">
-                        ID: <?= htmlspecialchars($other_user['students_id']) ?>
-                    </small>
-                    <?php if ($is_online): ?>
-                        <small class="text-success">
-                            <i class="bi bi-circle-fill"></i> Online
-                        </small>
-                    <?php else: ?>
-                        <small class="text-muted">
-                            <i class="bi bi-circle-fill"></i> Offline
-                        </small>
-                    <?php endif; ?>
-                </div>
+<strong>
 
+<?= htmlspecialchars($other_user['name']) ?>
 
-            </div>
+</strong>
 
-            <div id="chat-box"
-                class="card-body flex-grow-1 overflow-auto">
-            </div>
-            
-            <div class="card-footer bg-white">
+<br>
 
-                <form method="POST" class="d-flex gap-2">
+<small class="text-muted">
 
-                    <input
-                        type="text"
-                        name="message"
-                        class="form-control rounded-pill"
-                        placeholder="メッセージを入力">
+ID :
+<?= htmlspecialchars($other_user['students_id']) ?>
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary rounded-pill px-4">
-                        <i class="bi bi-send-fill"></i>
-                    </button>
+</small>
 
-                </form>
+<br>
 
-            </div>
+<?php if($is_online): ?>
 
-        </div>
+<small class="text-success">
 
-    </div>
+<i class="bi bi-circle-fill"></i>
 
-</body>
+Online
+
+</small>
+
+<?php else: ?>
+
+<small class="text-muted">
+
+<i class="bi bi-circle-fill"></i>
+
+Offline
+
+</small>
+
+<?php endif; ?>
+
+</div>
+
+</div>
+
+<div
+id="chat-box"
+class="card-body flex-grow-1 overflow-auto">
+
+</div>
+
+<div class="card-footer bg-white position-relative">
+
+    <form method="POST" class="d-flex align-items-center gap-2">
+
+        <!-- Emoji Button -->
+        <button
+            type="button"
+            id="emojiBtn"
+            class="btn btn-light rounded-circle">
+            😊
+        </button>
+
+        <!-- Message -->
+        <input
+            type="text"
+            id="message"
+            name="message"
+            class="form-control rounded-pill"
+            placeholder="メッセージを入力"
+            autocomplete="off">
+
+        <!-- Send -->
+        <button
+            type="submit"
+            class="btn btn-primary rounded-pill px-4">
+
+            <i class="bi bi-send-fill"></i>
+
+        </button>
+
+    </form>
+
+    <!-- Emoji Picker -->
+    <emoji-picker id="emojiPicker"></emoji-picker>
+
+</div>
+
+</div>
+
+</div>
+
 <script>
-    function loadMessages() {
 
-        fetch("chat_messages.php?id=<?= $other_user_id ?>")
-            .then(response => response.text())
-            .then(data => {
+function loadMessages() {
 
-                const box =
-                    document.getElementById("chat-box");
+    fetch("chat_messages.php?id=<?= $other_user_id ?>")
+        .then(response => response.text())
+        .then(data => {
 
-                box.innerHTML = data;
+            const box =
+                document.getElementById("chat-box");
 
-                box.scrollTop =
-                    box.scrollHeight;
-            });
-    }
+            box.innerHTML = data;
 
-    loadMessages();
+            box.scrollTop =
+                box.scrollHeight;
 
-    setInterval(loadMessages, 2000);
+        });
+
+}
+
+loadMessages();
+
+setInterval(loadMessages,2000);
+
 </script>
 
+<script>
+
+const emojiBtn =
+document.getElementById("emojiBtn");
+
+const emojiPicker =
+document.getElementById("emojiPicker");
+
+const messageInput =
+document.getElementById("message");
+
+emojiBtn.addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    if(emojiPicker.style.display==="block"){
+
+        emojiPicker.style.display="none";
+
+    }else{
+
+        emojiPicker.style.display="block";
+
+    }
+
+});
+
+emojiPicker.addEventListener(
+"emoji-click",
+function(event){
+
+    messageInput.value +=
+    event.detail.unicode;
+
+    messageInput.focus();
+
+    emojiPicker.style.display="none";
+
+});
+
+document.addEventListener("click",function(e){
+
+    if(
+        !emojiPicker.contains(e.target)
+        &&
+        e.target!==emojiBtn
+    ){
+
+        emojiPicker.style.display="none";
+
+    }
+
+});
+
+</script>
+
+</body>
 </html>
