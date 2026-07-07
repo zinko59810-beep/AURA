@@ -48,7 +48,7 @@ session_start();
     <section class="hero">
 
         <video autoplay muted loop playsinline class="bg-video">
-            <source src="../video/176098-854875299_medium.mp4" type="video/mp4">
+            <source src="../video/137614-767056227_medium.mp4" type="video/mp4">
         </video>
 
         <div class="hero-content">
@@ -117,7 +117,7 @@ session_start();
 
     <script>
         const video = document.querySelector(".bg-video");
-        video.playbackRate = 0.3;
+        video.playbackRate = 0.5;
     </script>
 
 </body>
