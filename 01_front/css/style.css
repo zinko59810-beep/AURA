@@ -12,7 +12,58 @@ body{
 
         #f8fafc;
 }
+/* profile */
+.profile-image {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px;
+    max-width: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    flex-shrink: 0;
+    display: block;
+}
+.ranking-card .card-body {
+    display: flex;
+    align-items: center;
+    min-height: 88px;
+}
 
+
+.ranking-avatar {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px;
+    max-width: 56px;
+    min-height: 56px;
+    max-height: 56px;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    object-position: center;
+    display: block;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.default-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #6b7280;
+    font-size: 28px;
+}
+.ranking-card .flex-grow-1 {
+    min-width: 0;
+}
+.aura-content {
+    max-width: 780px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px;
+}
 .chat-window{
 
     background:rgba(255,255,255,.88);
@@ -137,19 +188,15 @@ body.aura-app {
     color: #b91c1c;
 }
 
-/* Content */
-.aura-content {
-    max-width: 780px;
-}
+
+
 
 .btn {
     font-weight: 600;
 }
 
 
-/* @media (max-width: 768px) {
 
-=======
 /* ✅ DELETE BUTTON POSITION + BLUE STYLE */
 .card-body {
     position: relative;

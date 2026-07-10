@@ -79,7 +79,7 @@ $users = $stmt->fetchAll();
     <?php $currentPage = 'ranking'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container-fluid py-4 px-4 aura-content">
+    <div class="container-fluid py-4 px-4 aura-content">
 
         <div class="d-flex align-items-center justify-content-between mb-4">
             <!-- <a href="profile.php" class="text-decoration-none text-muted">
@@ -121,9 +121,7 @@ $users = $stmt->fetchAll();
                 }
                 ?>
 
-                <div class="card shadow-sm rounded-4 mb-2 <?= $card_class ?>"
-                    style="width: 100%; max-width:100%;">
-
+                <div class="card shadow-sm border-0 rounded-4 mb-3 ranking-card">
                     <div class="card-body d-flex align-items-center">
 
                         <div class="me-3 fs-2">
@@ -131,56 +129,34 @@ $users = $stmt->fetchAll();
                         </div>
 
                         <?php if (!empty($user['profile_image'])): ?>
-
                             <img
-                                src="<?= htmlspecialchars($user['profile_image']) ?>"
-                                class="rounded-circle me-3"
-                                width="55"
-                                height="55"
-                                style="object-fit:cover;">
-
-                        <?php else: ?>
-
-                            <div
-                                class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
-                                style="width:55px;height:55px;font-size:24px;">
-                                <i class="bi bi-person-circle"></i>
+                                src="/AURA/<?= htmlspecialchars(ltrim($user['profile_image'], '/')) ?>"
+                                alt="<?= htmlspecialchars($user['name']) ?>"
+                                class="ranking-avatar me-3"
+                                onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="ranking-avatar default-avatar me-3" style="display:none;">
+                                <i class="bi bi-person-fill"></i>
                             </div>
-
+                        <?php else: ?>
+                            <div class="ranking-avatar default-avatar me-3">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
                         <?php endif; ?>
 
                         <div class="flex-grow-1">
-
-                            <h5 class="mb-1 fw-bold">
-                                <?= htmlspecialchars($user['name']) ?>
-                            </h5>
-
-                            <small class="text-muted">
-                                ID: <?= htmlspecialchars($user['students_id']) ?>
-                            </small>
-
+                            <h5 class="mb-1 fw-bold"><?= htmlspecialchars($user['name']) ?></h5>
+                            <small class="text-muted">ID: <?= htmlspecialchars($user['students_id']) ?></small>
                             <div>
-                                <span class="badge bg-primary">
-                                    <?= htmlspecialchars($user['level']) ?>
-                                </span>
+                                <span class="badge bg-primary"><?= htmlspecialchars($user['level']) ?></span>
                             </div>
-
                         </div>
 
                         <div class="text-end">
-
-                            <h5 class="fw-bold mb-0">
-                                <?= htmlspecialchars($user['points']) ?>
-                            </h5>
-
-                            <small class="text-muted">
-                                pt
-                            </small>
-
+                            <h5 class="fw-bold mb-0"><?= htmlspecialchars($user['points']) ?></h5>
+                            <small class="text-muted">pt</small>
                         </div>
 
                     </div>
-
                 </div>
 
             <?php endforeach; ?>

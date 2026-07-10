@@ -17,10 +17,7 @@ switch ($url) {
         require __DIR__ . '/01_front/php/question_post.php';
         break;
 
-    case 'chat':
-        require __DIR__ . '/01_front/php/chat_list.php';
-        break;
-
+    
     case 'notice':
         require __DIR__ . '/01_front/php/notification.php';
         break;
@@ -67,6 +64,10 @@ switch ($url) {
         break;
 
     /* ===== if you have direct message page ===== */
+
+    case 'chat':
+        require __DIR__ . '/01_front/php/chat_list.php';
+        break;
 
     case 'chat_messages':
         require __DIR__ . '/01_front/php/chat_messages.php';
