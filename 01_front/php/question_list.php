@@ -94,7 +94,7 @@ if ($keyword !== '') {
     <title>AURA Study</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
@@ -183,7 +183,7 @@ if ($keyword !== '') {
                                 </div>
                             </div>
 
-                            <a href="profile.php?id=<?= $search_user['id'] ?>"
+                            <a href="/AURA/profile?id=<?= $search_user['id'] ?>"
                                 class="btn btn-sm btn-primary rounded-pill">
                                 Profile
                             </a>
@@ -207,7 +207,7 @@ if ($keyword !== '') {
 
             <!-- ✅ DELETE BUTTON (ONLY OWNER) -->
             <?php if ($_SESSION['user_id'] == $question['user_id']): ?>
-                <form action="question_delete.php" method="POST" style="position:absolute; top:15px; right:15px;">
+                <form action="/AURA/question_delete" method="POST" style="position:absolute; top:15px; right:15px;">
                     
                     <input type="hidden" name="id" value="<?= $question['id'] ?>">
 
@@ -237,7 +237,7 @@ if ($keyword !== '') {
                     <?= htmlspecialchars($question['name']) ?>
                 </small>
 
-                <a href="question_detail.php?id=<?= $question['id'] ?>"
+                <a href="/AURA/question_detail?id=<?= $question['id'] ?>"
                     class="btn btn-sm btn-primary rounded-pill">
                     詳細
                 </a>

@@ -11,7 +11,7 @@ if (!isset($notice_count)) {
 ?>
 
 <aside class="aura-sidebar">
-    <a href="yaju.php" class="aura-brand">
+    <a href="/AURA/home" class="aura-brand">
         <span class="aura-brand-mark">
             <i class="bi bi-fire"></i>
         </span>
@@ -19,17 +19,17 @@ if (!isset($notice_count)) {
     </a>
 
     <nav class="aura-menu">
-        <a href="question_list.php" class="aura-menu-link <?= $currentPage === 'home' ? 'active' : '' ?>">
+        <a href="/AURA/home" class="aura-menu-link <?= $currentPage === 'home' ? 'active' : '' ?>">
             <i class="bi bi-house-door"></i>
             <span>Home</span>
         </a>
 
-        <a href="question_post.php" class="aura-menu-link <?= $currentPage === 'post' ? 'active' : '' ?>">
+        <a href="/AURA/post" class="aura-menu-link <?= $currentPage === 'post' ? 'active' : '' ?>">
             <i class="bi bi-plus-square"></i>
             <span>Post</span>
         </a>
 
-        <a href="chat_list.php" class="aura-menu-link <?= $currentPage === 'chat' ? 'active' : '' ?>">
+        <a href="/AURA/chat" class="aura-menu-link <?= $currentPage === 'chat' ? 'active' : '' ?>">
             <i class="bi bi-chat-dots"></i>
             <span>
                 Chat
@@ -39,7 +39,7 @@ if (!isset($notice_count)) {
             </span>
         </a>
 
-        <a href="notification.php" class="aura-menu-link <?= $currentPage === 'notice' ? 'active' : '' ?>">
+        <a href="/AURA/notice" class="aura-menu-link <?= $currentPage === 'notice' ? 'active' : '' ?>">
             <i class="bi bi-bell"></i>
             <span>
                 Notice
@@ -49,23 +49,23 @@ if (!isset($notice_count)) {
             </span>
         </a>
 
-        <a href="ranking.php" class="aura-menu-link <?= $currentPage === 'ranking' ? 'active' : '' ?>">
+        <a href="/AURA/ranking" class="aura-menu-link <?= $currentPage === 'ranking' ? 'active' : '' ?>">
             <i class="bi bi-trophy"></i>
             <span>Ranking</span>
         </a>
 
-        <a href="profile.php" class="aura-menu-link <?= $currentPage === 'profile' ? 'active' : '' ?>">
+        <a href="/AURA/profile" class="aura-menu-link <?= $currentPage === 'profile' ? 'active' : '' ?>">
             <i class="bi bi-person-circle"></i>
             <span>Profile</span>
         </a>
 
-        <a href="game.html" class="aura-menu-link <?= $currentPage === 'arcade' ? 'active' : '' ?>">
+        <a href="/AURA/game" class="aura-menu-link <?= $currentPage === 'arcade' ? 'active' : '' ?>">
             <i class="bi bi-controller"></i>
             <span>Arcade</span>
         </a>
     </nav>
 
-    <a href="logout.php" class="aura-logout">
+    <a href="href=/AURA/logout" class="aura-logout">
         <i class="bi bi-box-arrow-right"></i>
         <span>Logout</span>
     </a>

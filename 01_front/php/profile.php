@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/auth");
     exit;
 }
 
@@ -175,7 +175,7 @@ if (!$is_own_profile) {
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
@@ -218,7 +218,7 @@ if (!$is_own_profile) {
 
                 <?php if ($is_own_profile): ?>
 
-                    <a href="profile_upload.php"
+                    <a href="/AURA/profile_upload"
                         class="btn btn-outline-primary btn-sm rounded-pill mb-3">
                         <i class="bi bi-camera"></i>
                         画像を変更
@@ -319,7 +319,7 @@ if (!$is_own_profile) {
                         <div class="row g-3">
 
                             <div class="col-6">
-                                <a href="my_questions.php"
+                                <a href="/AURA/my_questions"
                                     class="btn btn-outline-primary w-100 rounded-4 py-3">
                                     <i class="bi bi-journal-text"></i><br>
                                     自分の質問
@@ -327,7 +327,7 @@ if (!$is_own_profile) {
                             </div>
 
                             <div class="col-6">
-                                <a href="my_answers.php"
+                                <a href="/AURA/my_answers"
                                     class="btn btn-outline-dark w-100 rounded-4 py-3">
                                     <i class="bi bi-chat-left-text"></i><br>
                                     自分の回答
@@ -339,7 +339,7 @@ if (!$is_own_profile) {
                         <div class="alert alert-light mt-3 rounded-4">
                             自分のプロフィールです
                         </div>
-                        <a href="project_add.php"
+                        <a href="/AURA/project_add"
                             class="btn btn-primary rounded-pill mt-3">
                             <i class="bi bi-folder-plus"></i>
                             Add Project
@@ -349,7 +349,7 @@ if (!$is_own_profile) {
 
                         <?php if (!$is_following): ?>
 
-                            <a href="follow.php?id=<?= htmlspecialchars($user['id']) ?>"
+                            <a href="/AURA/follow?id=<?= htmlspecialchars($user['id']) ?>"
                                 class="btn btn-primary rounded-pill px-4">
                                 <i class="bi bi-person-plus"></i>
                                 フォローする
@@ -357,7 +357,7 @@ if (!$is_own_profile) {
 
                         <?php else: ?>
 
-                            <a href="unfollow.php?id=<?= htmlspecialchars($user['id']) ?>"
+                            <a href="/AURA/unfollow?id=<?= htmlspecialchars($user['id']) ?>"
                                 class="btn btn-outline-danger rounded-pill px-4">
                                 <i class="bi bi-person-dash"></i>
                                 フォロー解除
@@ -365,7 +365,7 @@ if (!$is_own_profile) {
 
                         <?php endif; ?>
 
-                        <a href="chat.php?id=<?= htmlspecialchars($user['id']) ?>"
+                        <a href="/AURA/chat_room?id=<?= htmlspecialchars($user['id']) ?>"
                             class="btn btn-dark rounded-pill px-4 ms-2">
                             <i class="bi bi-chat-dots"></i>
                             Message
@@ -404,12 +404,12 @@ if (!$is_own_profile) {
 
                             <?php if ($is_own_profile): ?>
                                 <div class="position-absolute top-0 end-0 p-2">
-                                    <a href="project_edit.php?id=<?= $project['id'] ?>"
+                                    <a href="/AURA/project_edit?id=<?= $project['id'] ?>"
                                         class="text-primary me-2">
                                         <i class="bi bi-pencil"></i>
                                     </a>
 
-                                    <a href="project_delete.php?id=<?= $project['id'] ?>"
+                                    <a href="/AURA/project_delete?id=<?= $project['id'] ?>"
                                         class="text-danger">
                                         <i class="bi bi-trash"></i>
                                     </a>
@@ -426,7 +426,7 @@ if (!$is_own_profile) {
                                     src="<?= htmlspecialchars($project['image_path']) ?>"
                                     class="card-img-top"
                                     style="height:180px; object-fit:cover;">
-                                    <?= "/01_front/php/" . $project['image_path'] ?>
+                                    <!-- <?= "/01_front/php/" . $project['image_path'] ?> -->
 
                             <?php endif; ?>
 

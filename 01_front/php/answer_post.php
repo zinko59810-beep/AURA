@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $dbh->commit();
 
-                header("Location: question_detail.php?id=" . urlencode($question_id));
+                header("Location: /AURA/question_detail?id=" . urlencode($question_id));
                 exit;
             }
         } catch (Exception $e) {
@@ -165,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <div class="container py-4 aura-content" style="max-width:500px;">
 
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <a href="question_detail.php?id=<?= htmlspecialchars($question_id) ?>" class="text-decoration-none text-muted">←</a>
+            <a href="/AURA/question_detail?id=<?= htmlspecialchars($question_id) ?>" class="text-decoration-none text-muted">←</a>
             <h4 class="fw-bold mb-0"><i class="bi bi-chat-left-text"></i> 回答投稿</h4>
             <span></span>
         </div>
@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <div class="card border-0 shadow-sm rounded-4">
             <div class="card-body p-4">
-                <form action="answer_post.php?question_id=<?= htmlspecialchars($question_id) ?>" method="POST">
+                <form action="/AURA/answer_post?question_id=<?= htmlspecialchars($question_id) ?>" method="POST">
                     <div class="mb-4">
                         <label class="form-label fw-bold">回答内容</label>
                         <textarea
@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         回答する
                     </button>
 
-                    <a href="question_detail.php?id=<?= htmlspecialchars($question_id) ?>"
+                    <a href="/AURA/question_detail?id=<?= htmlspecialchars($question_id) ?>"
                         class="btn btn-outline-secondary w-100 rounded-pill mt-2">
                         戻る
                     </a>

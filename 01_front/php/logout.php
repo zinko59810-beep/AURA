@@ -6,5 +6,5 @@ session_start();
 session_destroy();
 
 // Login Page ပြန်ပို့
-header("Location: auth.php");
+header("Location: /AURA/auth");
 exit;

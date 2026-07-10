@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $dbh->commit();
 
-        header("Location: question_list.php");
+        header("Location: /AURA/question_list");
         exit;
 
     } catch (Exception $e) {

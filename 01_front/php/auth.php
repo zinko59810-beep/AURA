@@ -17,7 +17,7 @@ $last_student_id = $_SESSION['last_student_id'] ?? "";
 unset($_SESSION['last_student_id']);
 
 if (isset($_SESSION['user_id'])) {
-    header("Location: profile.php");
+    header("Location: /AURA/profile");
     exit;
 }
 
@@ -56,7 +56,7 @@ if (isset($_POST['login'])) {
             $_SESSION['user_id']
         ]);
 
-        header("Location: profile.php");
+        header("Location: /AURA/profile");
         exit;
     }
 
@@ -139,7 +139,7 @@ if (isset($_POST['register'])) {
 
             $_SESSION['last_student_id'] = $students_id;
 
-            header("Location: auth.php");
+            header("Location: /AURA/auth");
             exit;
         }
     }
@@ -157,7 +157,7 @@ if (isset($_POST['register'])) {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="/AURA/01_front/php/auth.css">
 </head>
 
 <body>
@@ -291,7 +291,7 @@ if (isset($_POST['register'])) {
                 name="register">
 
                 Register
-`
+
             </button>
 
             </form>
@@ -352,7 +352,7 @@ if (isset($_POST['register'])) {
 
     </div>
 
-    <script src="auth.js"></script>
+    <script src="/AURA/01_front/php/auth.js"></script>
 
 </body>
 

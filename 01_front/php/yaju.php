@@ -9,7 +9,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学習コミュニティサイト</title>
-    <link rel="stylesheet" href="../css/yaju.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/yaju.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@ session_start();
 
             <?php if (isset($_SESSION['user_id'])): ?>
 
-                <a href="profile.php" class="user-btn">
+                <a href="/AURA/profile" class="user-btn">
 
                     👤 <?= htmlspecialchars($_SESSION['name']) ?>
 
@@ -30,11 +30,11 @@ session_start();
 
             <?php else: ?>
 
-                <a href="auth.php" class="login">
+                <a href="/AURA/auth" class="login">
                     ログイン
                 </a>
 
-                <a href="auth.php?mode=register" class="register">
+                <a href="/AURA/auth?mode=register" class="register">
                     新規登録
                 </a>
 
@@ -48,7 +48,7 @@ session_start();
     <section class="hero">
 
         <video autoplay muted loop playsinline class="bg-video">
-            <source src="../video/137614-767056227_medium.mp4" type="video/mp4">
+            <source src="/AURA/01_front/video/137614-767056227_medium" type="video/mp4">
         </video>
 
         <div class="hero-content">
@@ -60,7 +60,7 @@ session_start();
                 同じ分野を学ぶ仲間や先輩と交流できる学習コミュニティです。
             </p>
 
-            <a href="auth.php?mode=register" class="start-btn">
+            <a href="/AURA/auth?mode=register" class="start-btn">
                 今すぐ始める
             </a>
 

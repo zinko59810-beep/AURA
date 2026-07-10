@@ -89,7 +89,7 @@ $questions = $stmt->fetchAll();
                         </span>
 
                         <h5 class="fw-bold">
-                            <a href="question_detail.php?id=<?= $question['id'] ?>"
+                            <a href="/AURA/question_detail?id=<?= $question['id'] ?>"
                                 class="text-decoration-none text-dark">
                                 <?= htmlspecialchars($question['title']) ?>
                             </a>

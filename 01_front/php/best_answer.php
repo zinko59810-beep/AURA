@@ -51,7 +51,7 @@ if ((int)$data['question_user_id'] !== (int)$_SESSION['user_id']) {
 }
 
 if ((int)$data['is_best_hint'] === 1) {
-    header("Location: question_detail.php?id=" . urlencode($question_id));
+    header("Location: /AURA/question_detail?id=" . urlencode($question_id));
     exit;
 }
 

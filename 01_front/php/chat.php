@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message
         ]);
 
-        header("Location: chat.php?id=".$other_user_id);
+        header("Location: chat.php?id=" . $other_user_id);
         exit;
     }
 }
@@ -136,243 +136,239 @@ $read_stmt->execute([
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>Chat</title>
+    <title>Chat</title>
 
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<link
-rel="stylesheet"
-href="../css/style.css">
+    <link
+        rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
 
-<script type="module"
-src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js">
-</script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js">
+    </script>
 
 </head>
 
 <body class="aura-app">
 
-<?php
-$currentPage='chat';
-require_once __DIR__.'/partials/sidebar.php';
-?>
+    <?php
+    $currentPage = 'chat';
+    require_once __DIR__ . '/partials/sidebar.php';
+    ?>
 
-<div class="container py-4 aura-content" style="max-width:700px;">
+    <div class="container py-4 aura-content" style="max-width:700px;">
 
-<div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
+        <div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
 
-<div class="card-header bg-white d-flex align-items-center">
+            <div class="card-header bg-white d-flex align-items-center">
 
-<a
-href="profile.php?id=<?= $other_user['id']?>"
-class="text-decoration-none text-muted me-3">
+                <a
+                    href="profile.php?id=<?= $other_user['id'] ?>"
+                    class="text-decoration-none text-muted me-3">
 
-←
+                    ←
 
-</a>
+                </a>
 
-<?php if(!empty($other_user['profile_image'])): ?>
+                <?php if (!empty($other_user['profile_image'])): ?>
 
-<img
-src="<?= htmlspecialchars($other_user['profile_image']) ?>"
-class="rounded-circle me-3"
-width="45"
-height="45"
-style="object-fit:cover;">
+                    <img
+                        src="<?= htmlspecialchars($other_user['profile_image']) ?>"
+                        class="rounded-circle me-3"
+                        width="45"
+                        height="45"
+                        style="object-fit:cover;">
 
-<?php else: ?>
+                <?php else: ?>
 
-<div
-class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
-style="width:45px;height:45px;">
+                    <div
+                        class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
+                        style="width:45px;height:45px;">
 
-<i class="bi bi-person"></i>
+                        <i class="bi bi-person"></i>
 
-</div>
+                    </div>
 
-<?php endif; ?>
+                <?php endif; ?>
 
-<div>
+                <div>
 
-<strong>
+                    <strong>
 
-<?= htmlspecialchars($other_user['name']) ?>
+                        <?= htmlspecialchars($other_user['name']) ?>
 
-</strong>
+                    </strong>
 
-<br>
+                    <br>
 
-<small class="text-muted">
+                    <small class="text-muted">
 
-ID :
-<?= htmlspecialchars($other_user['students_id']) ?>
+                        ID :
+                        <?= htmlspecialchars($other_user['students_id']) ?>
 
-</small>
+                    </small>
 
-<br>
+                    <br>
 
-<?php if($is_online): ?>
+                    <?php if ($is_online): ?>
 
-<small class="text-success">
+                        <small class="text-success">
 
-<i class="bi bi-circle-fill"></i>
+                            <i class="bi bi-circle-fill"></i>
 
-Online
+                            Online
 
-</small>
+                        </small>
 
-<?php else: ?>
+                    <?php else: ?>
 
-<small class="text-muted">
+                        <small class="text-muted">
 
-<i class="bi bi-circle-fill"></i>
+                            <i class="bi bi-circle-fill"></i>
 
-Offline
+                            Offline
 
-</small>
+                        </small>
 
-<?php endif; ?>
+                    <?php endif; ?>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-<div
-id="chat-box"
-class="card-body flex-grow-1 overflow-auto">
+            <div
+                id="chat-box"
+                class="card-body flex-grow-1 overflow-auto">
 
-</div>
+            </div>
 
-<div class="card-footer bg-white position-relative">
+            <div class="card-footer bg-white position-relative">
 
-    <form method="POST" class="d-flex align-items-center gap-2">
+                <form method="POST" class="d-flex align-items-center gap-2">
 
-        <!-- Emoji Button -->
-        <button
-            type="button"
-            id="emojiBtn"
-            class="btn btn-light rounded-circle">
-            😊
-        </button>
+                    <!-- Emoji Button -->
+                    <button
+                        type="button"
+                        id="emojiBtn"
+                        class="btn btn-light rounded-circle">
+                        😊
+                    </button>
 
-        <!-- Message -->
-        <input
-            type="text"
-            id="message"
-            name="message"
-            class="form-control rounded-pill"
-            placeholder="メッセージを入力"
-            autocomplete="off">
+                    <!-- Message -->
+                    <input
+                        type="text"
+                        id="message"
+                        name="message"
+                        class="form-control rounded-pill"
+                        placeholder="メッセージを入力"
+                        autocomplete="off">
 
-        <!-- Send -->
-        <button
-            type="submit"
-            class="btn btn-primary rounded-pill px-4">
+                    <!-- Send -->
+                    <button
+                        type="submit"
+                        class="btn btn-primary rounded-pill px-4">
 
-            <i class="bi bi-send-fill"></i>
+                        <i class="bi bi-send-fill"></i>
 
-        </button>
+                    </button>
 
-    </form>
+                </form>
 
-    <!-- Emoji Picker -->
-    <emoji-picker id="emojiPicker"></emoji-picker>
+                <!-- Emoji Picker -->
+                <emoji-picker id="emojiPicker"></emoji-picker>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<script>
+    <script>
+        function loadMessages() {
 
-function loadMessages() {
+            fetch("/AURA?chat_messages?id=<?= $other_user_id ?>")
+                .then(response => response.text())
+                .then(data => {
 
-    fetch("chat_messages.php?id=<?= $other_user_id ?>")
-        .then(response => response.text())
-        .then(data => {
+                    const box =
+                        document.getElementById("chat-box");
 
-            const box =
-                document.getElementById("chat-box");
+                    box.innerHTML = data;
 
-            box.innerHTML = data;
+                    box.scrollTop =
+                        box.scrollHeight;
 
-            box.scrollTop =
-                box.scrollHeight;
+                });
+
+        }
+
+        loadMessages();
+
+        setInterval(loadMessages, 2000);
+    </script>
+
+    <script>
+        const emojiBtn =
+            document.getElementById("emojiBtn");
+
+        const emojiPicker =
+            document.getElementById("emojiPicker");
+
+        const messageInput =
+            document.getElementById("message");
+
+        emojiBtn.addEventListener("click", function(e) {
+
+            e.stopPropagation();
+
+            if (emojiPicker.style.display === "block") {
+
+                emojiPicker.style.display = "none";
+
+            } else {
+
+                emojiPicker.style.display = "block";
+
+            }
 
         });
 
-}
+        emojiPicker.addEventListener(
+            "emoji-click",
+            function(event) {
 
-loadMessages();
+                messageInput.value +=
+                    event.detail.unicode;
 
-setInterval(loadMessages,2000);
+                messageInput.focus();
 
-</script>
+                emojiPicker.style.display = "none";
 
-<script>
+            });
 
-const emojiBtn =
-document.getElementById("emojiBtn");
+        document.addEventListener("click", function(e) {
 
-const emojiPicker =
-document.getElementById("emojiPicker");
+            if (
+                !emojiPicker.contains(e.target) &&
+                e.target !== emojiBtn
+            ) {
 
-const messageInput =
-document.getElementById("message");
+                emojiPicker.style.display = "none";
 
-emojiBtn.addEventListener("click",function(e){
+            }
 
-    e.stopPropagation();
-
-    if(emojiPicker.style.display==="block"){
-
-        emojiPicker.style.display="none";
-
-    }else{
-
-        emojiPicker.style.display="block";
-
-    }
-
-});
-
-emojiPicker.addEventListener(
-"emoji-click",
-function(event){
-
-    messageInput.value +=
-    event.detail.unicode;
-
-    messageInput.focus();
-
-    emojiPicker.style.display="none";
-
-});
-
-document.addEventListener("click",function(e){
-
-    if(
-        !emojiPicker.contains(e.target)
-        &&
-        e.target!==emojiBtn
-    ){
-
-        emojiPicker.style.display="none";
-
-    }
-
-});
-
-</script>
+        });
+    </script>
 
 </body>
+
 </html>

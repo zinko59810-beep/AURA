@@ -93,7 +93,7 @@ $following_count = $following_stmt->fetch()['total'];
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 
 
 </head>
@@ -105,7 +105,7 @@ $following_count = $following_stmt->fetch()['total'];
 <div class="container py-4 aura-content" style="max-width:500px;">
 
 
-        <a href="question_list.php"
+        <a href="/AURA/home"
             class="text-decoration-none text-muted">
             ← 戻る
         </a>

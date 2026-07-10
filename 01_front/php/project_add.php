@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/login");
     exit;
 }
 
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $demo_url
         ]);
 
-        header("Location: profile.php");
+        header("Location: /AURA/profile");
         exit;
     }
 }

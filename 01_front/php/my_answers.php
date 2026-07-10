@@ -110,7 +110,7 @@ $answers = $stmt->fetchAll();
                                 <?= htmlspecialchars($answer['created_at']) ?>
                             </small>
 
-                            <a href="question_detail.php?id=<?= $answer['question_id'] ?>"
+                            <a href="/AURA/question_detail?id=<?= $answer['question_id'] ?>"
                                 class="btn btn-sm btn-primary rounded-pill">
                                 質問を見る
                             </a>

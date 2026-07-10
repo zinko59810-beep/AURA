@@ -97,7 +97,7 @@ $answers = $answer_stmt->fetchAll();
     <title>質問詳細</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
@@ -115,7 +115,7 @@ $answers = $answer_stmt->fetchAll();
 
         <?php endif; ?>
 
-        <a href="question_list.php" class="text-decoration-none text-muted">
+        <a href="/AURA/home" class="text-decoration-none text-muted">
             ← 戻る
         </a>
 
@@ -150,7 +150,7 @@ $answers = $answer_stmt->fetchAll();
         </div>
 
         <div class="d-grid mb-4">
-            <a href="answer_post.php?question_id=<?= $question['id'] ?>"
+            <a href="/AURA/answer_post?question_id=<?= $question['id'] ?>"
                 class="btn btn-primary rounded-pill">
                 回答する
             </a>
@@ -187,7 +187,7 @@ $answers = $answer_stmt->fetchAll();
                         </div>
                         <?php if ($answer['user_id'] != $_SESSION['user_id']): ?>
 
-                            <a href="helpful.php?answer_id=<?= $answer['id'] ?>"
+                            <a href="/AURA/helpful?answer_id=<?= $answer['id'] ?>"
                                 class="btn btn-sm btn-outline-success rounded-pill mt-2">
                                 👍 役に立った
                                 (<?= $helpful_count ?>)
@@ -205,14 +205,14 @@ $answers = $answer_stmt->fetchAll();
                             <?= nl2br(htmlspecialchars($answer['content'])) ?>
                         </p>
                         <?php if ($answer['user_id'] != $_SESSION['user_id']): ?>
-                            <a href="report.php?answer_id=<?= $answer['id'] ?>&user_id=<?= $answer['user_id'] ?>"
+                            <a href="/AURA/report?answer_id=<?= $answer['id'] ?>&user_id=<?= $answer['user_id'] ?>"
                                 class="btn btn-sm btn-outline-danger rounded-pill mt-2">
                                 <i class="bi bi-flag"></i> Report
                             </a>
                         <?php endif; ?>
 
                         <?php if ($question['user_id'] == $_SESSION['user_id'] && $answer['is_best_hint'] == 0): ?>
-                            <a href="best_answer.php?answer_id=<?= $answer['id'] ?>&question_id=<?= $question['id'] ?>"
+                            <a href="/AURA/best_answer?answer_id=<?= $answer['id'] ?>&question_id=<?= $question['id'] ?>"
                                 class="btn btn-sm btn-outline-warning rounded-pill mt-3">
                                 ベスト回答にする
                             </a>
