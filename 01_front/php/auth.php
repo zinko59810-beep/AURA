@@ -205,7 +205,7 @@ if (isset($_POST['register'])) {
                     type="submit"
                     name="login">
 
-                    Login
+                    ログイン
 
                 </button>
 
