@@ -83,49 +83,128 @@ select {
     width: 100%;
     padding: 13px 15px;
     margin: 8px 0;
-    border: none;
+    border: 2px solid transparent;
     outline: none;
-    border-radius: 10px;
-    background: #f1f1f1;
+    border-radius: 12px;
+    background: #f1f5f9;
+    color: #1e293b;
     transition: .3s;
     font-size: 15px;
 }
+
+
+input::placeholder {
+    color: #94a3b8;
+}
+
 
 input:focus,
 select:focus {
     background: #fff;
-    border: 2px solid #ff4b2b;
+    border: 2px solid #2563eb;
+    box-shadow: 0 0 12px rgba(37,99,235,.15);
 }
 
-button {
-    border-radius: 30px;
-    border: none;
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 12px 45px;
-    margin-top: 18px;
-    cursor: pointer;
-    transition: .3s;
-}
 
-button:hover {
-    transform: scale(1.05);
-}
-
-button.ghost {
-    background: transparent;
-    border: 2px solid #fff;
-}
-
-.alert {
-    width: 100%;
-    border-radius: 10px;
-}
 
 /* ==========================
-   OVERLAY
+   MODERN BLUE BUTTON
+========================== */
+
+
+button {
+
+    border-radius: 30px;
+
+    border: none;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+
+    color:#fff;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    padding:13px 50px;
+
+    margin-top:18px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:
+        0 8px 20px rgba(37,99,235,.25);
+}
+
+
+
+button:hover {
+
+    transform:translateY(-3px) scale(1.03);
+
+    box-shadow:
+        0 15px 30px rgba(37,99,235,.35);
+
+}
+
+
+
+button:active {
+
+    transform:scale(.96);
+
+}
+
+
+
+/* ==========================
+   TRANSPARENT OVERLAY BUTTON
+========================== */
+
+
+button.ghost {
+
+    background:transparent;
+
+    border:2px solid rgba(255,255,255,.8);
+
+    color:white;
+
+    box-shadow:none;
+
+}
+
+
+button.ghost:hover {
+
+    background:white;
+
+    color:#2563eb;
+
+}
+
+
+
+/* ==========================
+   ALERT MESSAGE
+========================== */
+
+
+.alert {
+
+    width:100%;
+
+    border-radius:12px;
+
+}
+/* ==========================
+   MODERN OVERLAY
 ========================== */
 
 .overlay-container {
@@ -135,7 +214,7 @@ button.ghost {
     width: 50%;
     height: 100%;
     overflow: hidden;
-    transition: transform .6s ease-in-out;
+    transition: transform .7s ease-in-out;
     z-index: 100;
 }
 
@@ -143,68 +222,235 @@ button.ghost {
     transform: translateX(-100%);
 }
 
+
 .overlay {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    color: #fff;
+
     position: relative;
+
     left: -100%;
     width: 200%;
     height: 100%;
-    transform: translateX(0);
-    transition: transform .6s ease-in-out;
+
+    overflow: hidden;
+
+
+    /* Modern Premium Gradient */
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #1e3a8a 45%,
+            #2563eb 100%
+        );
+
+
+    color:white;
+
+    transform:translateX(0);
+
+    transition:transform .7s ease-in-out;
+
 }
+
 
 .auth-container.right-panel-active .overlay {
-    transform: translateX(50%);
+
+    transform:translateX(50%);
+
 }
+
+
+/* Soft Light Effect */
+
+.overlay::before {
+
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+    height:500px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:50%;
+
+    top:-180px;
+    right:-150px;
+
+}
+
+
+.overlay::after {
+
+    content:"";
+
+    position:absolute;
+
+    width:350px;
+    height:350px;
+
+    background:rgba(59,130,246,.25);
+
+    border-radius:50%;
+
+    bottom:-150px;
+    left:-120px;
+
+    filter:blur(30px);
+
+}
+
+
+
+/* Overlay Panels */
 
 .overlay-panel {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 0 40px;
-    width: 50%;
-    height: 100%;
-    top: 0;
+
+    position:absolute;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:60px;
+
+    width:50%;
+
+    height:100%;
+
+    top:0;
+
+    z-index:5;
+
 }
+
+
 
 .overlay-left {
-    transform: translateX(-20%);
+
+    transform:translateX(-20%);
+
 }
+
 
 .auth-container.right-panel-active .overlay-left {
-    transform: translateX(0);
+
+    transform:translateX(0);
+
 }
+
+
 
 .overlay-right {
-    right: 0;
-    transform: translateX(0);
+
+    right:0;
+
+    transform:translateX(0);
+
 }
+
+
 
 .auth-container.right-panel-active .overlay-right {
-    transform: translateX(20%);
+
+    transform:translateX(20%);
+
 }
+
+
+
+
+/* Text */
 
 .overlay h1 {
-    color: #fff;
-    margin-bottom: 20px;
+
+    font-size:42px;
+
+    font-weight:700;
+
+    margin-bottom:20px;
+
+    color:white;
+
+    letter-spacing:-1px;
+
 }
+
+
 
 .overlay p {
-    font-size: 15px;
-    line-height: 1.7;
-    margin-bottom: 30px;
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    margin-bottom:35px;
+
+    max-width:330px;
+
+    color:rgba(255,255,255,.85);
+
 }
 
-/* ==========================
-   BUTTON
-========================== */
 
-button:active {
-    transform: scale(.95);
+
+/* Button */
+
+.overlay button {
+
+    padding:14px 50px;
+
+    border-radius:50px;
+
+    border:1px solid rgba(255,255,255,.6);
+
+
+    background:rgba(255,255,255,.1);
+
+    backdrop-filter:blur(10px);
+
+
+    color:white;
+
+
+    font-size:15px;
+
+    font-weight:600;
+
+
+    cursor:pointer;
+
+
+    transition:.3s;
+
+}
+
+
+
+.overlay button:hover {
+
+
+    background:white;
+
+    color:#1e3a8a;
+
+
+    transform:translateY(-3px);
+
+
+    box-shadow:
+
+    0 10px 25px rgba(0,0,0,.2);
+
+
 }
 
 /* ==========================
