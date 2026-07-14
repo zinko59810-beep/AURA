@@ -224,7 +224,7 @@ if ($keyword !== '') {
                 <?= htmlspecialchars($question['subject_name']) ?>
             </span>
 
-            <a href="profile.php?id=<?= $question['user_id'] ?>">
+            <a href="/AURA/profile?id=<?= $question['user_id'] ?>">
                 <?= htmlspecialchars($question['name']) ?>
             </a>
 
