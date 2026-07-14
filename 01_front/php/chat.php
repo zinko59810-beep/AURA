@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/login");
     exit;
 }
 
@@ -24,7 +24,7 @@ $active_stmt->execute([
 $other_user_id = $_GET['id'] ?? 0;
 
 if ($other_user_id == $_SESSION['user_id']) {
-    header("Location: profile.php");
+    header("Location: /AURA/profile");
     exit;
 }
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message
         ]);
 
-        header("Location: chat.php?id=" . $other_user_id);
+        header("Location: /AURA/chat_room?id=" . $other_user_id);
         exit;
     }
 }
@@ -172,7 +172,7 @@ $read_stmt->execute([
             <div class="card-header bg-white d-flex align-items-center">
 
                 <a
-                    href="profile.php?id=<?= $other_user['id'] ?>"
+                    href="/AURA/profile?id=<?= $other_user['id'] ?>"
                     class="text-decoration-none text-muted me-3">
 
                     ←
@@ -182,20 +182,29 @@ $read_stmt->execute([
                 <?php if (!empty($other_user['profile_image'])): ?>
 
                     <img
-                        src="<?= htmlspecialchars($other_user['profile_image']) ?>"
-                        class="rounded-circle me-3"
-                        width="45"
-                        height="45"
-                        style="object-fit:cover;">
+                        src="/AURA/<?= htmlspecialchars(
+                                        ltrim($other_user['profile_image'], '/'),
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>"
+                        alt="<?= htmlspecialchars($other_user['name'], ENT_QUOTES, 'UTF-8') ?>"
+                        class="chat-avatar me-3"
+                        onerror="
+            this.onerror=null;
+            this.style.display='none';
+            this.nextElementSibling.style.display='flex';
+        ">
+
+                    <div
+                        class="chat-avatar chat-default-avatar me-3"
+                        style="display:none;">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
 
                 <?php else: ?>
 
-                    <div
-                        class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
-                        style="width:45px;height:45px;">
-
-                        <i class="bi bi-person"></i>
-
+                    <div class="chat-avatar chat-default-avatar me-3">
+                        <i class="bi bi-person-fill"></i>
                     </div>
 
                 <?php endif; ?>
@@ -295,7 +304,7 @@ $read_stmt->execute([
     <script>
         function loadMessages() {
 
-            fetch("/AURA?chat_messages?id=<?= $other_user_id ?>")
+            fetch("/AURA/chat_messages?id=<?= urlencode($other_user_id) ?>")
                 .then(response => response.text())
                 .then(data => {
 

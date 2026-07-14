@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="card-body p-1">
 
-                <form action="question_post.php" method="POST">
+                <form action="/AURA/question_post" method="POST">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">

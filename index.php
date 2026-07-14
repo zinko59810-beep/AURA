@@ -66,8 +66,9 @@ switch ($url) {
     /* ===== if you have direct message page ===== */
 
     case 'chat':
-        require __DIR__ . '/01_front/php/chat_list.php';
-        break;
+    require __DIR__ . '/01_front/php/chat_list.php';
+    break;
+
 
     case 'chat_messages':
         require __DIR__ . '/01_front/php/chat_messages.php';

@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/login");
     exit;
 }
 
@@ -128,7 +128,7 @@ $users = $stmt->fetchAll();
     <?php $currentPage = 'chat'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content">
+    <div class="container py-4 aura-content">
 
         <h3 class="fw-bold mb-4">
             Chat
@@ -145,7 +145,7 @@ $users = $stmt->fetchAll();
         <?php foreach ($users as $user): ?>
 
             <a
-                href="chat.php?id=<?= $user['id'] ?>"
+                href="/AURA/chat_room?id=<?= urlencode($user['id']) ?>"
                 class="text-decoration-none text-dark">
 
                 <div class="card border-0 shadow-sm rounded-4 mb-3">
@@ -155,18 +155,29 @@ $users = $stmt->fetchAll();
                         <?php if (!empty($user['profile_image'])): ?>
 
                             <img
-                                src="<?= htmlspecialchars($user['profile_image']) ?>"
-                                class="rounded-circle me-3"
-                                width="55"
-                                height="55"
-                                style="object-fit:cover;">
+                                src="/AURA/<?= htmlspecialchars(
+                                                ltrim($user['profile_image'], '/'),
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>"
+                                alt="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"
+                                class="chat-list-avatar me-3"
+                                onerror="
+            this.onerror=null;
+            this.style.display='none';
+            this.nextElementSibling.style.display='flex';
+        ">
+
+                            <div
+                                class="chat-list-avatar chat-list-default-avatar me-3"
+                                style="display:none;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
 
                         <?php else: ?>
 
-                            <div
-                                class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
-                                style="width:55px;height:55px;">
-                                <i class="bi bi-person"></i>
+                            <div class="chat-list-avatar chat-list-default-avatar me-3">
+                                <i class="bi bi-person-fill"></i>
                             </div>
 
                         <?php endif; ?>
@@ -178,7 +189,11 @@ $users = $stmt->fetchAll();
                             </h6>
 
                             <small class="text-muted">
-                                <?= htmlspecialchars($user['last_message']) ?>
+                                <?= htmlspecialchars(
+                                    $user['last_message'] ?? 'メッセージはありません',
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
                             </small>
 
                         </div>

@@ -78,6 +78,55 @@ body{
         0 15px 40px rgba(15,23,42,.08);
 
 }
+.chat-avatar {
+    width: 45px !important;
+    height: 45px !important;
+    min-width: 45px;
+    max-width: 45px;
+    min-height: 45px;
+    max-height: 45px;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    object-position: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.chat-default-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4f46e5;
+    color: white;
+    font-size: 22px;
+}
+
+.chat-list-avatar {
+    width: 55px !important;
+    height: 55px !important;
+    min-width: 55px;
+    max-width: 55px;
+    min-height: 55px;
+    max-height: 55px;
+
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    object-position: center;
+
+    display: block;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.chat-list-default-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #4f46e5;
+    color: #fff;
+    font-size: 25px;
+}
 
 /* Layout basics */
 .container {
