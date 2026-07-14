@@ -65,7 +65,7 @@ if (!isset($notice_count)) {
         </a>
     </nav>
 
-    <a href="href=/AURA/logout" class="aura-logout">
+    <a href="/AURA/logout" class="aura-logout">
         <i class="bi bi-box-arrow-right"></i>
         <span>Logout</span>
     </a>
