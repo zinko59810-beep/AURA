@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/login");
     exit;
 }
 
@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="card-body p-1">
 
-                <form action="/AURA/question_post" method="POST">
+                <form action="/AURA/post" method="POST">
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">

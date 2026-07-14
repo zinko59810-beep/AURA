@@ -19,7 +19,7 @@ if (!isset($notice_count)) {
     </a>
 
     <nav class="aura-menu">
-        <a href="/AURA/home" class="aura-menu-link <?= $currentPage === 'home' ? 'active' : '' ?>">
+        <a href="/AURA/question_list" class="aura-menu-link <?= $currentPage === 'home' ? 'active' : '' ?>">
             <i class="bi bi-house-door"></i>
             <span>Home</span>
         </a>
