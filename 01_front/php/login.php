@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
 
 session_start();
@@ -112,4 +112,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 </body>
 
-</html>
+</html> -->

@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../../02_backend/db/db_.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/login");
     exit;
 }
 
@@ -23,5 +23,5 @@ $stmt->execute([
     $following_id
 ]);
 
-header("Location: profile.php?id=" . urlencode($following_id));
+header("Location: /AURA/profile?id=" . urlencode($following_id));
 exit;

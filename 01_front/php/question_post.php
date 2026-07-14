@@ -244,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </button>
 
                     <a
-                        href="question_list.php"
+                        href="/AURA/question_list"
                         class="btn btn-outline-secondary w-100 rounded-pill mt-2">
                         戻る
                     </a>

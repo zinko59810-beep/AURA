@@ -122,7 +122,7 @@ $chat_count = $chat_stmt->fetch()['total'];
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
@@ -131,7 +131,7 @@ $chat_count = $chat_stmt->fetch()['total'];
 
 <div class="container py-4 aura-content" style="max-width:700px;">
 
-    <a href="profile.php" class="text-decoration-none text-muted">
+    <a href="/AURA/profile" class="text-decoration-none text-muted">
         ← 戻る
     </a>
 
@@ -150,7 +150,7 @@ $chat_count = $chat_stmt->fetch()['total'];
                 </div>
             <?php endif; ?>
 
-            <form action="project_add.php" method="POST" enctype="multipart/form-data">
+            <form action="/AURA/project_add" method="POST" enctype="multipart/form-data">
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">

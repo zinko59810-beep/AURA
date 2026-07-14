@@ -115,7 +115,7 @@ $answers = $answer_stmt->fetchAll();
 
         <?php endif; ?>
 
-        <a href="/AURA/home" class="text-decoration-none text-muted">
+        <a href="/AURA/profile" class="text-decoration-none text-muted">
             ← 戻る
         </a>
 
@@ -159,8 +159,10 @@ $answers = $answer_stmt->fetchAll();
         <h5 class="fw-bold mb-3">回答一覧</h5>
 
         <?php if (empty($answers)): ?>
+            
 
             <div class="alert alert-info rounded-4">
+                
                 まだ回答がありません。
             </div>
 
