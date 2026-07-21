@@ -60,7 +60,7 @@ if (isset($_POST['login'])) {
         exit;
     }
 
-    $login_message = "Student ID or Password is wrong";
+    $login_message = "学生IDまたはパスワードが間違っています。";
 }
 
 
@@ -88,7 +88,7 @@ if (isset($_POST['register'])) {
         $register_message = "全部入力してください";
     } elseif ($password != $confirm_password) {
 
-        $register_message = "Password does not match";
+        $register_message = "パスワードが一致していませ";
     } else {
 
         $check_stmt = $dbh->prepare("

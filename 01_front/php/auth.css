@@ -23,7 +23,7 @@ body {
     overflow: hidden;
     width: 900px;
     max-width: 100%;
-    min-height: 650px;
+    min-height: 750px;
 }
 
 .form-container {
@@ -31,6 +31,7 @@ body {
     top: 0;
     height: 100%;
     transition: all .6s ease-in-out;
+    overflow-y: auto;
 }
 
 .sign-in-container {
@@ -44,6 +45,7 @@ body {
     width: 50%;
     opacity: 0;
     z-index: 1;
+    padding-bottom: 40px;
 }
 
 .auth-container.right-panel-active .sign-in-container {
