@@ -31,11 +31,15 @@ if (!isset($notice_count)) {
 
         <a href="/AURA/chat" class="aura-menu-link <?= $currentPage === 'chat' ? 'active' : '' ?>">
             <i class="bi bi-chat-dots"></i>
+
             <span>
                 Chat
-                <?php if ($chat_count > 0): ?>
-                    <span class="badge bg-danger rounded-pill"><?= $chat_count ?></span>
-                <?php endif; ?>
+
+                <span
+                    id="chatUnreadBadge"
+                    class="badge bg-danger rounded-pill <?= $chat_count > 0 ? '' : 'd-none' ?>">
+                    <?= (int)$chat_count ?>
+                </span>
             </span>
         </a>
 

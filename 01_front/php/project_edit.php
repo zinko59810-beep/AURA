@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <div class="container py-5" style="max-width:700px;">
 
-    <a href="profile.php" class="text-decoration-none text-muted">
+    <a href="/AURA/profile" class="text-decoration-none text-muted">
         ← 戻る
     </a>
 

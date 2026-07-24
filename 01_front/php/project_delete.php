@@ -46,5 +46,5 @@ $delete_stmt->execute([
     $_SESSION['user_id']
 ]);
 
-header("Location: profile.php");
+header("Location: /AURA/profile");
 exit;

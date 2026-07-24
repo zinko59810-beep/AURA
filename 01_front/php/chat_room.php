@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message
         ]);
 
-        header("Location: /AURA/chat_room?id=" . $other_user_id);
+        header("Location: /AURA/chat_room?id=" . urlencode($other_user_id));
         exit;
     }
 }
@@ -103,32 +103,32 @@ $notice_stmt->execute([
 
 $notice_count = $notice_stmt->fetch()['total'];
 
-// Chat unread count
-$chat_stmt = $dbh->prepare("
-SELECT COUNT(*) total
-FROM direct_messages
-WHERE receiver_id=?
-AND is_read=0
-");
-
-$chat_stmt->execute([
-    $_SESSION['user_id']
-]);
-
-$chat_count = $chat_stmt->fetch()['total'];
-
-// Read messages
+// Read messages first
 $read_stmt = $dbh->prepare("
-UPDATE direct_messages
-SET is_read=1
-WHERE sender_id=?
-AND receiver_id=?
+    UPDATE direct_messages
+    SET is_read = 1
+    WHERE sender_id = ?
+      AND receiver_id = ?
 ");
 
 $read_stmt->execute([
     $other_user_id,
     $_SESSION['user_id']
 ]);
+
+// Then count remaining unread messages
+$chat_stmt = $dbh->prepare("
+    SELECT COUNT(*) AS total
+    FROM direct_messages
+    WHERE receiver_id = ?
+      AND is_read = 0
+");
+
+$chat_stmt->execute([
+    $_SESSION['user_id']
+]);
+
+$chat_count = (int)$chat_stmt->fetch()['total'];
 ?>
 
 <!DOCTYPE html>
@@ -350,6 +350,25 @@ $read_stmt->execute([
 
             }
 
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const badge = document.getElementById('chatUnreadBadge');
+
+            if (!badge) {
+                return;
+            }
+
+            const unreadCount = <?= (int)$chat_count ?>;
+
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.classList.remove('d-none');
+            } else {
+                badge.textContent = '0';
+                badge.classList.add('d-none');
+            }
         });
     </script>
 

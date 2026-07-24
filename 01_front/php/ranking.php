@@ -128,28 +128,59 @@ $users = $stmt->fetchAll();
                             <?= $medal ?>
                         </div>
 
-                        <?php if (!empty($user['profile_image'])): ?>
-                            <img
-                                src="/AURA/<?= htmlspecialchars(ltrim($user['profile_image'], '/')) ?>"
-                                alt="<?= htmlspecialchars($user['name']) ?>"
-                                class="ranking-avatar me-3"
-                                onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="ranking-avatar default-avatar me-3" style="display:none;">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
-                        <?php else: ?>
-                            <div class="ranking-avatar default-avatar me-3">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
-                        <?php endif; ?>
+                        <a
+                            href="/AURA/profile?id=<?= urlencode($user['id']) ?>"
+                            class="d-flex align-items-center flex-grow-1 text-decoration-none text-dark">
 
-                        <div class="flex-grow-1">
-                            <h5 class="mb-1 fw-bold"><?= htmlspecialchars($user['name']) ?></h5>
-                            <small class="text-muted">ID: <?= htmlspecialchars($user['students_id']) ?></small>
-                            <div>
-                                <span class="badge bg-primary"><?= htmlspecialchars($user['level']) ?></span>
+                            <?php if (!empty($user['profile_image'])): ?>
+
+                                <img
+                                    src="/AURA/<?= htmlspecialchars(
+                                                    ltrim($user['profile_image'], '/'),
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                ) ?>"
+                                    alt="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"
+                                    class="ranking-avatar me-3"
+                                    onerror="
+                this.onerror=null;
+                this.style.display='none';
+                this.nextElementSibling.style.display='flex';
+            ">
+
+                                <div
+                                    class="ranking-avatar default-avatar me-3"
+                                    style="display:none;">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+
+                            <?php else: ?>
+
+                                <div class="ranking-avatar default-avatar me-3">
+                                    <i class="bi bi-person-fill"></i>
+                                </div>
+
+                            <?php endif; ?>
+
+                            <div class="flex-grow-1">
+
+                                <h5 class="mb-1 fw-bold">
+                                    <?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>
+                                </h5>
+
+                                <small class="text-muted">
+                                    ID: <?= htmlspecialchars($user['students_id'], ENT_QUOTES, 'UTF-8') ?>
+                                </small>
+
+                                <div>
+                                    <span class="badge bg-primary">
+                                        <?= htmlspecialchars($user['level'], ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                </div>
+
                             </div>
-                        </div>
+
+                        </a>
 
                         <div class="text-end">
                             <h5 class="fw-bold mb-0"><?= htmlspecialchars($user['points']) ?></h5>
