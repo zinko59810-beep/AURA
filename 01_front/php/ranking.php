@@ -120,7 +120,8 @@ $users = $stmt->fetchAll();
                     $card_class = "border-0";
                 }
                 ?>
-
+                <a href="/AURA/profile?id=<?= $user['id'] ?>"
+                class="text-decoration-none text-dark">
                 <div class="card shadow-sm border-0 rounded-4 mb-3 ranking-card">
                     <div class="card-body d-flex align-items-center">
 
@@ -158,7 +159,7 @@ $users = $stmt->fetchAll();
 
                     </div>
                 </div>
-
+                </a>
             <?php endforeach; ?>
 
         <?php endif; ?>
