@@ -36,12 +36,15 @@ if (!$question) {
     echo "Question Not Found";
     exit;
 }
-if ((int)$question['user_id'] === (int)$_SESSION['user_id']) {
-    echo "自分の質問には回答できません";
-    exit;
-}
+
+$is_own_question =
+    (int)$question['user_id'] === (int)$_SESSION['user_id'];
 
 $message = "";
+
+   
+
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $content = trim($_POST["content"] ?? "");
@@ -155,57 +158,118 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>回答投稿</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="aura-app">
     <?php $currentPage = 'home'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content" style="max-width:500px;">
+    <div class="container py-5 aura-content" style="max-width:650px;">
 
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <a href="/AURA/question_detail?id=<?= htmlspecialchars($question_id) ?>" class="text-decoration-none text-muted">←</a>
-            <h4 class="fw-bold mb-0"><i class="bi bi-chat-left-text"></i> 回答投稿</h4>
-            <span></span>
-        </div>
+        <?php if ($is_own_question): ?>
 
-        <div class="card border-0 shadow-sm rounded-4 mb-4">
-            <div class="card-body">
-                <h5 class="fw-bold"><?= htmlspecialchars($question['title']) ?></h5>
-                <p class="text-muted mb-0"><?= nl2br(htmlspecialchars($question['problem'])) ?></p>
-            </div>
-        </div>
+            <div class="card border-0 shadow-sm rounded-4 text-center">
+                <div class="card-body p-5">
 
-        <?php if (!empty($message)): ?>
-            <div class="alert alert-danger rounded-4">
-                <?= htmlspecialchars($message) ?>
-            </div>
-        <?php endif; ?>
-
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body p-4">
-                <form action="/AURA/answer_post?question_id=<?= htmlspecialchars($question_id) ?>" method="POST">
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">回答内容</label>
-                        <textarea
-                            name="content"
-                            class="form-control rounded-3"
-                            rows="6"
-                            placeholder="答えそのものではなく、考え方やヒントを書いてください"></textarea>
+                    <div class="own-question-icon mx-auto mb-4">
+                        <i class="bi bi-chat-square-text-fill"></i>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
-                        回答する
-                    </button>
+                    <h3 class="fw-bold mb-3">
+                        自分の質問には回答できません
+                    </h3>
 
-                    <a href="/AURA/question_detail?id=<?= htmlspecialchars($question_id) ?>"
-                        class="btn btn-outline-secondary w-100 rounded-pill mt-2">
-                        戻る
+                    <p class="text-muted mb-4">
+                        他のユーザーからの回答を待ちましょう。
+                    </p>
+
+                    <a
+                        href="/AURA/question_detail?id=<?= urlencode($question_id) ?>"
+                        class="btn btn-primary rounded-pill px-5 py-2"
+                    >
+                        <i class="bi bi-arrow-left me-1"></i>
+                        質問詳細へ戻る
                     </a>
-                </form>
+
+                </div>
             </div>
-        </div>
+
+        <?php else: ?>
+
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <a
+                    href="/AURA/question_detail?id=<?= urlencode($question_id) ?>"
+                    class="text-decoration-none text-muted"
+                >
+                    ←
+                </a>
+
+                <h4 class="fw-bold mb-0">
+                    <i class="bi bi-chat-left-text"></i>
+                    回答投稿
+                </h4>
+
+                <span></span>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold">
+                        <?= htmlspecialchars($question['title']) ?>
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        <?= nl2br(htmlspecialchars($question['problem'])) ?>
+                    </p>
+                </div>
+            </div>
+
+            <?php if (!empty($message)): ?>
+                <div class="alert alert-danger rounded-4">
+                    <?= htmlspecialchars($message) ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+
+                    <form
+                        action="/AURA/answer_post?question_id=<?= urlencode($question_id) ?>"
+                        method="POST"
+                    >
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                回答内容
+                            </label>
+
+                            <textarea
+                                name="content"
+                                class="form-control rounded-3"
+                                rows="6"
+                                placeholder="答えそのものではなく、考え方やヒントを書いてください"
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 rounded-pill py-3 fw-bold"
+                        >
+                            回答する
+                        </button>
+
+                        <a
+                            href="/AURA/question_detail?id=<?= urlencode($question_id) ?>"
+                            class="btn btn-outline-secondary w-100 rounded-pill mt-2"
+                        >
+                            戻る
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+
+        <?php endif; ?>
 
     </div>
 </body>

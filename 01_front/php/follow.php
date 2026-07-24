@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 $following_id = $_GET['id'] ?? 0;
 
 if ($following_id == $_SESSION['user_id']) {
-    header("Location: profile.php");
+    header("Location: /AURA/profile");
     exit;
 }
 
@@ -71,5 +71,5 @@ if (!$check_stmt->fetch()) {
     ]);
 }
 
-header("Location: profile.php?id=" . urlencode($following_id));
+header("Location: /AURA/profile?id=" . urlencode($following_id));
 exit;

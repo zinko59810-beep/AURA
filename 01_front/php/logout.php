@@ -2,6 +2,8 @@
 
 session_start();
 
+$_SESSION = [];
+
 // Session အားလုံးဖျက်
 session_destroy();
 

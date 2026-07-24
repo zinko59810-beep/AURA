@@ -171,86 +171,61 @@ $read_stmt->execute([
 
             <div class="card-header bg-white d-flex align-items-center">
 
-                <a
-                    href="/AURA/profile?id=<?= $other_user['id'] ?>"
-                    class="text-decoration-none text-muted me-3">
-
+                <a href="/AURA/chat" class="text-decoration-none text-muted me-3">
                     ←
-
                 </a>
 
-                <?php if (!empty($other_user['profile_image'])): ?>
+                <a
+                    href="/AURA/profile?id=<?= urlencode($other_user['id']) ?>"
+                    class="d-flex align-items-center text-decoration-none text-dark flex-grow-1">
 
-                    <img
-                        src="/AURA/<?= htmlspecialchars(
-                                        ltrim($other_user['profile_image'], '/'),
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    ) ?>"
-                        alt="<?= htmlspecialchars($other_user['name'], ENT_QUOTES, 'UTF-8') ?>"
-                        class="chat-avatar me-3"
-                        onerror="
-            this.onerror=null;
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-        ">
+                    <?php if (!empty($other_user['profile_image'])): ?>
 
-                    <div
-                        class="chat-avatar chat-default-avatar me-3"
-                        style="display:none;">
-                        <i class="bi bi-person-fill"></i>
-                    </div>
+                        <img
+                            src="/AURA/<?= htmlspecialchars(ltrim($other_user['profile_image'], '/')) ?>"
+                            alt="<?= htmlspecialchars($other_user['name']) ?>"
+                            class="chat-avatar me-3"
+                            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
 
-                <?php else: ?>
-
-                    <div class="chat-avatar chat-default-avatar me-3">
-                        <i class="bi bi-person-fill"></i>
-                    </div>
-
-                <?php endif; ?>
-
-                <div>
-
-                    <strong>
-
-                        <?= htmlspecialchars($other_user['name']) ?>
-
-                    </strong>
-
-                    <br>
-
-                    <small class="text-muted">
-
-                        ID :
-                        <?= htmlspecialchars($other_user['students_id']) ?>
-
-                    </small>
-
-                    <br>
-
-                    <?php if ($is_online): ?>
-
-                        <small class="text-success">
-
-                            <i class="bi bi-circle-fill"></i>
-
-                            Online
-
-                        </small>
+                        <div class="chat-avatar chat-default-avatar me-3" style="display:none;">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
 
                     <?php else: ?>
 
-                        <small class="text-muted">
-
-                            <i class="bi bi-circle-fill"></i>
-
-                            Offline
-
-                        </small>
+                        <div class="chat-avatar chat-default-avatar me-3">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
 
                     <?php endif; ?>
 
-                </div>
+                    <div>
+
+                        <strong>
+                            <?= htmlspecialchars($other_user['name']) ?>
+                        </strong>
+
+                        <br>
+
+                        <small class="text-muted">
+                            ID : <?= htmlspecialchars($other_user['students_id']) ?>
+                        </small>
+
+                        <br>
+
+                        <?php if ($is_online): ?>
+                            <small class="text-success">
+                                <i class="bi bi-circle-fill"></i> Online
+                            </small>
+                        <?php else: ?>
+                            <small class="text-muted">
+                                <i class="bi bi-circle-fill"></i> Offline
+                            </small>
+                        <?php endif; ?>
+
+                    </div>
+
+                </a>
 
             </div>
 

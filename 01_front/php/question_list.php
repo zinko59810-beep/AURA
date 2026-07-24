@@ -102,7 +102,7 @@ if ($keyword !== '') {
     <?php $currentPage = 'home'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content">
+    <div class="container py-4 aura-content">
 
         <h3 class="fw-bold mb-4">AURA Study</h3>
 
@@ -201,29 +201,25 @@ if ($keyword !== '') {
         <?php endif; ?>
 
 
-       <?php foreach ($questions as $question): ?>
+        <?php foreach ($questions as $question): ?>
 
-    <div class="card border-0 shadow-sm rounded-4 mb-3">
-        <div class="card-body">
+            <div class="card border-0 shadow-sm rounded-4 mb-3">
+                <div class="card-body">
 
-            <!-- ✅ DELETE BUTTON (ONLY OWNER) -->
-            <?php if ($_SESSION['user_id'] == $question['user_id']): ?>
-                <form action="/AURA/question_delete" method="POST" style="position:absolute; top:15px; right:15px;">
-                    
-                    <input type="hidden" name="id" value="<?= $question['id'] ?>">
+                    <!-- ✅ DELETE BUTTON (ONLY OWNER) -->
+                    <?php if ($_SESSION['user_id'] == $question['user_id']): ?>
+                        <form action="/AURA/question_delete" method="POST" style="position:absolute; top:15px; right:15px;">
 
-                    <button type="submit"
-                            class="delete-btn"
-                            onclick="return confirm('本当に削除しますか？');">
-                        <i class="bi bi-trash"></i>
-                    </button>
+                            <input type="hidden" name="id" value="<?= $question['id'] ?>">
 
-                </form>
-            <?php endif; ?>
+                            <button type="submit"
+                                class="delete-btn"
+                                onclick="return confirm('本当に削除しますか？');">
+                                <i class="bi bi-trash"></i>
+                            </button>
 
-            <span class="badge bg-primary mb-2">
-                <?= htmlspecialchars($question['subject_name']) ?>
-            </span>
+                        </form>
+                    <?php endif; ?>
 
            <a href="/AURA/profile?id=<?= $question['user_id'] ?>"
    class="d-flex align-items-center text-decoration-none text-dark mb-2">
@@ -251,25 +247,30 @@ style="width:40px;height:40px;">
 
 </a>
 
-            <p class="text-muted">
-                <?= htmlspecialchars(mb_strimwidth($question['goal'], 0, 100, "...")) ?>
-            </p>
+                    <a href="/AURA/profile?id=<?= $question['user_id'] ?>"
+                        class="fw-bold text-dark text-decoration-none">
+                        <?= htmlspecialchars($question['name']) ?>
+                    </a>
 
-            <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">
-                    <?= htmlspecialchars($question['name']) ?>
-                </small>
+                    <p class="text-muted">
+                        <?= htmlspecialchars(mb_strimwidth($question['goal'], 0, 100, "...")) ?>
+                    </p>
 
-                <a href="/AURA/question_detail?id=<?= $question['id'] ?>"
-                    class="btn btn-sm btn-primary rounded-pill">
-                    詳細
-                </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <?= htmlspecialchars($question['name']) ?>
+                        </small>
+
+                        <a href="/AURA/question_detail?id=<?= $question['id'] ?>"
+                            class="btn btn-sm btn-primary rounded-pill">
+                            詳細
+                        </a>
+                    </div>
+
+                </div>
             </div>
 
-        </div>
-    </div>
-
-<?php endforeach; ?>
+        <?php endforeach; ?>
 
     </div>
 </body>

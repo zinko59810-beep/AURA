@@ -60,7 +60,7 @@ if (isset($_POST['login'])) {
         exit;
     }
 
-    $login_message = "Student ID or Password is wrong";
+    $login_message = "学生IDまたはパスワードが間違っています。";
 }
 
 
@@ -88,7 +88,7 @@ if (isset($_POST['register'])) {
         $register_message = "全部入力してください";
     } elseif ($password != $confirm_password) {
 
-        $register_message = "Password does not match";
+        $register_message = "パスワードが一致していませ";
     } else {
 
         $check_stmt = $dbh->prepare("
@@ -173,9 +173,9 @@ if (isset($_POST['register'])) {
 
             <form method="POST">
 
-                <h1>Sign In</h1>
+                <h1>ログイン</h1>
 
-                <span>Use your Student Account</span>
+                <span>学生アカウントでログインしてください</span>
 
                 <?php if (!empty($login_message)): ?>
 
@@ -191,21 +191,21 @@ if (isset($_POST['register'])) {
                 <input
                     type="text"
                     name="students_id"
-                    placeholder="Student ID"
+                    placeholder="学籍番号"
                     value="<?= htmlspecialchars($last_student_id) ?>"
                     required>
 
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="パスワード"
                     required>
 
                 <button
                     type="submit"
                     name="login">
 
-                    Login
+                    ログイン
 
                 </button>
 
@@ -224,75 +224,75 @@ if (isset($_POST['register'])) {
         <div class="form-container sign-up-container">
 
             <form method="POST">
-            <h1>Create Account</h1>
+                <h1>アカウント登録</h1>
 
-            <span>Create your AURA Study account</span>
+                <span>AURA Studyのアカウントを作成してください</span>
 
-            <?php if (!empty($register_message)): ?>
+                <?php if (!empty($register_message)): ?>
 
-                <div class="alert alert-danger mt-3 mb-3">
+                    <div class="alert alert-danger mt-3 mb-3">
 
-                    <?= htmlspecialchars($register_message) ?>
+                        <?= htmlspecialchars($register_message) ?>
 
-                </div>
+                    </div>
 
-            <?php endif; ?>
+                <?php endif; ?>
 
-            <input
-                type="text"
-                name="students_id"
-                placeholder="Student ID"
-                required>
+                <input
+                    type="text"
+                    name="students_id"
+                    placeholder="学籍番号"
+                    required>
 
-            <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                required>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="氏名"
+                    required>
 
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="メールアドレス"
+                    required>
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                required>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="パスワード"
+                    required>
 
-            <input
-                type="password"
-                name="confirm_password"
-                placeholder="Confirm Password"
-                required>
+                <input
+                    type="password"
+                    name="confirm_password"
+                    placeholder="パスワード確認"
+                    required>
 
-            <select
-                name="class_id"
-                required>
+                <select
+                    name="class_id"
+                    required>
 
-                <option value="">Select Class</option>
+                    <option value="">クラスを選択してください</option>
 
-                <option value="1">SK1A</option>
-                <option value="2">SK2A</option>
-                <option value="3">SK3A</option>
-                <option value="4">IE1A</option>
-                <option value="5">IE2A</option>
-                <option value="6">IE3A</option>
-                <option value="7">IE4A</option>
-                <option value="8">SE1A</option>
-                <option value="9">SE2A</option>
+                    <option value="1">SK1A</option>
+                    <option value="2">SK2A</option>
+                    <option value="3">SK3A</option>
+                    <option value="4">IE1A</option>
+                    <option value="5">IE2A</option>
+                    <option value="6">IE3A</option>
+                    <option value="7">IE4A</option>
+                    <option value="8">SE1A</option>
+                    <option value="9">SE2A</option>
 
-            </select>
+                </select>
 
-            <button
-                type="submit"
-                name="register">
+                <button
+                    type="submit"
+                    name="register">
 
-                Register
+                    登録
 
-            </button>
+                </button>
 
             </form>
 
@@ -309,19 +309,19 @@ if (isset($_POST['register'])) {
 
                 <div class="overlay-panel overlay-left">
 
-                    <h1>Welcome Back!</h1>
+                    <h1>おかえりなさい</h1>
 
                     <p>
-                        Already have an account?
-                        Login here and continue
-                        your AURA Study journey.
+                        すでにアカウントをお持ちの方は、
+                        ログインしてAURA Studyを
+                        続けましょう。
                     </p>
 
                     <button
                         class="ghost"
                         id="signIn">
 
-                        Login
+                        ログイン
 
                     </button>
 
@@ -330,17 +330,19 @@ if (isset($_POST['register'])) {
 
                 <div class="overlay-panel overlay-right">
 
-                    <h1>Hello Friend!</h1>
+                    <h1>ようこそ</h1>
 
                     <p>
-                        Enter your personal details and start your study with us.
+                        学生情報を入力して、
+                        AURA Studyを
+                        始めましょう。
                     </p>
 
                     <button
                         class="ghost"
                         id="signUp">
 
-                        Register
+                        アカウント登録
 
                     </button>
 

@@ -75,7 +75,7 @@ switch ($url) {
         break;
 
     case 'chat_room':
-        require __DIR__ . '/01_front/php/chat.php';
+        require __DIR__ . '/01_front/php/chat_room.php';
         break;
 
     case 'question_list':

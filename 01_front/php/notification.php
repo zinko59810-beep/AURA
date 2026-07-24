@@ -102,7 +102,7 @@ $read_stmt->execute([
             <?php foreach ($notifications as $notification): ?>
 
                 <a
-                    href="<?= !empty($notification['sender_id']) ? 'profile.php?id=' . htmlspecialchars($notification['sender_id']) : '#' ?>"
+                    href="<?= !empty($notification['sender_id']) ? 'profile?id=' . htmlspecialchars($notification['sender_id']) : '#' ?>"
                     class="text-decoration-none text-dark">
 
                     <div class="card border-0 shadow-sm rounded-4 mb-3">

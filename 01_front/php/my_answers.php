@@ -51,7 +51,7 @@ $answers = $stmt->fetchAll();
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
 
 
 </head>
@@ -64,7 +64,7 @@ $answers = $stmt->fetchAll();
 
 
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <a href="profile.php" class="text-decoration-none text-muted">
+            <a href="/AURA/profile" class="text-decoration-none text-muted">
                 ←
             </a>
 
