@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if(isset($_GET['lang'])){
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+$currentLang = $_SESSION['lang'] ?? "ja";
 ?>
 
 <!DOCTYPE html>
@@ -23,10 +29,26 @@ session_start();
             <?php if (isset($_SESSION['user_id'])): ?>
 
                 <a href="/AURA/profile" class="user-btn">
-
                     👤 <?= htmlspecialchars($_SESSION['name']) ?>
-
                 </a>
+
+                <div class="language-switch">
+                    <?php
+                    $currentLang = $_SESSION['lang'] ?? "ja";
+
+                    if ($currentLang === "ja") {
+                        $nextLang = "en";
+                        $label = "US English";
+                    } else {
+                        $nextLang = "ja";
+                        $label = "JP 日本語";
+                    }
+                    ?>
+
+                    <a href="?lang=<?= $nextLang ?>" class="lang-btn">
+                        <?= $label ?>
+                    </a>
+                </div>
 
             <?php else: ?>
 
@@ -42,7 +64,6 @@ session_start();
 
         </div>
 
-    </header>
     </header>
 
     <section class="hero">
