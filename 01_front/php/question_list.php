@@ -23,15 +23,16 @@ $active_stmt->execute([
 $keyword = trim($_GET['keyword'] ?? '');
 $users = [];
 $stmt = $dbh->query("
-    SELECT
-        q.*,
-        u.name,
-        u.students_id,
-        s.subject_name
-    FROM questions q
-    JOIN users u ON q.user_id = u.id
-    JOIN subjects s ON q.subject_id = s.id
-    ORDER BY q.created_at DESC
+   SELECT
+    q.*,
+    u.name,
+    u.students_id,
+    u.profile_image,
+    s.subject_name
+FROM questions q
+JOIN users u ON q.user_id = u.id
+JOIN subjects s ON q.subject_id = s.id
+ORDER BY q.created_at DESC
 ");
 $notice_stmt = $dbh->prepare("
     SELECT COUNT(*) AS total
@@ -220,9 +221,31 @@ if ($keyword !== '') {
                         </form>
                     <?php endif; ?>
 
-                    <span class="badge bg-primary mb-2">
-                        <?= htmlspecialchars($question['subject_name']) ?>
-                    </span>
+           <a href="/AURA/profile?id=<?= $question['user_id'] ?>"
+   class="d-flex align-items-center text-decoration-none text-dark mb-2">
+
+<?php if (!empty($question['profile_image'])): ?>
+
+<img
+    src="<?= htmlspecialchars($question['profile_image']) ?>"
+    class="rounded-circle me-2"
+    width="40"
+    height="40"
+    style="object-fit:cover;">
+
+<?php else: ?>
+
+<div
+class="rounded-circle bg-primary text-white me-2 d-flex align-items-center justify-content-center"
+style="width:40px;height:40px;">
+<i class="bi bi-person"></i>
+</div>
+
+<?php endif; ?>
+
+<strong><?= htmlspecialchars($question['name']) ?></strong>
+
+</a>
 
                     <a href="/AURA/profile?id=<?= $question['user_id'] ?>"
                         class="fw-bold text-dark text-decoration-none">
