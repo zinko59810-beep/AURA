@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: /AURA/login");
@@ -109,11 +109,11 @@ $users = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= $currentLang ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Message</title>
+    <title><?= $lang['message_title'] ?></title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
@@ -131,13 +131,13 @@ $users = $stmt->fetchAll();
     <div class="container py-4 aura-content">
 
         <h3 class="fw-bold mb-4">
-            Chat
+            <?= $lang['chat'] ?>
         </h3>
 
         <?php if (empty($users)): ?>
 
             <div class="alert alert-light rounded-4">
-                まだメッセージがありません
+                <?= $lang['no_messages'] ?>
             </div>
 
         <?php endif; ?>
@@ -163,10 +163,10 @@ $users = $stmt->fetchAll();
                                 alt="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"
                                 class="chat-list-avatar me-3"
                                 onerror="
-            this.onerror=null;
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-        ">
+                                    this.onerror=null;
+                                    this.style.display='none';
+                                    this.nextElementSibling.style.display='flex';
+                                ">
 
                             <div
                                 class="chat-list-avatar chat-list-default-avatar me-3"
@@ -190,7 +190,7 @@ $users = $stmt->fetchAll();
 
                             <small class="text-muted">
                                 <?= htmlspecialchars(
-                                    $user['last_message'] ?? 'メッセージはありません',
+                                    $user['last_message'] ?? $lang['no_last_message'],
                                     ENT_QUOTES,
                                     'UTF-8'
                                 ) ?>

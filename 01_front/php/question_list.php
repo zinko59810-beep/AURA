@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -86,25 +87,44 @@ if ($keyword !== '') {
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA Study</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <title><?= $lang['site_title'] ?></title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
+
     <?php $currentPage = 'home'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
     <div class="container py-4 aura-content">
 
-        <h3 class="fw-bold mb-4">AURA Study</h3>
+        <!-- ==========================
+             Page Title
+        =========================== -->
+        <h3 class="fw-bold mb-4">
+            <?= $lang['site_title'] ?>
+        </h3>
 
+        <!-- ==========================
+             User Search Form
+        =========================== -->
         <form method="GET" class="mb-4">
 
             <div class="input-group">
@@ -117,29 +137,38 @@ if ($keyword !== '') {
                     type="text"
                     name="keyword"
                     class="form-control"
-                    placeholder="Search by Name / Student ID"
-                    value="<?= htmlspecialchars($keyword) ?>">
+                    placeholder="<?= $lang['search_user_placeholder'] ?>"
+                    value="<?= htmlspecialchars(
+                                $keyword ?? '',
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>">
 
                 <button
                     type="submit"
                     class="btn btn-primary">
-                    Search
+
+                    <?= $lang['search'] ?>
+
                 </button>
 
             </div>
 
         </form>
 
-        <?php if ($keyword !== ''): ?>
+        <!-- ==========================
+             User Search Results
+        =========================== -->
+        <?php if (($keyword ?? '') !== ''): ?>
 
             <h5 class="fw-bold mb-3">
-                Search Results
+                <?= $lang['search_results'] ?>
             </h5>
 
             <?php if (empty($users)): ?>
 
                 <div class="alert alert-light rounded-4">
-                    ユーザーが見つかりません。
+                    <?= $lang['user_not_found'] ?>
                 </div>
 
             <?php else: ?>
@@ -147,48 +176,103 @@ if ($keyword !== '') {
                 <?php foreach ($users as $search_user): ?>
 
                     <div class="card border-0 shadow-sm rounded-4 mb-3">
+
                         <div class="card-body d-flex align-items-center">
 
+                            <!-- ==========================
+                                 Profile Image
+                            =========================== -->
                             <?php if (!empty($search_user['profile_image'])): ?>
+
                                 <img
-                                    src="<?= htmlspecialchars($search_user['profile_image']) ?>"
+                                    src="<?= htmlspecialchars(
+                                                $search_user['profile_image'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>"
+                                    alt="<?= $lang['user_profile_image'] ?>"
                                     class="rounded-circle me-3"
                                     width="55"
                                     height="55"
                                     style="object-fit:cover;">
+
                             <?php else: ?>
-                                <div class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
+
+                                <div
+                                    class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
                                     style="width:55px;height:55px;">
+
                                     <i class="bi bi-person"></i>
+
                                 </div>
+
                             <?php endif; ?>
 
+                            <!-- ==========================
+                                 User Information
+                            =========================== -->
                             <div class="flex-grow-1">
+
                                 <h6 class="fw-bold mb-1">
-                                    <?= htmlspecialchars($search_user['name']) ?>
+
+                                    <?= htmlspecialchars(
+                                        $search_user['name'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
+
                                 </h6>
 
                                 <small class="text-muted">
-                                    ID: <?= htmlspecialchars($search_user['students_id']) ?>
+
+                                    <?= $lang['student_id_label'] ?>:
+
+                                    <?= htmlspecialchars(
+                                        $search_user['students_id'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
+
                                 </small>
 
                                 <div>
+
                                     <span class="badge bg-primary">
-                                        <?= htmlspecialchars($search_user['level']) ?>
+
+                                        <?= htmlspecialchars(
+                                            $search_user['level'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>
+
                                     </span>
 
                                     <span class="text-muted small">
-                                        <?= htmlspecialchars($search_user['points']) ?> pt
+
+                                        <?= htmlspecialchars(
+                                            $search_user['points'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>
+
+                                        <?= $lang['points_short'] ?>
+
                                     </span>
+
                                 </div>
+
                             </div>
 
-                            <a href="/AURA/profile?id=<?= $search_user['id'] ?>"
+                            <a
+                                href="/AURA/profile?id=<?= urlencode($search_user['id']) ?>"
                                 class="btn btn-sm btn-primary rounded-pill">
-                                Profile
+
+                                <?= $lang['profile'] ?>
+
                             </a>
 
                         </div>
+
                     </div>
 
                 <?php endforeach; ?>
@@ -199,57 +283,144 @@ if ($keyword !== '') {
 
         <?php endif; ?>
 
+        <!-- ==========================
+             Question List
+        =========================== -->
+        <?php if (empty($questions)): ?>
 
-        <?php foreach ($questions as $question): ?>
+            <div class="alert alert-info rounded-4">
+                <?= $lang['no_questions'] ?>
+            </div>
 
-            <div class="card border-0 shadow-sm rounded-4 mb-3">
-                <div class="card-body">
+        <?php else: ?>
 
-                    <!-- ✅ DELETE BUTTON (ONLY OWNER) -->
-                    <?php if ($_SESSION['user_id'] == $question['user_id']): ?>
-                        <form action="/AURA/question_delete" method="POST" style="position:absolute; top:15px; right:15px;">
+            <?php foreach ($questions as $question): ?>
 
-                            <input type="hidden" name="id" value="<?= $question['id'] ?>">
+                <div class="card border-0 shadow-sm rounded-4 mb-3 position-relative">
 
-                            <button type="submit"
-                                class="delete-btn"
-                                onclick="return confirm('本当に削除しますか？');">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                    <div class="card-body">
 
-                        </form>
-                    <?php endif; ?>
+                        <!-- ==========================
+                             Delete Button
+                        =========================== -->
+                        <?php if (
+                            isset($_SESSION['user_id'])
+                            && $_SESSION['user_id'] == $question['user_id']
+                        ): ?>
 
-                    <span class="badge bg-primary mb-2">
-                        <?= htmlspecialchars($question['subject_name']) ?>
-                    </span>
+                            <form
+                                action="/AURA/question_delete"
+                                method="POST"
+                                style="position:absolute; top:15px; right:15px;">
 
-                    <a href="/AURA/profile?id=<?= $question['user_id'] ?>"
-                        class="fw-bold text-dark text-decoration-none">
-                        <?= htmlspecialchars($question['name']) ?>
-                    </a>
+                                <input
+                                    type="hidden"
+                                    name="id"
+                                    value="<?= htmlspecialchars(
+                                                $question['id'],
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>">
 
-                    <p class="text-muted">
-                        <?= htmlspecialchars(mb_strimwidth($question['goal'], 0, 100, "...")) ?>
-                    </p>
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                    aria-label="<?= htmlspecialchars($lang['delete_question']) ?>"
+                                    onclick="return confirm('<?= htmlspecialchars($lang['confirm_delete_question'], ENT_QUOTES, 'UTF-8') ?>');">
 
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <?= htmlspecialchars($question['name']) ?>
-                        </small>
+                                    <i class="bi bi-trash"></i>
 
-                        <a href="/AURA/question_detail?id=<?= $question['id'] ?>"
-                            class="btn btn-sm btn-primary rounded-pill">
-                            詳細
+                                </button>
+
+                            </form>
+
+                        <?php endif; ?>
+
+                        <span class="badge bg-primary mb-2">
+
+                            <?= htmlspecialchars(
+                                $question['subject_name'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>
+
+                        </span>
+
+                        <h5 class="fw-bold">
+
+                            <a
+                                href="/AURA/question_detail?id=<?= urlencode($question['id']) ?>"
+                                class="text-decoration-none text-dark">
+
+                                <?= htmlspecialchars(
+                                    $question['title'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                            </a>
+
+                        </h5>
+
+                        <a
+                            href="/AURA/profile?id=<?= urlencode($question['user_id']) ?>"
+                            class="fw-bold text-dark text-decoration-none">
+
+                            <?= htmlspecialchars(
+                                $question['name'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>
+
                         </a>
+
+                        <p class="text-muted mt-2">
+
+                            <?= htmlspecialchars(
+                                mb_strimwidth(
+                                    $question['goal'],
+                                    0,
+                                    100,
+                                    '...'
+                                ),
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>
+
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <small class="text-muted">
+
+                                <?= htmlspecialchars(
+                                    $question['created_at'] ?? $question['name'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                            </small>
+
+                            <a
+                                href="/AURA/question_detail?id=<?= urlencode($question['id']) ?>"
+                                class="btn btn-sm btn-primary rounded-pill">
+
+                                <?= $lang['details'] ?>
+
+                            </a>
+
+                        </div>
+
                     </div>
 
                 </div>
-            </div>
 
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+
+        <?php endif; ?>
 
     </div>
+
 </body>
 
 </html>

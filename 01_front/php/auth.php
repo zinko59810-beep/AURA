@@ -1,8 +1,21 @@
 <?php
 $mode = $_GET['mode'] ?? '';
+
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
 
 session_start();
+
+/* Language */
+if (
+    isset($_GET['lang']) &&
+    in_array($_GET['lang'], ['ja', 'en'], true)
+) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+$currentLang = $_SESSION['lang'] ?? 'ja';
+
+$lang = require __DIR__ . '/../../lang/' . $currentLang . '.php';
 
 $dbh = db_connect();
 
@@ -147,13 +160,13 @@ if (isset($_POST['register'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= $currentLang ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AURA Study</title>
+    <title><?= $lang['site_title'] ?></title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -167,15 +180,15 @@ if (isset($_POST['register'])) {
 
         <!-- ==========================
             LOGIN FORM
-    =========================== -->
+        =========================== -->
 
         <div class="form-container sign-in-container">
 
             <form method="POST">
 
-                <h1>ログイン</h1>
+                <h1><?= $lang['login'] ?></h1>
 
-                <span>学生アカウントでログインしてください</span>
+                <span><?= $lang['login_subtitle'] ?></span>
 
                 <?php if (!empty($login_message)): ?>
 
@@ -187,174 +200,168 @@ if (isset($_POST['register'])) {
 
                 <?php endif; ?>
 
-
                 <input
                     type="text"
                     name="students_id"
-                    placeholder="学籍番号"
+                    placeholder="<?= $lang['student_id'] ?>"
                     value="<?= htmlspecialchars($last_student_id) ?>"
                     required>
 
                 <input
                     type="password"
                     name="password"
-                    placeholder="パスワード"
+                    placeholder="<?= $lang['password'] ?>"
                     required>
 
                 <button
                     type="submit"
                     name="login">
 
-                    ログイン
+                    <?= $lang['login'] ?>
 
                 </button>
 
             </form>
 
         </div>
-
-
-
-
 
         <!-- ==========================
             REGISTER FORM
     =========================== -->
 
-        <div class="form-container sign-up-container">
+<div class="form-container sign-up-container">
 
-            <form method="POST">
-                <h1>アカウント登録</h1>
+    <form method="POST">
 
-                <span>AURA Studyのアカウントを作成してください</span>
+        <h1><?= $lang['register_title'] ?></h1>
 
-                <?php if (!empty($register_message)): ?>
+        <span><?= $lang['register_subtitle'] ?></span>
 
-                    <div class="alert alert-danger mt-3 mb-3">
+        <?php if (!empty($register_message)): ?>
 
-                        <?= htmlspecialchars($register_message) ?>
+            <div class="alert alert-danger mt-3 mb-3">
 
-                    </div>
+                <?= htmlspecialchars($register_message) ?>
 
-                <?php endif; ?>
+            </div>
 
-                <input
-                    type="text"
-                    name="students_id"
-                    placeholder="学籍番号"
-                    required>
+        <?php endif; ?>
 
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="氏名"
-                    required>
+        <input
+            type="text"
+            name="students_id"
+            placeholder="<?= $lang['student_id'] ?>"
+            required>
 
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="メールアドレス"
-                    required>
+        <input
+            type="text"
+            name="name"
+            placeholder="<?= $lang['name'] ?>"
+            required>
 
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="パスワード"
-                    required>
+        <input
+            type="email"
+            name="email"
+            placeholder="<?= $lang['email'] ?>"
+            required>
 
-                <input
-                    type="password"
-                    name="confirm_password"
-                    placeholder="パスワード確認"
-                    required>
+        <input
+            type="password"
+            name="password"
+            placeholder="<?= $lang['password'] ?>"
+            required>
 
-                <select
-                    name="class_id"
-                    required>
+        <input
+            type="password"
+            name="confirm_password"
+            placeholder="<?= $lang['confirm_password'] ?>"
+            required>
 
-                    <option value="">クラスを選択してください</option>
+        <select
+            name="class_id"
+            required>
 
-                    <option value="1">SK1A</option>
-                    <option value="2">SK2A</option>
-                    <option value="3">SK3A</option>
-                    <option value="4">IE1A</option>
-                    <option value="5">IE2A</option>
-                    <option value="6">IE3A</option>
-                    <option value="7">IE4A</option>
-                    <option value="8">SE1A</option>
-                    <option value="9">SE2A</option>
+            <option value="">
+                <?= $lang['select_class'] ?>
+            </option>
 
-                </select>
+            <option value="1">SK1A</option>
+            <option value="2">SK2A</option>
+            <option value="3">SK3A</option>
+            <option value="4">IE1A</option>
+            <option value="5">IE2A</option>
+            <option value="6">IE3A</option>
+            <option value="7">IE4A</option>
+            <option value="8">SE1A</option>
+            <option value="9">SE2A</option>
 
-                <button
-                    type="submit"
-                    name="register">
+        </select>
 
-                    登録
+        <button
+            type="submit"
+            name="register">
 
-                </button>
+            <?= $lang['register_button'] ?>
 
-            </form>
+        </button>
+
+    </form>
+
+</div>
+
+
+<!--==========================
+            OVERLAY
+===========================-->
+
+<div class="overlay-container">
+
+    <div class="overlay">
+
+        <div class="overlay-panel overlay-left">
+
+            <h1><?= $lang['welcome_back'] ?></h1>
+
+            <p>
+                <?= $lang['welcome_back_text'] ?>
+            </p>
+
+            <button
+                class="ghost"
+                id="signIn">
+
+                <?= $lang['login'] ?>
+
+            </button>
 
         </div>
 
 
-        <!--==========================
-            OVERLAY
-    ===========================-->
+        <div class="overlay-panel overlay-right">
 
-        <div class="overlay-container">
+            <h1><?= $lang['welcome'] ?></h1>
 
-            <div class="overlay">
+            <p>
+                <?= $lang['welcome_text'] ?>
+            </p>
 
-                <div class="overlay-panel overlay-left">
+            <button
+                class="ghost"
+                id="signUp">
 
-                    <h1>おかえりなさい</h1>
+                <?= $lang['register_title'] ?>
 
-                    <p>
-                        すでにアカウントをお持ちの方は、
-                        ログインしてAURA Studyを
-                        続けましょう。
-                    </p>
-
-                    <button
-                        class="ghost"
-                        id="signIn">
-
-                        ログイン
-
-                    </button>
-
-                </div>
-
-
-                <div class="overlay-panel overlay-right">
-
-                    <h1>ようこそ</h1>
-
-                    <p>
-                        学生情報を入力して、
-                        AURA Studyを
-                        始めましょう。
-                    </p>
-
-                    <button
-                        class="ghost"
-                        id="signUp">
-
-                        アカウント登録
-
-                    </button>
-
-                </div>
-
-            </div>
+            </button>
 
         </div>
 
     </div>
 
-    <script src="/AURA/01_front/php/auth.js"></script>
+</div>
+
+</div>
+
+<script src="/AURA/01_front/php/auth.js"></script>
 
 </body>
 

@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -89,85 +90,187 @@ $answers = $answer_stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>質問詳細</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <title><?= $lang['question_detail_title'] ?></title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
+
     <?php $currentPage = 'home'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content">
+    <div class="container py-4 aura-content">
+
+        <!-- ==========================
+             Warning Message
+        =========================== -->
         <?php if (!empty($_SESSION['warning'])): ?>
 
             <div class="alert alert-warning rounded-4">
-                <?= htmlspecialchars($_SESSION['warning']) ?>
+                <?= htmlspecialchars(
+                    $_SESSION['warning'],
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
             </div>
 
             <?php unset($_SESSION['warning']); ?>
 
         <?php endif; ?>
 
-        <a href="/AURA/profile" class="text-decoration-none text-muted">
-            ← 戻る
+        <!-- ==========================
+             Back Button
+        =========================== -->
+        <a
+            href="/AURA/profile"
+            class="text-decoration-none text-muted">
+
+            ← <?= $lang['back'] ?>
+
         </a>
 
+        <!-- ==========================
+             Question Detail
+        =========================== -->
         <div class="card border-0 shadow-sm rounded-4 mt-3 mb-4">
+
             <div class="card-body">
 
                 <span class="badge bg-primary mb-2">
-                    <?= htmlspecialchars($question['subject_name']) ?>
+                    <?= htmlspecialchars(
+                        $question['subject_name'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
                 </span>
 
                 <h4 class="fw-bold">
-                    <?= htmlspecialchars($question['title']) ?>
+                    <?= htmlspecialchars(
+                        $question['title'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
                 </h4>
 
                 <small class="text-muted">
-                    <?= htmlspecialchars($question['name']) ?>
-                    ・<?= htmlspecialchars($question['created_at']) ?>
+
+                    <?= htmlspecialchars(
+                        $question['name'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+
+                    ・
+
+                    <?= htmlspecialchars(
+                        $question['created_at'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+
                 </small>
 
                 <hr>
 
-                <h6 class="fw-bold">やりたいこと</h6>
-                <p><?= nl2br(htmlspecialchars($question['goal'])) ?></p>
+                <h6 class="fw-bold">
+                    <?= $lang['question_goal'] ?>
+                </h6>
 
-                <h6 class="fw-bold mt-3">試したこと</h6>
-                <p><?= nl2br(htmlspecialchars($question['tried'])) ?></p>
+                <p>
+                    <?= nl2br(
+                        htmlspecialchars(
+                            $question['goal'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        )
+                    ) ?>
+                </p>
 
-                <h6 class="fw-bold mt-3">分からない点</h6>
-                <p><?= nl2br(htmlspecialchars($question['problem'])) ?></p>
+                <h6 class="fw-bold mt-3">
+                    <?= $lang['question_tried'] ?>
+                </h6>
+
+                <p>
+                    <?= nl2br(
+                        htmlspecialchars(
+                            $question['tried'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        )
+                    ) ?>
+                </p>
+
+                <h6 class="fw-bold mt-3">
+                    <?= $lang['question_problem'] ?>
+                </h6>
+
+                <p>
+                    <?= nl2br(
+                        htmlspecialchars(
+                            $question['problem'],
+                            ENT_QUOTES,
+                            'UTF-8'
+                        )
+                    ) ?>
+                </p>
 
             </div>
+
         </div>
 
+        <!-- ==========================
+             Answer Button
+        =========================== -->
         <div class="d-grid mb-4">
-            <a href="/AURA/answer_post?question_id=<?= $question['id'] ?>"
+
+            <a
+                href="/AURA/answer_post?question_id=<?= urlencode($question['id']) ?>"
                 class="btn btn-primary rounded-pill">
-                回答する
+
+                <?= $lang['answer_question'] ?>
+
             </a>
+
         </div>
 
-        <h5 class="fw-bold mb-3">回答一覧</h5>
+        <!-- ==========================
+             Answer List Title
+        =========================== -->
+        <h5 class="fw-bold mb-3">
+            <?= $lang['answer_list'] ?>
+        </h5>
 
+        <!-- ==========================
+             No Answers
+        =========================== -->
         <?php if (empty($answers)): ?>
-            
 
             <div class="alert alert-info rounded-4">
-                
-                まだ回答がありません。
+                <?= $lang['no_answers_yet'] ?>
             </div>
 
         <?php else: ?>
 
+            <!-- ==========================
+                 Answer List
+            =========================== -->
             <?php foreach ($answers as $answer): ?>
 
                 <?php
@@ -175,52 +278,114 @@ $answers = $answer_stmt->fetchAll();
                     $answer['id']
                 ]);
 
-                $helpful_count = $helpful_stmt->fetch()['total'];
+                $helpful_result = $helpful_stmt->fetch();
+
+                $helpful_count = $helpful_result['total'] ?? 0;
                 ?>
 
                 <div class="card border-0 shadow-sm rounded-4 mb-3">
+
                     <div class="card-body">
 
                         <div class="d-flex justify-content-between">
-                            <strong><?= htmlspecialchars($answer['name']) ?></strong>
+
+                            <strong>
+                                <?= htmlspecialchars(
+                                    $answer['name'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+                            </strong>
+
                             <small class="text-muted">
-                                <?= htmlspecialchars($answer['created_at']) ?>
+                                <?= htmlspecialchars(
+                                    $answer['created_at'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
                             </small>
+
                         </div>
+
+                        <!-- ==========================
+                             Helpful Button
+                        =========================== -->
                         <?php if ($answer['user_id'] != $_SESSION['user_id']): ?>
 
-                            <a href="/AURA/helpful?answer_id=<?= $answer['id'] ?>"
+                            <a
+                                href="/AURA/helpful?answer_id=<?= urlencode($answer['id']) ?>"
                                 class="btn btn-sm btn-outline-success rounded-pill mt-2">
-                                👍 役に立った
-                                (<?= $helpful_count ?>)
+
+                                👍 <?= $lang['helpful'] ?>
+                                (<?= (int) $helpful_count ?>)
+
                             </a>
 
                         <?php endif; ?>
 
+                        <!-- ==========================
+                             Best Answer Badge
+                        =========================== -->
                         <?php if ($answer['is_best_hint'] == 1): ?>
+
                             <span class="badge bg-warning text-dark mt-2">
-                                <i class="bi bi-star-fill"></i> ベスト回答
+
+                                <i class="bi bi-star-fill"></i>
+                                <?= $lang['best_answer'] ?>
+
                             </span>
+
                         <?php endif; ?>
 
+                        <!-- ==========================
+                             Answer Content
+                        =========================== -->
                         <p class="mt-3 mb-0">
-                            <?= nl2br(htmlspecialchars($answer['content'])) ?>
+                            <?= nl2br(
+                                htmlspecialchars(
+                                    $answer['content'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                )
+                            ) ?>
                         </p>
+
+                        <!-- ==========================
+                             Report Button
+                        =========================== -->
                         <?php if ($answer['user_id'] != $_SESSION['user_id']): ?>
-                            <a href="/AURA/report?answer_id=<?= $answer['id'] ?>&user_id=<?= $answer['user_id'] ?>"
+
+                            <a
+                                href="/AURA/report?answer_id=<?= urlencode($answer['id']) ?>&user_id=<?= urlencode($answer['user_id']) ?>"
                                 class="btn btn-sm btn-outline-danger rounded-pill mt-2">
-                                <i class="bi bi-flag"></i> Report
+
+                                <i class="bi bi-flag"></i>
+                                <?= $lang['report'] ?>
+
                             </a>
+
                         <?php endif; ?>
 
-                        <?php if ($question['user_id'] == $_SESSION['user_id'] && $answer['is_best_hint'] == 0): ?>
-                            <a href="/AURA/best_answer?answer_id=<?= $answer['id'] ?>&question_id=<?= $question['id'] ?>"
+                        <!-- ==========================
+                             Select Best Answer
+                        =========================== -->
+                        <?php if (
+                            $question['user_id'] == $_SESSION['user_id']
+                            && $answer['is_best_hint'] == 0
+                        ): ?>
+
+                            <a
+                                href="/AURA/best_answer?answer_id=<?= urlencode($answer['id']) ?>&question_id=<?= urlencode($question['id']) ?>"
                                 class="btn btn-sm btn-outline-warning rounded-pill mt-3">
-                                ベスト回答にする
+
+                                <?= $lang['select_best_answer'] ?>
+
                             </a>
+
                         <?php endif; ?>
 
                     </div>
+
                 </div>
 
             <?php endforeach; ?>
@@ -228,6 +393,7 @@ $answers = $answer_stmt->fetchAll();
         <?php endif; ?>
 
     </div>
+
 </body>
 
 </html>

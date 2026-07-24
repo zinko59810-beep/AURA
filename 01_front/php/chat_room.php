@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: /AURA/login");
@@ -132,13 +133,13 @@ $read_stmt->execute([
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
 
     <meta charset="UTF-8">
 
-    <title>Chat</title>
+    <title><?= $lang['chat_room_title'] ?></title>
 
     <link
         rel="stylesheet"
@@ -152,7 +153,8 @@ $read_stmt->execute([
         rel="stylesheet"
         href="/AURA/01_front/css/style.css">
 
-    <script type="module"
+    <script
+        type="module"
         src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js">
     </script>
 
@@ -167,11 +169,19 @@ $read_stmt->execute([
 
     <div class="container py-4 aura-content" style="max-width:700px;">
 
-        <div class="card border-0 shadow-sm rounded-4 d-flex flex-column" style="height:100vh;">
+        <div
+            class="card border-0 shadow-sm rounded-4 d-flex flex-column"
+            style="height:100vh;">
 
+            <!-- ==========================
+                 Chat Header
+            =========================== -->
             <div class="card-header bg-white d-flex align-items-center">
 
-                <a href="/AURA/chat" class="text-decoration-none text-muted me-3">
+                <a
+                    href="/AURA/chat"
+                    class="text-decoration-none text-muted me-3"
+                    aria-label="<?= $lang['back_to_chat_list'] ?>">
                     ←
                 </a>
 
@@ -182,12 +192,26 @@ $read_stmt->execute([
                     <?php if (!empty($other_user['profile_image'])): ?>
 
                         <img
-                            src="/AURA/<?= htmlspecialchars(ltrim($other_user['profile_image'], '/')) ?>"
-                            alt="<?= htmlspecialchars($other_user['name']) ?>"
+                            src="/AURA/<?= htmlspecialchars(
+                                            ltrim($other_user['profile_image'], '/'),
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>"
+                            alt="<?= htmlspecialchars(
+                                        $other_user['name'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>"
                             class="chat-avatar me-3"
-                            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            onerror="
+                                this.onerror=null;
+                                this.style.display='none';
+                                this.nextElementSibling.style.display='flex';
+                            ">
 
-                        <div class="chat-avatar chat-default-avatar me-3" style="display:none;">
+                        <div
+                            class="chat-avatar chat-default-avatar me-3"
+                            style="display:none;">
                             <i class="bi bi-person-fill"></i>
                         </div>
 
@@ -202,25 +226,40 @@ $read_stmt->execute([
                     <div>
 
                         <strong>
-                            <?= htmlspecialchars($other_user['name']) ?>
+                            <?= htmlspecialchars(
+                                $other_user['name'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>
                         </strong>
 
                         <br>
 
                         <small class="text-muted">
-                            ID : <?= htmlspecialchars($other_user['students_id']) ?>
+                            <?= $lang['student_id_label'] ?> :
+                            <?= htmlspecialchars(
+                                $other_user['students_id'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            ) ?>
                         </small>
 
                         <br>
 
                         <?php if ($is_online): ?>
+
                             <small class="text-success">
-                                <i class="bi bi-circle-fill"></i> Online
+                                <i class="bi bi-circle-fill"></i>
+                                <?= $lang['online'] ?>
                             </small>
+
                         <?php else: ?>
+
                             <small class="text-muted">
-                                <i class="bi bi-circle-fill"></i> Offline
+                                <i class="bi bi-circle-fill"></i>
+                                <?= $lang['offline'] ?>
                             </small>
+
                         <?php endif; ?>
 
                     </div>
@@ -229,12 +268,18 @@ $read_stmt->execute([
 
             </div>
 
+            <!-- ==========================
+                 Chat Messages
+            =========================== -->
             <div
                 id="chat-box"
                 class="card-body flex-grow-1 overflow-auto">
 
             </div>
 
+            <!-- ==========================
+                 Message Form
+            =========================== -->
             <div class="card-footer bg-white position-relative">
 
                 <form method="POST" class="d-flex align-items-center gap-2">
@@ -243,23 +288,25 @@ $read_stmt->execute([
                     <button
                         type="button"
                         id="emojiBtn"
-                        class="btn btn-light rounded-circle">
+                        class="btn btn-light rounded-circle"
+                        aria-label="<?= $lang['open_emoji_picker'] ?>">
                         😊
                     </button>
 
-                    <!-- Message -->
+                    <!-- Message Input -->
                     <input
                         type="text"
                         id="message"
                         name="message"
                         class="form-control rounded-pill"
-                        placeholder="メッセージを入力"
+                        placeholder="<?= $lang['message_placeholder'] ?>"
                         autocomplete="off">
 
-                    <!-- Send -->
+                    <!-- Send Button -->
                     <button
                         type="submit"
-                        class="btn btn-primary rounded-pill px-4">
+                        class="btn btn-primary rounded-pill px-4"
+                        aria-label="<?= $lang['send_message'] ?>">
 
                         <i class="bi bi-send-fill"></i>
 
@@ -276,6 +323,9 @@ $read_stmt->execute([
 
     </div>
 
+    <!-- ==========================
+         Load Chat Messages
+    =========================== -->
     <script>
         function loadMessages() {
 
@@ -291,6 +341,9 @@ $read_stmt->execute([
                     box.scrollTop =
                         box.scrollHeight;
 
+                })
+                .catch(error => {
+                    console.error("Chat message load error:", error);
                 });
 
         }
@@ -300,6 +353,9 @@ $read_stmt->execute([
         setInterval(loadMessages, 2000);
     </script>
 
+    <!-- ==========================
+         Emoji Picker
+    =========================== -->
     <script>
         const emojiBtn =
             document.getElementById("emojiBtn");
@@ -337,7 +393,8 @@ $read_stmt->execute([
 
                 emojiPicker.style.display = "none";
 
-            });
+            }
+        );
 
         document.addEventListener("click", function(e) {
 

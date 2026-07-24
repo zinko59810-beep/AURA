@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
-
-session_start();
+require_once __DIR__ . '/../../lang/language.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");

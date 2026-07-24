@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -63,44 +64,59 @@ $users = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>ランキング</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><?= $lang['ranking_title'] ?></title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
+
     <?php $currentPage = 'ranking'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
     <div class="container-fluid py-4 px-4 aura-content">
 
+        <!-- ==========================
+             Page Header
+        =========================== -->
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <!-- <a href="profile.php" class="text-decoration-none text-muted">
-                ←戻る
-            </a> -->
 
             <h4 class="fw-bold mb-0">
-                <i class="bi bi-trophy"></i> ランキング
+                <i class="bi bi-trophy"></i>
+                <?= $lang['ranking_title'] ?>
             </h4>
 
             <span></span>
+
         </div>
 
+        <!-- ==========================
+             No Users
+        =========================== -->
         <?php if (empty($users)): ?>
 
             <div class="alert alert-info rounded-4">
-                ユーザーがいません。
+                <?= $lang['no_ranking_users'] ?>
             </div>
 
         <?php else: ?>
 
+            <!-- ==========================
+                 Ranking List
+            =========================== -->
             <?php foreach ($users as $index => $user): ?>
 
                 <?php
@@ -108,60 +124,142 @@ $users = $stmt->fetchAll();
 
                 if ($rank === 1) {
                     $medal = '<i class="bi bi-award-fill text-warning"></i>';
-                    $card_class = "border-warning";
+                    $card_class = 'border-warning';
                 } elseif ($rank === 2) {
                     $medal = '<i class="bi bi-award-fill text-secondary"></i>';
-                    $card_class = "border-secondary";
+                    $card_class = 'border-secondary';
                 } elseif ($rank === 3) {
                     $medal = '<i class="bi bi-award-fill text-danger"></i>';
-                    $card_class = "border-danger";
+                    $card_class = 'border-danger';
                 } else {
                     $medal = $rank;
-                    $card_class = "border-0";
+                    $card_class = 'border-0';
                 }
                 ?>
 
-                <div class="card shadow-sm border-0 rounded-4 mb-3 ranking-card">
+                <div class="card shadow-sm <?= $card_class ?> rounded-4 mb-3 ranking-card">
+
                     <div class="card-body d-flex align-items-center">
 
+                        <!-- ==========================
+                             Rank
+                        =========================== -->
                         <div class="me-3 fs-2">
                             <?= $medal ?>
                         </div>
 
+                        <!-- ==========================
+                             Profile Image
+                        =========================== -->
                         <?php if (!empty($user['profile_image'])): ?>
+
                             <img
-                                src="/AURA/<?= htmlspecialchars(ltrim($user['profile_image'], '/')) ?>"
-                                alt="<?= htmlspecialchars($user['name']) ?>"
+                                src="/AURA/<?= htmlspecialchars(
+                                                ltrim($user['profile_image'], '/'),
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            ) ?>"
+                                alt="<?= htmlspecialchars(
+                                            $user['name'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>"
                                 class="ranking-avatar me-3"
                                 onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="ranking-avatar default-avatar me-3" style="display:none;">
+
+                            <div
+                                class="ranking-avatar default-avatar me-3"
+                                style="display:none;"
+                                aria-label="<?= $lang['default_profile_image'] ?>">
+
                                 <i class="bi bi-person-fill"></i>
+
                             </div>
+
                         <?php else: ?>
-                            <div class="ranking-avatar default-avatar me-3">
+
+                            <div
+                                class="ranking-avatar default-avatar me-3"
+                                aria-label="<?= $lang['default_profile_image'] ?>">
+
                                 <i class="bi bi-person-fill"></i>
+
                             </div>
+
                         <?php endif; ?>
 
+                        <!-- ==========================
+                             User Information
+                        =========================== -->
                         <div class="flex-grow-1">
+
                             <h5 class="mb-1 fw-bold">
-                                <a href="/AURA/profile?id=<?= $user['id'] ?>"
+
+                                <a
+                                    href="/AURA/profile?id=<?= urlencode($user['id']) ?>"
                                     class="text-decoration-none text-dark">
-                                    <?= htmlspecialchars($user['name']) ?>
+
+                                    <?= htmlspecialchars(
+                                        $user['name'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
+
                                 </a>
+
                             </h5>
-                            <small class="text-muted">ID: <?= htmlspecialchars($user['students_id']) ?></small>
+
+                            <small class="text-muted">
+
+                                <?= $lang['student_id_label'] ?>:
+
+                                <?= htmlspecialchars(
+                                    $user['students_id'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                            </small>
+
                             <div>
-                                <span class="badge bg-primary"><?= htmlspecialchars($user['level']) ?></span>
+
+                                <span class="badge bg-primary">
+
+                                    <?= htmlspecialchars(
+                                        $user['level'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
+
+                                </span>
+
                             </div>
+
                         </div>
 
+                        <!-- ==========================
+                             Points
+                        =========================== -->
                         <div class="text-end">
-                            <h5 class="fw-bold mb-0"><?= htmlspecialchars($user['points']) ?></h5>
-                            <small class="text-muted">pt</small>
+
+                            <h5 class="fw-bold mb-0">
+
+                                <?= htmlspecialchars(
+                                    $user['points'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                            </h5>
+
+                            <small class="text-muted">
+                                <?= $lang['points_short'] ?>
+                            </small>
+
                         </div>
 
                     </div>
+
                 </div>
 
             <?php endforeach; ?>
@@ -169,6 +267,7 @@ $users = $stmt->fetchAll();
         <?php endif; ?>
 
     </div>
+
 </body>
 
 </html>

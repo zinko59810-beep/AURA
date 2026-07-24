@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: /AURA/login");
@@ -110,11 +111,12 @@ $chat_count = $chat_stmt->fetch()['total'];
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Project</title>
+
+    <title><?= $lang['add_project_title'] ?></title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
@@ -122,109 +124,138 @@ $chat_count = $chat_stmt->fetch()['total'];
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+    <link rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
 </head>
 
 <body class="bg-light aura-app">
+
     <?php $currentPage = 'post'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content" style="max-width:700px;">
+    <div class="container py-4 aura-content" style="max-width:700px;">
 
-    <a href="/AURA/profile" class="text-decoration-none text-muted">
-        ← 戻る
-    </a>
+        <a
+            href="/AURA/profile"
+            class="text-decoration-none text-muted">
+            ← <?= $lang['back'] ?>
+        </a>
 
-    <div class="card border-0 shadow-sm rounded-4 mt-3">
+        <div class="card border-0 shadow-sm rounded-4 mt-3">
 
-        <div class="card-body p-4">
+            <div class="card-body p-4">
 
-            <h3 class="fw-bold mb-4">
-                <i class="bi bi-folder-plus"></i>
-                Add Project
-            </h3>
+                <!-- ==========================
+                     Page Title
+                =========================== -->
+                <h3 class="fw-bold mb-4">
+                    <i class="bi bi-folder-plus"></i>
+                    <?= $lang['add_project_title'] ?>
+                </h3>
 
-            <?php if (!empty($message)): ?>
-                <div class="alert alert-danger rounded-4">
-                    <?= htmlspecialchars($message) ?>
-                </div>
-            <?php endif; ?>
+                <?php if (!empty($message)): ?>
 
-            <form action="/AURA/project_add" method="POST" enctype="multipart/form-data">
+                    <div class="alert alert-danger rounded-4">
+                        <?= htmlspecialchars($message) ?>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">
-                        Project Title
-                    </label>
+                <?php endif; ?>
 
-                    <input
-                        type="text"
-                        name="title"
-                        class="form-control rounded-3"
-                        placeholder="AURA Study">
-                </div>
+                <!-- ==========================
+                     Project Form
+                =========================== -->
+                <form
+                    action="/AURA/project_add"
+                    method="POST"
+                    enctype="multipart/form-data">
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">
-                        Description
-                    </label>
+                    <div class="mb-3">
 
-                    <textarea
-                        name="description"
-                        class="form-control rounded-3"
-                        rows="5"
-                        placeholder="Project description"></textarea>
-                </div>
+                        <label class="form-label fw-bold">
+                            <?= $lang['project_title'] ?>
+                        </label>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">
-                        Screenshot
-                    </label>
+                        <input
+                            type="text"
+                            name="title"
+                            class="form-control rounded-3"
+                            placeholder="<?= $lang['project_title_placeholder'] ?>">
 
-                    <input
-                        type="file"
-                        name="project_image"
-                        class="form-control rounded-3">
-                </div>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">
-                        GitHub URL
-                    </label>
+                    <div class="mb-3">
 
-                    <input
-                        type="text"
-                        name="github_url"
-                        class="form-control rounded-3"
-                        placeholder="https://github.com/...">
-                </div>
+                        <label class="form-label fw-bold">
+                            <?= $lang['description'] ?>
+                        </label>
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold">
-                        Demo URL
-                    </label>
+                        <textarea
+                            name="description"
+                            class="form-control rounded-3"
+                            rows="5"
+                            placeholder="<?= $lang['project_description_placeholder'] ?>"></textarea>
 
-                    <input
-                        type="text"
-                        name="demo_url"
-                        class="form-control rounded-3"
-                        placeholder="https://...">
-                </div>
+                    </div>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
-                    <i class="bi bi-save"></i>
-                    Save Project
-                </button>
+                    <div class="mb-3">
 
-            </form>
+                        <label class="form-label fw-bold">
+                            <?= $lang['screenshot'] ?>
+                        </label>
+
+                        <input
+                            type="file"
+                            name="project_image"
+                            class="form-control rounded-3">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-bold">
+                            <?= $lang['github_url'] ?>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="github_url"
+                            class="form-control rounded-3"
+                            placeholder="https://github.com/...">
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label fw-bold">
+                            <?= $lang['demo_url'] ?>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="demo_url"
+                            class="form-control rounded-3"
+                            placeholder="https://...">
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
+
+                        <i class="bi bi-save"></i>
+
+                        <?= $lang['save_project'] ?>
+
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
-
 </body>
+
 </html>

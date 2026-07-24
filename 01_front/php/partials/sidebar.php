@@ -1,72 +1,162 @@
 <?php
+
+/**
+ * @var array $lang
+ */
+
 if (!isset($currentPage)) {
     $currentPage = '';
 }
+
 if (!isset($chat_count)) {
     $chat_count = 0;
 }
+
 if (!isset($notice_count)) {
     $notice_count = 0;
 }
 ?>
 
 <aside class="aura-sidebar">
+
     <a href="/AURA/home" class="aura-brand">
+
         <span class="aura-brand-mark">
             <i class="bi bi-fire"></i>
         </span>
+
         <span>AURA Study</span>
+
     </a>
 
     <nav class="aura-menu">
-        <a href="/AURA/question_list" class="aura-menu-link <?= $currentPage === 'home' ? 'active' : '' ?>">
+
+        <a
+            href="/AURA/question_list"
+            class="aura-menu-link <?= $currentPage === 'home' ? 'active' : '' ?>">
+
             <i class="bi bi-house-door"></i>
-            <span>Home</span>
+
+            <span>
+                <?= htmlspecialchars($lang['home'], ENT_QUOTES, 'UTF-8') ?>
+            </span>
+
         </a>
 
-        <a href="/AURA/post" class="aura-menu-link <?= $currentPage === 'post' ? 'active' : '' ?>">
+        <a
+            href="/AURA/post"
+            class="aura-menu-link <?= $currentPage === 'post' ? 'active' : '' ?>">
+
             <i class="bi bi-plus-square"></i>
-            <span>Post</span>
+
+            <span>
+                <?= htmlspecialchars($lang['post'], ENT_QUOTES, 'UTF-8') ?>
+            </span>
+
         </a>
 
-        <a href="/AURA/chat" class="aura-menu-link <?= $currentPage === 'chat' ? 'active' : '' ?>">
+        <a
+            href="/AURA/chat"
+            class="aura-menu-link <?= $currentPage === 'chat' ? 'active' : '' ?>">
+
             <i class="bi bi-chat-dots"></i>
+
             <span>
-                Chat
+
+                <?= htmlspecialchars($lang['chat'], ENT_QUOTES, 'UTF-8') ?>
+
                 <?php if ($chat_count > 0): ?>
-                    <span class="badge bg-danger rounded-pill"><?= $chat_count ?></span>
+
+                    <span class="badge bg-danger rounded-pill">
+
+                        <?= htmlspecialchars(
+                            (string) $chat_count,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+
+                    </span>
+
                 <?php endif; ?>
+
             </span>
+
         </a>
 
-        <a href="/AURA/notice" class="aura-menu-link <?= $currentPage === 'notice' ? 'active' : '' ?>">
+        <a
+            href="/AURA/notice"
+            class="aura-menu-link <?= $currentPage === 'notice' ? 'active' : '' ?>">
+
             <i class="bi bi-bell"></i>
+
             <span>
-                Notice
+
+                <?= htmlspecialchars($lang['notice'], ENT_QUOTES, 'UTF-8') ?>
+
                 <?php if ($notice_count > 0): ?>
-                    <span class="badge bg-danger rounded-pill"><?= $notice_count ?></span>
+
+                    <span class="badge bg-danger rounded-pill">
+
+                        <?= htmlspecialchars(
+                            (string) $notice_count,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
+
+                    </span>
+
                 <?php endif; ?>
+
             </span>
+
         </a>
 
-        <a href="/AURA/ranking" class="aura-menu-link <?= $currentPage === 'ranking' ? 'active' : '' ?>">
+        <a
+            href="/AURA/ranking"
+            class="aura-menu-link <?= $currentPage === 'ranking' ? 'active' : '' ?>">
+
             <i class="bi bi-trophy"></i>
-            <span>Ranking</span>
+
+            <span>
+                <?= htmlspecialchars($lang['ranking'], ENT_QUOTES, 'UTF-8') ?>
+            </span>
+
         </a>
 
-        <a href="/AURA/profile" class="aura-menu-link <?= $currentPage === 'profile' ? 'active' : '' ?>">
+        <a
+            href="/AURA/profile"
+            class="aura-menu-link <?= $currentPage === 'profile' ? 'active' : '' ?>">
+
             <i class="bi bi-person-circle"></i>
-            <span>Profile</span>
+
+            <span>
+                <?= htmlspecialchars($lang['profile'], ENT_QUOTES, 'UTF-8') ?>
+            </span>
+
         </a>
 
-        <a href="/AURA/game" class="aura-menu-link <?= $currentPage === 'arcade' ? 'active' : '' ?>">
+        <a
+            href="/AURA/game"
+            class="aura-menu-link <?= $currentPage === 'arcade' ? 'active' : '' ?>">
+
             <i class="bi bi-controller"></i>
-            <span>Arcade</span>
+
+            <span>
+                <?= htmlspecialchars($lang['arcade'], ENT_QUOTES, 'UTF-8') ?>
+            </span>
+
         </a>
+
     </nav>
 
     <a href="/AURA/logout" class="aura-logout">
+
         <i class="bi bi-box-arrow-right"></i>
-        <span>Logout</span>
+
+        <span>
+            <?= htmlspecialchars($lang['logout'], ENT_QUOTES, 'UTF-8') ?>
+        </span>
+
     </a>
+
 </aside>
