@@ -179,19 +179,6 @@ $users = $stmt->fetchAll();
                                     </span>
                                 </div>
 
-<<<<<<< HEAD
-=======
-                        <div class="flex-grow-1">
-                            <h5 class="mb-1 fw-bold">
-                                <a href="/AURA/profile?id=<?= $user['id'] ?>"
-                                    class="text-decoration-none text-dark">
-                                    <?= htmlspecialchars($user['name']) ?>
-                                </a>
-                            </h5>
-                            <small class="text-muted">ID: <?= htmlspecialchars($user['students_id']) ?></small>
-                            <div>
-                                <span class="badge bg-primary"><?= htmlspecialchars($user['level']) ?></span>
->>>>>>> 1a1560090502bdf858600fe3a98c20d6375aea55
                             </div>
 
                         </a>
