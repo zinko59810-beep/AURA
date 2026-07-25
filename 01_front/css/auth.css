@@ -64,9 +64,14 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 50px;
-    height: 100%;
+    padding: 40px 50px;
+    min-height: 100%;
     text-align: center;
+}
+
+/* Register form မှာ item များသောကြောင့် အပေါ်ကနေစီမယ် */
+.sign-up-container form {
+    justify-content: flex-start;
 }
 
 h1 {
@@ -468,39 +473,140 @@ button.ghost:hover {
 
 }
 
-@media(max-width:768px) {
+@media screen and (max-width: 768px) {
 
     body {
+        display: block;
         padding: 20px;
+        overflow-y: auto;
     }
 
     .auth-container {
-
         width: 100%;
-        min-height: auto;
-        display: flex;
-        flex-direction: column;
-        overflow: visible;
-    }
-
-    .form-container,
-    .sign-in-container,
-    .sign-up-container {
-
-        position: relative;
-        width: 100%;
-        transform: none !important;
-        opacity: 1 !important;
-        left: 0;
-        height: auto;
+        max-width: 520px;
+        min-height: 650px;
+        margin: 0 auto;
+        overflow: hidden;
     }
 
     .overlay-container {
         display: none;
     }
 
-    form {
-        padding: 40px 30px;
+    .form-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
 
+    .sign-in-container {
+        opacity: 1;
+        z-index: 2;
+        transform: translateX(0);
+    }
+
+    .sign-up-container {
+        opacity: 0;
+        z-index: 1;
+        transform: translateX(100%);
+    }
+
+    .auth-container.right-panel-active .sign-in-container {
+        opacity: 0;
+        transform: translateX(-100%) !important;
+    }
+
+    .auth-container.right-panel-active .sign-up-container {
+        opacity: 1;
+        z-index: 5;
+        transform: translateX(0) !important;
+    }
+
+    form {
+        padding: 35px 25px;
+        min-height: 100%;
+    }
+
+    .sign-up-container form {
+        justify-content: flex-start;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    input,
+    select {
+        padding: 12px 14px;
+        margin: 6px 0;
+    }
+}
+
+/* ==========================
+   SHORT SCREEN RESPONSIVE
+   Laptop screen အမြင့်နည်းတဲ့အခါ
+========================== */
+
+@media screen and (max-height: 800px) and (min-width: 769px) {
+
+    body {
+        padding: 20px 0;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    .auth-container {
+        width: min(900px, 95%);
+        min-height: 650px;
+        margin: 20px auto;
+    }
+
+    .form-container {
+        overflow-y: auto;
+    }
+
+    form {
+        padding: 25px 45px;
+    }
+
+    .sign-up-container form {
+        justify-content: flex-start;
+    }
+
+    h1 {
+        font-size: 30px;
+        margin-bottom: 5px;
+    }
+
+    span {
+        margin-bottom: 10px;
+    }
+
+    input,
+    select {
+        padding: 11px 14px;
+        margin: 5px 0;
+    }
+
+    button {
+        padding: 11px 45px;
+        margin-top: 10px;
+    }
+
+    .alert {
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .overlay h1 {
+        font-size: 36px;
+        margin-bottom: 15px;
+    }
+
+    .overlay p {
+        margin-bottom: 20px;
+    }
 }
