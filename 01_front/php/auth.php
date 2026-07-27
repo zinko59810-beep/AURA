@@ -1,265 +1,251 @@
 <?php
 $mode = $_GET['mode'] ?? '';
+
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
 
 session_start();
 
+/* Language */
+if (
+    isset($_GET['lang']) &&
+    in_array($_GET['lang'], ['ja', 'en'], true)
+) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+$currentLang = $_SESSION['lang'] ?? 'ja';
+$lang = require __DIR__ . '/../../lang/' . $currentLang . '.php';
+
 $dbh = db_connect();
 
-/* -----------------------------
-   LOGIN
-------------------------------*/
+/* Flash messages */
+$login_message = $_SESSION['login_message'] ?? '';
+$register_message = $_SESSION['register_message'] ?? '';
+$last_student_id = $_SESSION['last_student_id'] ?? '';
 
-$login_message = $_SESSION['login_message'] ?? "";
-$register_message = $_SESSION['register_message'] ?? "";
-
-unset($_SESSION['login_message']);
-unset($_SESSION['register_message']);
-
-$last_student_id = $_SESSION['last_student_id'] ?? "";
-unset($_SESSION['last_student_id']);
+unset(
+    $_SESSION['login_message'],
+    $_SESSION['register_message'],
+    $_SESSION['last_student_id']
+);
 
 if (isset($_SESSION['user_id'])) {
-    header("Location: /AURA/profile");
+    header('Location: /AURA/profile');
     exit;
 }
 
 /* -----------------------------
-   LOGIN FORM
-------------------------------*/
-
+   LOGIN
+------------------------------ */
 if (isset($_POST['login'])) {
-
     $students_id = trim($_POST['students_id'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    $stmt = $dbh->prepare("
-        SELECT *
-        FROM users
-        WHERE students_id = ?
-    ");
+    if ($students_id === '' || $password === '') {
+        $_SESSION['login_message'] = '学生IDとパスワードを入力してください。';
+        header('Location: /AURA/auth');
+        exit;
+    }
 
+    $stmt = $dbh->prepare(
+        'SELECT *
+         FROM users
+         WHERE students_id = ?
+         LIMIT 1'
+    );
     $stmt->execute([$students_id]);
-
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
+        session_regenerate_id(true);
 
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['students_id'] = $user['students_id'];
         $_SESSION['name'] = $user['name'];
 
-        $active_stmt = $dbh->prepare("
-            UPDATE users
-            SET last_active_at = NOW()
-            WHERE id = ?
-        ");
+        $active_stmt = $dbh->prepare(
+            'UPDATE users
+             SET last_active_at = NOW()
+             WHERE id = ?'
+        );
+        $active_stmt->execute([$user['id']]);
 
-        $active_stmt->execute([
-            $_SESSION['user_id']
-        ]);
-
-        header("Location: /AURA/profile");
+        header('Location: /AURA/profile');
         exit;
     }
 
-    $login_message = "学生IDまたはパスワードが間違っています。";
+    $_SESSION['login_message'] = '学生IDまたはパスワードが間違っています。';
+    header('Location: /AURA/auth');
+    exit;
 }
 
-
 /* -----------------------------
-   REGISTER FORM
-------------------------------*/
-
+   REGISTER
+------------------------------ */
 if (isset($_POST['register'])) {
-
-    // Error ဖြစ်ရင် Register Screen ကိုဆက်ပြရန်
-    $mode = 'register';
-
-    $students_id = trim($_POST["students_id"] ?? "");
-    $name = trim($_POST["name"] ?? "");
-    $email = trim($_POST["email"] ?? "");
-    $password = $_POST["password"] ?? "";
-    $confirm_password = $_POST["confirm_password"] ?? "";
-    $class_id = $_POST["class_id"] ?? "";
+    $students_id = trim($_POST['register_students_id'] ?? '');
+    $name = trim($_POST['register_name'] ?? '');
+    $email = trim($_POST['register_email'] ?? '');
+    $password = $_POST['register_password'] ?? '';
+    $confirm_password = $_POST['register_confirm_password'] ?? '';
+    $class_id = trim($_POST['class_id'] ?? '');
 
     if (
-        $students_id === "" ||
-        $name === "" ||
-        $email === "" ||
-        $password === "" ||
-        $confirm_password === "" ||
-        $class_id === ""
+        $students_id === '' ||
+        $name === '' ||
+        $email === '' ||
+        $password === '' ||
+        $confirm_password === '' ||
+        $class_id === ''
     ) {
-
-        $_SESSION['register_message'] = "全部入力してください";
-
-        header("Location: /AURA/auth?mode=register");
+        $_SESSION['register_message'] = '全部入力してください。';
+        header('Location: /AURA/auth?mode=register');
         exit;
-    } elseif ($password !== $confirm_password) {
-
-        $_SESSION['register_message'] = "パスワードが一致していません";
-
-        header("Location: /AURA/auth?mode=register");
-        exit;
-    } else {
-
-        $check_stmt = $dbh->prepare("
-            SELECT id
-            FROM users
-            WHERE students_id = ?
-               OR email = ?
-            LIMIT 1
-        ");
-
-        $check_stmt->execute([
-            $students_id,
-            $email
-        ]);
-
-        if ($check_stmt->fetch()) {
-
-            $_SESSION['register_message'] =
-                "この学生IDまたはメールは既に登録されています";
-
-            header("Location: /AURA/auth?mode=register");
-            exit;
-        } else {
-
-            $password_hash = password_hash(
-                $password,
-                PASSWORD_DEFAULT
-            );
-
-            $stmt = $dbh->prepare("
-                INSERT INTO users
-                (
-                    students_id,
-                    name,
-                    email,
-                    password_hash,
-                    class_id
-                )
-                VALUES (?, ?, ?, ?, ?)
-            ");
-
-            $stmt->execute([
-                $students_id,
-                $name,
-                $email,
-                $password_hash,
-                $class_id
-            ]);
-
-            $_SESSION['last_student_id'] = $students_id;
-
-            header("Location: /AURA/auth");
-            exit;
-        }
     }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['register_message'] = '正しいメールアドレスを入力してください。';
+        header('Location: /AURA/auth?mode=register');
+        exit;
+    }
+
+    if ($password !== $confirm_password) {
+        $_SESSION['register_message'] = 'パスワードが一致していません。';
+        header('Location: /AURA/auth?mode=register');
+        exit;
+    }
+
+    $check_stmt = $dbh->prepare(
+        'SELECT id
+         FROM users
+         WHERE students_id = ?
+            OR email = ?
+         LIMIT 1'
+    );
+    $check_stmt->execute([$students_id, $email]);
+
+    if ($check_stmt->fetch()) {
+        $_SESSION['register_message'] =
+            'この学生IDまたはメールは既に登録されています。';
+
+        header('Location: /AURA/auth?mode=register');
+        exit;
+    }
+
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = $dbh->prepare(
+        'INSERT INTO users
+            (students_id, name, email, password_hash, class_id)
+         VALUES (?, ?, ?, ?, ?)'
+    );
+    $stmt->execute([
+        $students_id,
+        $name,
+        $email,
+        $password_hash,
+        $class_id
+    ]);
+
+    $_SESSION['last_student_id'] = $students_id;
+
+    header('Location: /AURA/auth');
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AURA Study</title>
+    <title><?= htmlspecialchars($lang['site_title'], ENT_QUOTES, 'UTF-8') ?></title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="/AURA/01_front/css/auth.css">
+
+    <!-- AURA PWA -->
+    <link rel="manifest" href="/AURA/manifest.webmanifest">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="application-name" content="AURA Study">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AURA/01_front/assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/AURA/01_front/assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
 <body>
     <div
-        class="auth-container <?= ($mode == 'register') ? 'right-panel-active' : '' ?>"
+        class="auth-container <?= $mode === 'register' ? 'right-panel-active' : '' ?>"
         id="container">
 
-        <!-- ==========================
-            LOGIN FORM
-    =========================== -->
-
+        <!-- LOGIN FORM -->
         <div class="form-container sign-in-container">
+            <form method="POST" action="/AURA/auth" autocomplete="off">
+                <h1><?= htmlspecialchars($lang['login'], ENT_QUOTES, 'UTF-8') ?></h1>
 
-            <form method="POST" action="/AURA/auth">
+                <span>
+                    <?= htmlspecialchars($lang['login_subtitle'], ENT_QUOTES, 'UTF-8') ?>
+                </span>
 
-                <h1>ログイン</h1>
-
-                <span>学生アカウントでログインしてください</span>
-
-                <?php if (!empty($login_message)): ?>
+                <?php if ($login_message !== ''): ?>
                     <div class="alert alert-danger mt-3 mb-3">
-                        <?= htmlspecialchars($login_message) ?>
+                        <?= htmlspecialchars($login_message, ENT_QUOTES, 'UTF-8') ?>
                     </div>
                 <?php endif; ?>
 
-                <!-- <input
-                    type="text"
-                    name="students_id"
-                    placeholder="学籍番号"
-                    value="<?= htmlspecialchars($last_student_id) ?>"
-                    required> -->
                 <input
                     type="text"
                     name="students_id"
-                    placeholder="学籍番号"
-                    value=""
-                    autocomplete="off"
+                    placeholder="<?= htmlspecialchars($lang['student_id'], ENT_QUOTES, 'UTF-8') ?>"
+                    value="<?= htmlspecialchars($last_student_id, ENT_QUOTES, 'UTF-8') ?>"
+                    autocomplete="username"
                     required>
 
-                <!-- <input
-                    type="password"
-                    name="password"
-                    placeholder="パスワード"
-                    required> -->
                 <input
                     type="password"
                     name="password"
-                    placeholder="パスワード"
-                    value=""
-                    autocomplete="new-password"
+                    placeholder="<?= htmlspecialchars($lang['password'], ENT_QUOTES, 'UTF-8') ?>"
+                    autocomplete="current-password"
                     required>
 
                 <button type="submit" name="login">
-                    ログイン
+                    <?= htmlspecialchars($lang['login'], ENT_QUOTES, 'UTF-8') ?>
                 </button>
-
             </form>
-
         </div>
 
-
-
-
-
-        <!-- ==========================
-            REGISTER FORM
-    =========================== -->
-
+        <!-- REGISTER FORM -->
         <div class="form-container sign-up-container">
-
-            <form method="POST"
+            <form
+                method="POST"
                 action="/AURA/auth?mode=register"
                 autocomplete="off">
 
-                <h1>アカウント登録</h1>
+                <h1>
+                    <?= htmlspecialchars($lang['register_title'], ENT_QUOTES, 'UTF-8') ?>
+                </h1>
 
-                <span>AURA Studyのアカウントを作成してください</span>
+                <span>
+                    <?= htmlspecialchars($lang['register_subtitle'], ENT_QUOTES, 'UTF-8') ?>
+                </span>
 
-                <?php if (!empty($register_message)): ?>
+                <?php if ($register_message !== ''): ?>
                     <div class="alert alert-danger mt-3 mb-3">
-                        <?= htmlspecialchars($register_message) ?>
+                        <?= htmlspecialchars($register_message, ENT_QUOTES, 'UTF-8') ?>
                     </div>
                 <?php endif; ?>
 
                 <input
                     type="text"
                     name="register_students_id"
-                    placeholder="学籍番号"
+                    placeholder="<?= htmlspecialchars($lang['student_id'], ENT_QUOTES, 'UTF-8') ?>"
                     autocomplete="off"
                     autocorrect="off"
                     autocapitalize="off"
@@ -269,37 +255,35 @@ if (isset($_POST['register'])) {
                 <input
                     type="text"
                     name="register_name"
-                    placeholder="氏名"
+                    placeholder="<?= htmlspecialchars($lang['name'], ENT_QUOTES, 'UTF-8') ?>"
                     autocomplete="off"
                     required>
 
                 <input
                     type="email"
                     name="register_email"
-                    placeholder="メールアドレス"
+                    placeholder="<?= htmlspecialchars($lang['email'], ENT_QUOTES, 'UTF-8') ?>"
                     autocomplete="off"
                     required>
 
                 <input
                     type="password"
                     name="register_password"
-                    placeholder="パスワード"
+                    placeholder="<?= htmlspecialchars($lang['password'], ENT_QUOTES, 'UTF-8') ?>"
                     autocomplete="new-password"
                     required>
 
                 <input
                     type="password"
                     name="register_confirm_password"
-                    placeholder="パスワード確認"
+                    placeholder="<?= htmlspecialchars($lang['confirm_password'], ENT_QUOTES, 'UTF-8') ?>"
                     autocomplete="new-password"
                     required>
 
-                <select
-                    name="class_id"
-                    autocomplete="off"
-                    required>
-
-                    <option value="">クラスを選択してください</option>
+                <select name="class_id" autocomplete="off" required>
+                    <option value="">
+                        <?= htmlspecialchars($lang['select_class'], ENT_QUOTES, 'UTF-8') ?>
+                    </option>
                     <option value="1">SK1A</option>
                     <option value="2">SK2A</option>
                     <option value="3">SK3A</option>
@@ -309,75 +293,51 @@ if (isset($_POST['register'])) {
                     <option value="7">IE4A</option>
                     <option value="8">SE1A</option>
                     <option value="9">SE2A</option>
-
                 </select>
 
                 <button type="submit" name="register">
-                    登録
+                    <?= htmlspecialchars($lang['register_button'], ENT_QUOTES, 'UTF-8') ?>
                 </button>
-
             </form>
-
         </div>
 
-
-        <!--==========================
-            OVERLAY
-    ===========================-->
-
+        <!-- OVERLAY -->
         <div class="overlay-container">
-
             <div class="overlay">
-
                 <div class="overlay-panel overlay-left">
-
-                    <h1>おかえりなさい</h1>
+                    <h1>
+                        <?= htmlspecialchars($lang['welcome_back'], ENT_QUOTES, 'UTF-8') ?>
+                    </h1>
 
                     <p>
-                        すでにアカウントをお持ちの方は、
-                        ログインしてAURA Studyを
-                        続けましょう。
+                        <?= htmlspecialchars($lang['welcome_back_text'], ENT_QUOTES, 'UTF-8') ?>
                     </p>
 
-                    <button
-                        class="ghost"
-                        id="signIn">
-
-                        ログイン
-
+                    <button class="ghost" id="signIn" type="button">
+                        <?= htmlspecialchars($lang['login'], ENT_QUOTES, 'UTF-8') ?>
                     </button>
-
                 </div>
-
 
                 <div class="overlay-panel overlay-right">
-
-                    <h1>ようこそ</h1>
+                    <h1>
+                        <?= htmlspecialchars($lang['welcome'], ENT_QUOTES, 'UTF-8') ?>
+                    </h1>
 
                     <p>
-                        学生情報を入力して、
-                        AURA Studyを
-                        始めましょう。
+                        <?= htmlspecialchars($lang['welcome_text'], ENT_QUOTES, 'UTF-8') ?>
                     </p>
 
-                    <button
-                        class="ghost"
-                        id="signUp">
-
-                        アカウント登録
-
+                    <button class="ghost" id="signUp" type="button">
+                        <?= htmlspecialchars($lang['register_title'], ENT_QUOTES, 'UTF-8') ?>
                     </button>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <script src="/AURA/01_front/php/auth.js"></script>
 
+    <script src="/AURA/pwa-register.js" defer></script>
 </body>
 
 </html>

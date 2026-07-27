@@ -7,6 +7,6 @@ $_SESSION = [];
 // Session အားလုံးဖျက်
 session_destroy();
 
-// Login Page ပြန်ပို့
-header("Location: /AURA/auth");
+// HOME Page ပြန်ပို့
+header("Location: /AURA/home");
 exit;

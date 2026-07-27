@@ -1,8 +1,9 @@
 <?php
 
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -81,43 +82,68 @@ $following_count = $following_stmt->fetch()['total'];
 ?>
 
 <!DOCTYPE html>
-
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title><?= $lang['user_profile_title'] ?></title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <link rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
 
+    <!-- AURA PWA -->
+    <link rel="manifest" href="/AURA/manifest.webmanifest">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="application-name" content="AURA Study">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AURA/01_front/assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/AURA/01_front/assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
 <body class="aura-app">
+
     <?php $currentPage = 'profile'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content" style="max-width:500px;">
+    <div class="container py-4 aura-content" style="max-width:500px;">
 
-
-        <a href="/AURA/home"
+        <!-- ==========================
+             Back Button
+        =========================== -->
+        <a
+            href="/AURA/home"
             class="text-decoration-none text-muted">
-            ← 戻る
+
+            ← <?= $lang['back'] ?>
+
         </a>
 
         <div class="card border-0 shadow-sm rounded-4 mt-3">
 
             <div class="card-body text-center">
 
+                <!-- ==========================
+                     Profile Image
+                =========================== -->
                 <?php if (!empty($user['profile_image'])): ?>
 
                     <img
-                        src="<?= htmlspecialchars($user['profile_image']) ?>"
+                        src="<?= htmlspecialchars(
+                                    $user['profile_image'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>"
+                        alt="<?= $lang['user_profile_image'] ?>"
                         class="rounded-circle mb-3"
                         width="120"
                         height="120"
@@ -128,89 +154,164 @@ $following_count = $following_stmt->fetch()['total'];
                     <div
                         class="rounded-circle bg-primary text-white mx-auto mb-3 d-flex align-items-center justify-content-center"
                         style="width:120px;height:120px;font-size:48px;">
+
                         <i class="bi bi-person-circle"></i>
+
                     </div>
 
                 <?php endif; ?>
 
+                <!-- ==========================
+                     User Information
+                =========================== -->
                 <h3>
-                    <?= htmlspecialchars($user['name']) ?>
+                    <?= htmlspecialchars(
+                        $user['name'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
                 </h3>
 
                 <p class="text-muted">
-                    Student ID :
-                    <?= htmlspecialchars($user['students_id']) ?>
+
+                    <?= $lang['student_id_label'] ?>:
+
+                    <?= htmlspecialchars(
+                        $user['students_id'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+
                 </p>
 
                 <span class="badge bg-primary">
-                    <?= htmlspecialchars($user['level']) ?>
+                    <?= htmlspecialchars(
+                        $user['level'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
                 </span>
 
                 <h2 class="mt-3">
-                    <?= htmlspecialchars($user['points']) ?> pt
+
+                    <?= htmlspecialchars(
+                        $user['points'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) ?>
+
+                    <?= $lang['points_short'] ?>
+
                 </h2>
+
+                <!-- ==========================
+                     Follow Information
+                =========================== -->
                 <div class="row mt-4">
 
                     <div class="col-6">
+
                         <div class="card border-0 bg-light rounded-4">
+
                             <div class="card-body text-center">
+
                                 <h4 class="fw-bold">
-                                    <?= htmlspecialchars($followers_count) ?>
+                                    <?= htmlspecialchars(
+                                        $followers_count,
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
                                 </h4>
+
                                 <small class="text-muted">
-                                    Followers
+                                    <?= $lang['followers'] ?>
                                 </small>
+
                             </div>
+
                         </div>
+
                     </div>
 
                     <div class="col-6">
+
                         <div class="card border-0 bg-light rounded-4">
+
                             <div class="card-body text-center">
+
                                 <h4 class="fw-bold">
-                                    <?= htmlspecialchars($following_count) ?>
+                                    <?= htmlspecialchars(
+                                        $following_count,
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>
                                 </h4>
+
                                 <small class="text-muted">
-                                    Following
+                                    <?= $lang['following'] ?>
                                 </small>
+
                             </div>
+
                         </div>
+
                     </div>
 
-
                 </div>
+
+                <!-- ==========================
+                     Other User Actions
+                =========================== -->
                 <?php if ($user['id'] != $_SESSION['user_id']): ?>
 
-                    <a href="chat.php?id=<?= $user['id'] ?>"
+                    <a
+                        href="/AURA/chat?id=<?= urlencode($user['id']) ?>"
                         class="btn btn-dark rounded-pill mt-3">
+
                         <i class="bi bi-chat-dots"></i>
-                        Message
+                        <?= $lang['message_button'] ?>
+
                     </a>
-
-                <?php endif; ?>
-
-
-                <?php if ($user['id'] != $_SESSION['user_id']): ?>
 
                     <?php if (!$is_following): ?>
-                        <a href="follow.php?id=<?= $user['id'] ?>"
+
+                        <a
+                            href="/AURA/follow?id=<?= urlencode($user['id']) ?>"
                             class="btn btn-primary rounded-pill mt-3">
-                            フォローする
+
+                            <?= $lang['follow'] ?>
+
                         </a>
+
                     <?php else: ?>
-                        <button class="btn btn-success rounded-pill mt-3" disabled>
-                            フォロー中
+
+                        <button
+                            type="button"
+                            class="btn btn-success rounded-pill mt-3"
+                            disabled>
+
+                            <?= $lang['following_status'] ?>
+
                         </button>
+
                     <?php endif; ?>
-                    <a href="unfollow.php?id=<?= $user['id'] ?>"
-                        class="btn btn-outline-danger rounded-pill mt-3">
-                        フォロー解除
-                    </a>
+
+                    <?php if ($is_following): ?>
+
+                        <a
+                            href="/AURA/unfollow?id=<?= urlencode($user['id']) ?>"
+                            class="btn btn-outline-danger rounded-pill mt-3">
+
+                            <?= $lang['unfollow'] ?>
+
+                        </a>
+
+                    <?php endif; ?>
 
                 <?php else: ?>
 
                     <div class="alert alert-light mt-3 rounded-4">
-                        自分のプロフィールです
+                        <?= $lang['this_is_your_profile'] ?>
                     </div>
 
                 <?php endif; ?>
@@ -219,9 +320,10 @@ $following_count = $following_stmt->fetch()['total'];
 
         </div>
 
-
     </div>
 
+
+    <script src="/AURA/pwa-register.js" defer></script>
 </body>
 
 </html>

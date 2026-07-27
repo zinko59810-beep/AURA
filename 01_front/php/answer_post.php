@@ -1,11 +1,11 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
 
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /AURA/auth");
     exit;
 }
 
@@ -42,7 +42,7 @@ $is_own_question =
 
 $message = "";
 
-   
+
 
 
 
@@ -150,15 +150,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= $currentLang ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>回答投稿</title>
+    <title><?= $lang['answer_post'] ?></title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <!-- AURA PWA -->
+    <link rel="manifest" href="/AURA/manifest.webmanifest">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="application-name" content="AURA Study">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AURA/01_front/assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/AURA/01_front/assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
 <body class="aura-app">
@@ -177,19 +188,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
 
                     <h3 class="fw-bold mb-3">
-                        自分の質問には回答できません
+                        <?= $lang['cannot_answer_own_question'] ?>
                     </h3>
 
                     <p class="text-muted mb-4">
-                        他のユーザーからの回答を待ちましょう。
+                        <?= $lang['wait_for_answers'] ?>
                     </p>
 
                     <a
                         href="/AURA/question_detail?id=<?= urlencode($question_id) ?>"
-                        class="btn btn-primary rounded-pill px-5 py-2"
-                    >
+                        class="btn btn-primary rounded-pill px-5 py-2">
                         <i class="bi bi-arrow-left me-1"></i>
-                        質問詳細へ戻る
+                        <?= $lang['back_to_question'] ?>
                     </a>
 
                 </div>
@@ -200,14 +210,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <a
                     href="/AURA/question_detail?id=<?= urlencode($question_id) ?>"
-                    class="text-decoration-none text-muted"
-                >
+                    class="text-decoration-none text-muted">
                     ←
                 </a>
 
                 <h4 class="fw-bold mb-0">
                     <i class="bi bi-chat-left-text"></i>
-                    回答投稿
+                    <?= $lang['answer_post'] ?>
                 </h4>
 
                 <span></span>
@@ -236,34 +245,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     <form
                         action="/AURA/answer_post?question_id=<?= urlencode($question_id) ?>"
-                        method="POST"
-                    >
+                        method="POST">
+
                         <div class="mb-4">
+
                             <label class="form-label fw-bold">
-                                回答内容
+                                <?= $lang['answer_content'] ?>
                             </label>
 
                             <textarea
                                 name="content"
                                 class="form-control rounded-3"
                                 rows="6"
-                                placeholder="答えそのものではなく、考え方やヒントを書いてください"
-                            ></textarea>
+                                placeholder="<?= $lang['answer_placeholder'] ?>"></textarea>
+
                         </div>
 
                         <button
                             type="submit"
-                            class="btn btn-primary w-100 rounded-pill py-3 fw-bold"
-                        >
-                            回答する
+                            class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
+
+                            <?= $lang['submit_answer'] ?>
+
                         </button>
 
                         <a
                             href="/AURA/question_detail?id=<?= urlencode($question_id) ?>"
-                            class="btn btn-outline-secondary w-100 rounded-pill mt-2"
-                        >
-                            戻る
+                            class="btn btn-outline-secondary w-100 rounded-pill mt-2">
+
+                            <?= $lang['back'] ?>
+
                         </a>
+
                     </form>
 
                 </div>
@@ -272,6 +285,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php endif; ?>
 
     </div>
+
+    <script src="/AURA/pwa-register.js" defer></script>
 </body>
 
 </html>

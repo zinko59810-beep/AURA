@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: /AURA/login");
@@ -109,11 +109,11 @@ $users = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= $currentLang ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Message</title>
+    <title><?= $lang['message_title'] ?></title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
@@ -122,6 +122,16 @@ $users = $stmt->fetchAll();
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <!-- AURA PWA -->
+    <link rel="manifest" href="/AURA/manifest.webmanifest">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="application-name" content="AURA Study">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AURA/01_front/assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/AURA/01_front/assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
 <body class="bg-light aura-app">
@@ -131,13 +141,13 @@ $users = $stmt->fetchAll();
     <div class="container py-4 aura-content">
 
         <h3 class="fw-bold mb-4">
-            Chat
+            <?= $lang['chat'] ?>
         </h3>
 
         <?php if (empty($users)): ?>
 
             <div class="alert alert-light rounded-4">
-                まだメッセージがありません
+                <?= $lang['no_messages'] ?>
             </div>
 
         <?php endif; ?>
@@ -163,10 +173,10 @@ $users = $stmt->fetchAll();
                                 alt="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"
                                 class="chat-list-avatar me-3"
                                 onerror="
-            this.onerror=null;
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-        ">
+                                    this.onerror=null;
+                                    this.style.display='none';
+                                    this.nextElementSibling.style.display='flex';
+                                ">
 
                             <div
                                 class="chat-list-avatar chat-list-default-avatar me-3"
@@ -190,7 +200,7 @@ $users = $stmt->fetchAll();
 
                             <small class="text-muted">
                                 <?= htmlspecialchars(
-                                    $user['last_message'] ?? 'メッセージはありません',
+                                    $user['last_message'] ?? $lang['no_last_message'],
                                     ENT_QUOTES,
                                     'UTF-8'
                                 ) ?>
@@ -215,6 +225,8 @@ $users = $stmt->fetchAll();
 
     </div>
 
+
+    <script src="/AURA/pwa-register.js" defer></script>
 </body>
 
 </html>

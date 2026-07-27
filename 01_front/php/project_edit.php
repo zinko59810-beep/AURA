@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -94,103 +95,208 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
+
 <head>
     <meta charset="UTF-8">
-    <title>Edit Project</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <title><?= $lang['edit_project_title'] ?></title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link
+        rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
+
+    <!-- AURA PWA -->
+    <link rel="manifest" href="/AURA/manifest.webmanifest">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="application-name" content="AURA Study">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AURA/01_front/assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/AURA/01_front/assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
-<body class="bg-light">
+<body class="bg-light aura-app">
 
-<div class="container py-5" style="max-width:700px;">
+    <?php $currentPage = 'profile'; ?>
+    <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-    <a href="/AURA/profile" class="text-decoration-none text-muted">
-        ← 戻る
-    </a>
+    <div class="container py-5 aura-content" style="max-width:700px;">
 
-    <div class="card border-0 shadow-sm rounded-4 mt-3">
-        <div class="card-body p-4">
+        <a
+            href="/AURA/profile"
+            class="text-decoration-none text-muted">
+            ← <?= $lang['back'] ?>
+        </a>
 
-            <h3 class="fw-bold mb-4">
-                <i class="bi bi-pencil"></i>
-                Edit Project
-            </h3>
+        <div class="card border-0 shadow-sm rounded-4 mt-3">
 
-            <?php if (!empty($message)): ?>
-                <div class="alert alert-danger rounded-4">
-                    <?= htmlspecialchars($message) ?>
-                </div>
-            <?php endif; ?>
+            <div class="card-body p-4">
 
-            <form method="POST" enctype="multipart/form-data">
+                <!-- ==========================
+                     Page Title
+                =========================== -->
+                <h3 class="fw-bold mb-4">
+                    <i class="bi bi-pencil"></i>
+                    <?= $lang['edit_project_title'] ?>
+                </h3>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Project Title</label>
-                    <input
-                        type="text"
-                        name="title"
-                        class="form-control rounded-3"
-                        value="<?= htmlspecialchars($project['title']) ?>">
-                </div>
+                <!-- ==========================
+                     Error Message
+                =========================== -->
+                <?php if (!empty($message)): ?>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Description</label>
-                    <textarea
-                        name="description"
-                        class="form-control rounded-3"
-                        rows="5"><?= htmlspecialchars($project['description']) ?></textarea>
-                </div>
-
-                <?php if (!empty($project['image_path'])): ?>
-                    <div class="mb-3">
-                        <img
-                            src="<?= htmlspecialchars($project['image_path']) ?>"
-                            class="img-fluid rounded-4">
+                    <div class="alert alert-danger rounded-4">
+                        <?= htmlspecialchars(
+                            $message,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        ) ?>
                     </div>
+
                 <?php endif; ?>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">New Screenshot</label>
-                    <input
-                        type="file"
-                        name="project_image"
-                        class="form-control rounded-3">
-                </div>
+                <!-- ==========================
+                     Edit Project Form
+                =========================== -->
+                <form method="POST" enctype="multipart/form-data">
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">GitHub URL</label>
-                    <input
-                        type="text"
-                        name="github_url"
-                        class="form-control rounded-3"
-                        value="<?= htmlspecialchars($project['github_url']) ?>">
-                </div>
+                    <div class="mb-3">
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Demo URL</label>
-                    <input
-                        type="text"
-                        name="demo_url"
-                        class="form-control rounded-3"
-                        value="<?= htmlspecialchars($project['demo_url']) ?>">
-                </div>
+                        <label class="form-label fw-bold">
+                            <?= $lang['project_title'] ?>
+                        </label>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
-                    <i class="bi bi-save"></i>
-                    Update Project
-                </button>
+                        <input
+                            type="text"
+                            name="title"
+                            class="form-control rounded-3"
+                            value="<?= htmlspecialchars(
+                                        $project['title'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
 
-            </form>
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-bold">
+                            <?= $lang['description'] ?>
+                        </label>
+
+                        <textarea
+                            name="description"
+                            class="form-control rounded-3"
+                            rows="5"><?= htmlspecialchars(
+                                        $project['description'],
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?></textarea>
+
+                    </div>
+
+                    <!-- ==========================
+                         Current Screenshot
+                    =========================== -->
+                    <?php if (!empty($project['image_path'])): ?>
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold d-block">
+                                <?= $lang['current_screenshot'] ?>
+                            </label>
+
+                            <img
+                                src="<?= htmlspecialchars(
+                                            $project['image_path'],
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        ) ?>"
+                                alt="<?= $lang['project_screenshot_alt'] ?>"
+                                class="img-fluid rounded-4">
+
+                        </div>
+
+                    <?php endif; ?>
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-bold">
+                            <?= $lang['new_screenshot'] ?>
+                        </label>
+
+                        <input
+                            type="file"
+                            name="project_image"
+                            class="form-control rounded-3">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label fw-bold">
+                            <?= $lang['github_url'] ?>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="github_url"
+                            class="form-control rounded-3"
+                            value="<?= htmlspecialchars(
+                                        $project['github_url'] ?? '',
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label fw-bold">
+                            <?= $lang['demo_url'] ?>
+                        </label>
+
+                        <input
+                            type="text"
+                            name="demo_url"
+                            class="form-control rounded-3"
+                            value="<?= htmlspecialchars(
+                                        $project['demo_url'] ?? '',
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) ?>">
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
+
+                        <i class="bi bi-save"></i>
+                        <?= $lang['update_project'] ?>
+
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
+
     </div>
 
-</div>
 
+    <script src="/AURA/pwa-register.js" defer></script>
 </body>
+
 </html>

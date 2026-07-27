@@ -1,7 +1,8 @@
 <?php
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
+require_once __DIR__ . '/../../lang/language.php';
 
-session_start();
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: /AURA/login");
@@ -120,66 +121,103 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="<?= htmlspecialchars($currentLang, ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>質問投稿</title>
+
+    <title><?= $lang['question_post_title'] ?></title>
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/AURA/01_front/css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet"
+        href="/AURA/01_front/css/style.css">
+
+    <!-- AURA PWA -->
+    <link rel="manifest" href="/AURA/manifest.webmanifest">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="application-name" content="AURA Study">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/png" sizes="32x32" href="/AURA/01_front/assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/AURA/01_front/assets/icons/favicon-16.png">
+    <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
 <body class="bg-light aura-app">
+
     <?php $currentPage = 'post'; ?>
     <?php require_once __DIR__ . '/partials/sidebar.php'; ?>
 
-<div class="container py-4 aura-content" style="max-width:700px;">
+    <div class="container py-4 aura-content" style="max-width:700px;">
 
+        <!-- ==========================
+             Page Header
+        =========================== -->
         <div class="d-flex align-items-center justify-content-between mb-4">
-            <!-- <a href="question_list.php" class="text-decoration-none text-muted">
-                ←戻る
-            </a> -->
 
             <h4 class="fw-bold mb-0">
-                <i class="bi bi-question-circle"></i> 質問投稿
+                <i class="bi bi-question-circle"></i>
+                <?= $lang['question_post_title'] ?>
             </h4>
 
             <span></span>
+
         </div>
 
+        <!-- ==========================
+             Message
+        =========================== -->
         <?php if (!empty($message)): ?>
 
-            <div class="alert <?= $is_success ? 'alert-success' : 'alert-danger' ?> rounded-4">
-                <?= htmlspecialchars($message) ?>
+            <div class="alert <?= !empty($is_success) ? 'alert-success' : 'alert-danger' ?> rounded-4">
+
+                <?= htmlspecialchars(
+                    $message,
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>
+
             </div>
 
         <?php endif; ?>
 
-        <div class="">
+        <!-- ==========================
+             Question Form
+        =========================== -->
+        <div>
 
             <div class="card-body p-1">
 
                 <form action="/AURA/post" method="POST">
 
+                    <!-- Question Title -->
                     <div class="mb-3">
+
                         <label class="form-label fw-bold">
-                            <i class="bi bi-pencil-square"></i> タイトル
+                            <i class="bi bi-pencil-square"></i>
+                            <?= $lang['question_title_label'] ?>
                         </label>
 
                         <input
                             type="text"
                             name="title"
                             class="form-control rounded-3"
-                            placeholder="質問タイトルを入力してください">
+                            placeholder="<?= $lang['question_title_placeholder'] ?>">
+
                     </div>
 
+                    <!-- Subject -->
                     <div class="mb-3">
+
                         <label class="form-label fw-bold">
-                            <i class="bi bi-tags"></i> 科目
+                            <i class="bi bi-tags"></i>
+                            <?= $lang['subject'] ?>
                         </label>
 
                         <select
@@ -187,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             class="form-select rounded-3">
 
                             <option value="">
-                                科目を選択してください
+                                <?= $lang['select_subject'] ?>
                             </option>
 
                             <option value="1">PHP</option>
@@ -196,57 +234,76 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <option value="4">Network</option>
                             <option value="5">Laravel</option>
                             <option value="6">HTML/CSS</option>
-                            <option value="7">Javascript</option>
+                            <option value="7">JavaScript</option>
 
                         </select>
+
                     </div>
 
+                    <!-- Goal -->
                     <div class="mb-3">
+
                         <label class="form-label fw-bold">
-                            <i class="bi bi-bullseye"></i> やりたいこと
+                            <i class="bi bi-bullseye"></i>
+                            <?= $lang['question_goal'] ?>
                         </label>
 
                         <textarea
                             name="goal"
                             class="form-control rounded-3"
                             rows="3"
-                            placeholder="何をしたいですか？"></textarea>
+                            placeholder="<?= $lang['question_goal_placeholder'] ?>"></textarea>
+
                     </div>
 
+                    <!-- Tried -->
                     <div class="mb-3">
+
                         <label class="form-label fw-bold">
-                            <i class="bi bi-tools"></i> 試したこと
+                            <i class="bi bi-tools"></i>
+                            <?= $lang['question_tried'] ?>
                         </label>
 
                         <textarea
                             name="tried"
                             class="form-control rounded-3"
                             rows="3"
-                            placeholder="何を試しましたか？"></textarea>
+                            placeholder="<?= $lang['question_tried_placeholder'] ?>"></textarea>
+
                     </div>
 
+                    <!-- Problem -->
                     <div class="mb-4">
+
                         <label class="form-label fw-bold">
-                            <i class="bi bi-question-circle"></i> 分からない点
+                            <i class="bi bi-question-circle"></i>
+                            <?= $lang['question_problem'] ?>
                         </label>
 
                         <textarea
                             name="problem"
                             class="form-control rounded-3"
                             rows="3"
-                            placeholder="どこが分かりませんか？"></textarea>
+                            placeholder="<?= $lang['question_problem_placeholder'] ?>"></textarea>
+
                     </div>
 
+                    <!-- Submit Button -->
                     <button
                         type="submit"
                         class="btn btn-primary w-100 rounded-pill py-3 fw-bold">
-                        投稿する
+
+                        <?= $lang['submit_question'] ?>
+
                     </button>
 
+                    <!-- Back Button -->
                     <a
                         href="/AURA/question_list"
                         class="btn btn-outline-secondary w-100 rounded-pill mt-2">
-                        戻る
+
+                        <?= $lang['back'] ?>
+
                     </a>
 
                 </form>
@@ -256,6 +313,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
     </div>
+
+
+    <script src="/AURA/pwa-register.js" defer></script>
 </body>
 
 </html>
