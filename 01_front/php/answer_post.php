@@ -49,8 +49,173 @@ $message = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $content = trim($_POST["content"] ?? "");
 
-    if ($content === "") {
-        $message = "回答を入力してください";
+        /*
+     * Question copy detection
+     * 問題文・コードの丸ごとコピーを防止
+     */
+    $normalize_text = function ($text) {
+
+        $text = (string)$text;
+
+        // PowerShell の PS ...> / >> を除去
+        $text = preg_replace(
+            '/^\s*(?:PS\s+[^\r\n>]*>\s*|>>\s*)/mi',
+            '',
+            $text
+        );
+
+        $text = mb_strtolower(
+            trim($text),
+            'UTF-8'
+        );
+
+        // 空白・改行を除去
+        $text = preg_replace(
+            '/\s+/u',
+            '',
+            $text
+        );
+
+        return $text;
+    };
+
+    $answer_normalized =
+        $normalize_text($content);
+
+    $question_parts = [
+        $question['goal'] ?? '',
+        $question['tried'] ?? '',
+        $question['problem'] ?? ''
+    ];
+
+    $full_question =
+        $normalize_text(
+            implode('', $question_parts)
+        );
+
+    $question_copy_detected = false;
+
+    $answer_length =
+        mb_strlen(
+            $answer_normalized,
+            'UTF-8'
+        );
+
+    $question_length =
+        mb_strlen(
+            $full_question,
+            'UTF-8'
+        );
+
+    /*
+     * ① 回答そのものが問題文の中に含まれている
+     * 40文字以上ならコピーと判断
+     */
+    if (
+        $answer_length >= 40 &&
+        mb_strpos(
+            $full_question,
+            $answer_normalized,
+            0,
+            'UTF-8'
+        ) !== false
+    ) {
+        $question_copy_detected = true;
+    }
+
+    /*
+     * ② 問題文の40文字ブロックを複数コピーしていないか
+     */
+    if (
+        !$question_copy_detected &&
+        $answer_length >= 40 &&
+        $question_length >= 40
+    ) {
+
+        $chunk_size = 40;
+        $step = 20;
+        $matched_chunks = 0;
+
+        for (
+            $i = 0;
+            $i <= $question_length - $chunk_size;
+            $i += $step
+        ) {
+
+            $chunk =
+                mb_substr(
+                    $full_question,
+                    $i,
+                    $chunk_size,
+                    'UTF-8'
+                );
+
+            if (
+                mb_strpos(
+                    $answer_normalized,
+                    $chunk,
+                    0,
+                    'UTF-8'
+                ) !== false
+            ) {
+
+                $matched_chunks++;
+
+                if ($matched_chunks >= 2) {
+                    $question_copy_detected = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    /*
+     * ③ 各項目をそのままコピーしていないか
+     */
+    if (!$question_copy_detected) {
+
+        foreach ($question_parts as $part) {
+
+            $part_normalized =
+                $normalize_text($part);
+
+            if (
+                mb_strlen(
+                    $part_normalized,
+                    'UTF-8'
+                ) >= 40 &&
+                mb_strpos(
+                    $answer_normalized,
+                    $part_normalized,
+                    0,
+                    'UTF-8'
+                ) !== false
+            ) {
+
+                $question_copy_detected = true;
+                break;
+            }
+        }
+    }
+
+
+    if ($is_own_question) {
+
+        http_response_code(403);
+
+        $message =
+            "自分の質問には回答できません。";
+
+    } elseif ($content === "") {
+
+        $message =
+            "回答を入力してください";
+
+    } elseif ($question_copy_detected) {
+
+        $message =
+            "問題文をそのままコピーして回答することはできません。自分の言葉で回答してください。";
+
     } else {
         $dbh->beginTransaction();
 
@@ -72,7 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $percent
                 );
 
-                if ($percent >= 80 || mb_strlen($content) > 800) {
+                if ($percent >= 90 && mb_strlen($content) >= 50) {
                     $is_copy = 1;
                     break;
                 }
@@ -223,7 +388,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <div class="card border-0 shadow-sm rounded-4 mb-4">
-                <div class="card-body">
+                <div class="card-body question-copy-zone">
                     <h5 class="fw-bold">
                         <?= htmlspecialchars($question['title']) ?>
                     </h5>
@@ -286,6 +451,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     </div>
 
+    <script src="/AURA/01_front/js/question-copy-guard.js" defer></script>
     <script src="/AURA/pwa-register.js" defer></script>
 </body>
 

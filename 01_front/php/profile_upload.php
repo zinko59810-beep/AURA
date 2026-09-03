@@ -2,6 +2,7 @@
 
 require_once(__DIR__ . '/../../02_backend/db/db_.php');
 require_once __DIR__ . '/../../lang/language.php';
+require_once __DIR__ . '/../../02_backend/security/image_upload.php';
 
 
 
@@ -14,43 +15,39 @@ $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if (!empty($_FILES['profile_image']['name'])) {
+    $result =
+        aura_save_uploaded_image(
+            $_FILES['profile_image'] ?? [],
+            __DIR__ . '/../../uploads/profile',
+            'uploads/profile'
+        );
 
-        $file_name = time() . "_" . $_FILES['profile_image']['name'];
+    if ($result['error'] !== null) {
 
-        $upload_dir = "uploads/profile/";
+        $message =
+            $result['error'];
 
-        // Folder မရှိရင်ဆောက်
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
+    } else {
 
-        $file_path = $upload_dir . $file_name;
+        $dbh = db_connect();
 
-        if (!move_uploaded_file($_FILES['profile_image']['tmp_name'], $file_path)) {
-            $message = "画像のアップロードに失敗しました。uploads/profile の権限を確認してください。";
-        } else {
+        $stmt = $dbh->prepare("
+            UPDATE users
+            SET profile_image = ?
+            WHERE id = ?
+        ");
 
-            $dbh = db_connect();
+        $stmt->execute([
+            $result['path'],
+            $_SESSION['user_id']
+        ]);
 
-            $stmt = $dbh->prepare("
-        UPDATE users
-        SET profile_image = ?
-        WHERE id = ?
-    ");
+        header(
+            "Location: /AURA/profile"
+        );
 
-            $stmt->execute([
-                $file_path,
-                $_SESSION['user_id']
-            ]);
-
-            // echo $file_path;
-            header("Location: /AURA/profile");
-            exit;
-        }
+        exit;
     }
-
-    $message = "画像を選択してください";
 }
 ?>
 

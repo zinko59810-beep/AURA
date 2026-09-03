@@ -113,6 +113,7 @@ $users = $stmt->fetchAll();
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title><?= $lang['message_title'] ?></title>
 
     <link rel="stylesheet"
@@ -164,34 +165,20 @@ $users = $stmt->fetchAll();
 
                         <?php if (!empty($user['profile_image'])): ?>
 
-                            <img
-                                src="/AURA/<?= htmlspecialchars(
-                                                ltrim($user['profile_image'], '/'),
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            ) ?>"
-                                alt="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"
-                                class="chat-list-avatar me-3"
-                                onerror="
-                                    this.onerror=null;
-                                    this.style.display='none';
-                                    this.nextElementSibling.style.display='flex';
-                                ">
+    <img
+        src="/AURA/uploads/profile/<?= rawurlencode(
+            basename($user['profile_image'])
+        ) ?>"
+        alt="<?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?>"
+        class="chat-list-avatar me-3">
 
-                            <div
-                                class="chat-list-avatar chat-list-default-avatar me-3"
-                                style="display:none;">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
+<?php else: ?>
 
-                        <?php else: ?>
+    <div class="chat-list-avatar chat-list-default-avatar me-3">
+        <i class="bi bi-person-fill"></i>
+    </div>
 
-                            <div class="chat-list-avatar chat-list-default-avatar me-3">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
-
-                        <?php endif; ?>
-
+<?php endif; ?>
                         <div class="flex-grow-1">
 
                             <h6 class="fw-bold mb-1">

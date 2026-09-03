@@ -5,10 +5,8 @@
 //本番表 は　
 // ・DB名　　　　：sys1_26_aura
 // ・DBユーザー　：sys1_26_aura
-// ・DBパスワード：wT0@ZEefs_yU
 
 // define('DB_USERNAME','sys1_26_aura');
-// define('DB_PASSWORD','wT0@ZEefs_yU');
 // define('DSN','mysql:host=localhost;dbname=sys1_26_aura;charset=utf8mb4');
 define('DB_USERNAME','aura');
 define('DB_PASSWORD','aura');

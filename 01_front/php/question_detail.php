@@ -161,7 +161,7 @@ $answers = $answer_stmt->fetchAll();
         =========================== -->
         <div class="card border-0 shadow-sm rounded-4 mt-3 mb-4">
 
-            <div class="card-body">
+            <div class="card-body question-copy-zone">
 
                 <span class="badge bg-primary mb-2">
                     <?= htmlspecialchars(
@@ -405,6 +405,7 @@ $answers = $answer_stmt->fetchAll();
     </div>
 
 
+    <script src="/AURA/01_front/js/question-copy-guard.js" defer></script>
     <script src="/AURA/pwa-register.js" defer></script>
 </body>
 

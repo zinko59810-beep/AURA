@@ -22,41 +22,111 @@ $active_stmt->execute([
     $_SESSION['user_id']
 ]);
 
-$answer_id = $_GET['answer_id'] ?? 0;
-$user_id = $_GET['user_id'] ?? 0;
+$answer_id =
+    filter_input(INPUT_GET, 'answer_id', FILTER_VALIDATE_INT);
+
+$answer_id = $answer_id ?: 0;
 
 $message = "";
+$is_success = false;
+$can_report = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$target_stmt = $dbh->prepare("
+    SELECT
+        id,
+        user_id,
+        question_id
+    FROM answers
+    WHERE id = ?
+");
 
-    $reason = trim($_POST['reason'] ?? "");
+$target_stmt->execute([$answer_id]);
+
+$target_answer = $target_stmt->fetch();
+
+if (!$target_answer) {
+    http_response_code(404);
+    exit("Answer Not Found");
+}
+
+$reported_user_id =
+    (int)$target_answer['user_id'];
+
+if (
+    $reported_user_id ===
+    (int)$_SESSION['user_id']
+) {
+    $message = "自分の回答は通報できません。";
+} else {
+    $can_report = true;
+}
+
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    $can_report
+) {
+
+    $reason =
+        trim($_POST['reason'] ?? "");
 
     if ($reason === "") {
-        $message = "理由を入力してください";
+
+        $message =
+            "通報理由を入力してください。";
+
+    } elseif (mb_strlen($reason) > 255) {
+
+        $message =
+            "通報理由は255文字以内で入力してください。";
+
     } else {
-        $stmt = $dbh->prepare("
-            INSERT INTO reports
-            (
-                reporter_id,
-                reported_user_id,
-                answer_id,
-                reason,
-                status
-            )
-            VALUES
-            (
-                ?, ?, ?, ?, 'pending'
-            )
+
+        $check_stmt = $dbh->prepare("
+            SELECT id
+            FROM reports
+            WHERE reporter_id = ?
+              AND answer_id = ?
+              AND status = 'pending'
+            LIMIT 1
         ");
 
-        $stmt->execute([
+        $check_stmt->execute([
             $_SESSION['user_id'],
-            $user_id,
-            $answer_id,
-            $reason
+            $answer_id
         ]);
 
-        $message = "通報しました";
+        if ($check_stmt->fetch()) {
+
+            $message =
+                "この回答はすでに通報済みです。";
+
+        } else {
+
+            $stmt = $dbh->prepare("
+                INSERT INTO reports
+                (
+                    reporter_id,
+                    reported_user_id,
+                    answer_id,
+                    reason,
+                    status
+                )
+                VALUES
+                (
+                    ?, ?, ?, ?, 'pending'
+                )
+            ");
+
+            $stmt->execute([
+                $_SESSION['user_id'],
+                $reported_user_id,
+                $answer_id,
+                $reason
+            ]);
+
+            $message = "通報しました。";
+            $is_success = true;
+        }
     }
 }
 ?>
@@ -127,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 =========================== -->
                 <?php if (!empty($message)): ?>
 
-                    <div class="alert alert-success rounded-4">
+                    <div class="alert <?= $is_success ? 'alert-success' : 'alert-danger' ?> rounded-4">
 
                         <?= htmlspecialchars(
                             $message,
@@ -142,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- ==========================
                      Report Form
                 =========================== -->
-                <form method="POST">
+                <?php if ($can_report): ?><form method="POST">
 
                     <div class="mb-3">
 
@@ -169,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     </button>
 
-                </form>
+                </form><?php endif; ?>
 
             </div>
 

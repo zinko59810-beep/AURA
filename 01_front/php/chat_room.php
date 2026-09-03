@@ -22,7 +22,7 @@ $active_stmt->execute([
     $_SESSION['user_id']
 ]);
 
-$other_user_id = $_GET['id'] ?? 0;
+$other_user_id = (int)($_GET['id'] ?? 0);
 
 if ($other_user_id == $_SESSION['user_id']) {
     header("Location: /AURA/profile");
@@ -63,6 +63,10 @@ if (!empty($other_user['last_active_at'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $message = trim($_POST['message'] ?? '');
+
+    if (mb_strlen($message) > 2000) {
+        $message = mb_substr($message, 0, 2000);
+    }
 
     if ($message !== '') {
 
@@ -138,6 +142,7 @@ $chat_count = (int)$chat_stmt->fetch()['total'];
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     <title><?= $lang['chat_room_title'] ?></title>
 
@@ -170,7 +175,7 @@ $chat_count = (int)$chat_stmt->fetch()['total'];
     <link rel="apple-touch-icon" href="/AURA/01_front/assets/icons/apple-touch-icon.png">
 </head>
 
-<body class="aura-app">
+<body class="aura-app chat-page">
 
     <?php
     $currentPage = 'chat';
@@ -180,8 +185,7 @@ $chat_count = (int)$chat_stmt->fetch()['total'];
     <div class="container py-4 aura-content" style="max-width:700px;">
 
         <div
-            class="card border-0 shadow-sm rounded-4 d-flex flex-column"
-            style="height:100vh;">
+            class="card border-0 shadow-sm rounded-4 d-flex flex-column chat-shell">
 
             <!-- ==========================
                  Chat Header
@@ -201,38 +205,20 @@ $chat_count = (int)$chat_stmt->fetch()['total'];
 
                     <?php if (!empty($other_user['profile_image'])): ?>
 
-                        <img
-                            src="/AURA/<?= htmlspecialchars(
-                                            ltrim($other_user['profile_image'], '/'),
-                                            ENT_QUOTES,
-                                            'UTF-8'
-                                        ) ?>"
-                            alt="<?= htmlspecialchars(
-                                        $other_user['name'],
-                                        ENT_QUOTES,
-                                        'UTF-8'
-                                    ) ?>"
-                            class="chat-avatar me-3"
-                            onerror="
-                                this.onerror=null;
-                                this.style.display='none';
-                                this.nextElementSibling.style.display='flex';
-                            ">
+    <img
+        src="/AURA/uploads/profile/<?= rawurlencode(
+            basename($other_user['profile_image'])
+        ) ?>"
+        alt="<?= htmlspecialchars($other_user['name'], ENT_QUOTES, 'UTF-8') ?>"
+        class="chat-list-avatar me-3">
 
-                        <div
-                            class="chat-avatar chat-default-avatar me-3"
-                            style="display:none;">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
+<?php else: ?>
 
-                    <?php else: ?>
+    <div class="chat-list-avatar chat-list-default-avatar me-3">
+        <i class="bi bi-person-fill"></i>
+    </div>
 
-                        <div class="chat-avatar chat-default-avatar me-3">
-                            <i class="bi bi-person-fill"></i>
-                        </div>
-
-                    <?php endif; ?>
-
+<?php endif; ?>
                     <div>
 
                         <strong>

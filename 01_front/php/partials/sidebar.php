@@ -15,6 +15,12 @@ if (!isset($chat_count)) {
 if (!isset($notice_count)) {
     $notice_count = 0;
 }
+
+$sidebarLang = ($currentLang ?? 'ja') === 'ja' ? 'en' : 'ja';
+$sidebarLangLabel = $sidebarLang === 'en' ? 'English' : '日本語';
+$sidebarLangQuery = $_GET;
+$sidebarLangQuery['lang'] = $sidebarLang;
+$sidebarLangUrl = '?' . http_build_query($sidebarLangQuery);
 ?>
 
 <aside class="aura-sidebar">
@@ -61,25 +67,15 @@ if (!isset($notice_count)) {
 
             <i class="bi bi-chat-dots"></i>
 
-            <span>
-
+            <span class="aura-menu-label">
                 <?= htmlspecialchars($lang['chat'], ENT_QUOTES, 'UTF-8') ?>
-
-                <?php if ($chat_count > 0): ?>
-
-                    <span class="badge bg-danger rounded-pill">
-
-                        <?= htmlspecialchars(
-                            (string) $chat_count,
-                            ENT_QUOTES,
-                            'UTF-8'
-                        ) ?>
-
-                    </span>
-
-                <?php endif; ?>
-
             </span>
+
+            <?php if ($chat_count > 0): ?>
+                <span class="badge bg-danger rounded-pill aura-menu-badge">
+                    <?= htmlspecialchars((string) $chat_count, ENT_QUOTES, 'UTF-8') ?>
+                </span>
+            <?php endif; ?>
 
         </a>
 
@@ -89,25 +85,15 @@ if (!isset($notice_count)) {
 
             <i class="bi bi-bell"></i>
 
-            <span>
-
+            <span class="aura-menu-label">
                 <?= htmlspecialchars($lang['notice'], ENT_QUOTES, 'UTF-8') ?>
-
-                <?php if ($notice_count > 0): ?>
-
-                    <span class="badge bg-danger rounded-pill">
-
-                        <?= htmlspecialchars(
-                            (string) $notice_count,
-                            ENT_QUOTES,
-                            'UTF-8'
-                        ) ?>
-
-                    </span>
-
-                <?php endif; ?>
-
             </span>
+
+            <?php if ($notice_count > 0): ?>
+                <span class="badge bg-danger rounded-pill aura-menu-badge">
+                    <?= htmlspecialchars((string) $notice_count, ENT_QUOTES, 'UTF-8') ?>
+                </span>
+            <?php endif; ?>
 
         </a>
 
@@ -148,31 +134,15 @@ if (!isset($notice_count)) {
         </a>
 
     </nav>
-    <div class="dropdown mb-2">
+    <a
+        href="<?= htmlspecialchars($sidebarLangUrl, ENT_QUOTES, 'UTF-8') ?>"
+        class="aura-menu-link aura-language-toggle"
+        aria-label="Language: <?= htmlspecialchars($sidebarLangLabel, ENT_QUOTES, 'UTF-8') ?>">
 
-        <button
-            class="aura-menu-link border-0 w-100 text-start bg-transparent dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown">
+        <i class="bi bi-translate"></i>
+        <span><?= htmlspecialchars($sidebarLangLabel, ENT_QUOTES, 'UTF-8') ?></span>
 
-            <i class="bi bi-translate"></i>
-            <span>Language</span>
-
-        </button>
-
-        <ul class="dropdown-menu w-100">
-
-            <li>
-                <a class="dropdown-item" href="?lang=ja">🇯🇵 日本語</a>
-            </li>
-
-            <li>
-                <a class="dropdown-item" href="?lang=en">🇺🇸 English</a>
-            </li>
-
-        </ul>
-
-    </div>
+    </a>
 
     <a href="/AURA/logout" class="aura-logout">
 

@@ -53,10 +53,10 @@ foreach ($messages as $msg):
         box-shadow:0 2px 8px rgba(0,0,0,.08);
     ">
 
-        <?= nl2br(htmlspecialchars($msg['message'])) ?>
+        <?= nl2br(htmlspecialchars($msg['message'], ENT_QUOTES, 'UTF-8')) ?>
 
         <div class="<?= $is_me ? 'text-white-50' : 'text-muted' ?> small mt-1">
-            <?= htmlspecialchars($msg['created_at']) ?>
+            <?= htmlspecialchars($msg['created_at'], ENT_QUOTES, 'UTF-8') ?>
         </div>
 
         <?php if ($is_me): ?>

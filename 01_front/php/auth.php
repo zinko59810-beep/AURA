@@ -134,18 +134,39 @@ if (isset($_POST['register'])) {
 
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $dbh->prepare(
-        'INSERT INTO users
-            (students_id, name, email, password_hash, class_id)
-         VALUES (?, ?, ?, ?, ?)'
-    );
-    $stmt->execute([
-        $students_id,
-        $name,
-        $email,
-        $password_hash,
-        $class_id
-    ]);
+    try {
+        $stmt = $dbh->prepare(
+            'INSERT INTO users
+                (students_id, name, email, password_hash, class_id)
+             VALUES (?, ?, ?, ?, ?)'
+        );
+
+        $stmt->execute([
+            $students_id,
+            $name,
+            $email,
+            $password_hash,
+            $class_id
+        ]);
+
+    } catch (PDOException $e) {
+
+        $mysqlError =
+            isset($e->errorInfo[1])
+                ? (int)$e->errorInfo[1]
+                : 0;
+
+        if ($mysqlError === 1062) {
+
+            $_SESSION['register_message'] =
+                'この学生IDまたはメールアドレスは既に登録されています。';
+
+            header('Location: /AURA/auth?mode=register');
+            exit;
+        }
+
+        throw $e;
+    }
 
     $_SESSION['last_student_id'] = $students_id;
 

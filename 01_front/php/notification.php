@@ -6,8 +6,8 @@ require_once __DIR__ . '/../../lang/language.php';
 
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
+    header("Location: /AURA/login");
+exit;
 }
 
 $dbh = db_connect();
@@ -73,6 +73,7 @@ $read_stmt->execute([
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     <title><?= $lang['notifications_title'] ?></title>
 
@@ -142,20 +143,21 @@ $read_stmt->execute([
 
                             <?php if (!empty($notification['profile_image'])): ?>
 
-                                <img
-                                    src="<?= htmlspecialchars(
-                                                $notification['profile_image'],
-                                                ENT_QUOTES,
-                                                'UTF-8'
-                                            ) ?>"
-                                    alt="<?= $lang['user_profile_image'] ?>"
-                                    class="rounded-circle me-3"
-                                    width="50"
-                                    height="50"
-                                    style="object-fit:cover;">
+    <img
+        src="/AURA/uploads/profile/<?= rawurlencode(
+            basename($notification['profile_image'])
+        ) ?>"
+        alt="<?= htmlspecialchars(
+                    $lang['user_profile_image'],
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) ?>"
+        class="rounded-circle me-3"
+        width="50"
+        height="50"
+        style="object-fit:cover;">
 
-                            <?php else: ?>
-
+<?php else: ?>
                                 <div
                                     class="rounded-circle bg-primary text-white me-3 d-flex align-items-center justify-content-center"
                                     style="width:50px;height:50px;">
