@@ -106,6 +106,35 @@ $stmt->execute([
 ]);
 
 $users = $stmt->fetchAll();
+$group_stmt = $dbh->prepare("
+    SELECT
+        g.id,
+        g.name,
+        g.image,
+
+        (
+            SELECT gm.message
+            FROM group_messages gm
+            WHERE gm.group_id = g.id
+            ORDER BY gm.created_at DESC
+            LIMIT 1
+        ) AS last_message
+
+    FROM chat_groups g
+
+    INNER JOIN group_members m
+        ON g.id = m.group_id
+
+    WHERE m.user_id = ?
+
+    ORDER BY g.name
+");
+
+$group_stmt->execute([
+    $_SESSION['user_id']
+]);
+
+$groups = $group_stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -209,6 +238,134 @@ $users = $stmt->fetchAll();
             </a>
 
         <?php endforeach; ?>
+
+
+        <!-- =========================
+             GROUP CHAT
+        ========================= -->
+
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+
+            <h4 class="fw-bold mb-0">
+                Group Chat
+            </h4>
+
+            <a href="/AURA/01_front/php/create_group.php"
+               class="btn btn-primary rounded-pill">
+
+                <i class="bi bi-people-fill"></i>
+                Create Group
+
+            </a>
+
+        </div>
+
+
+        <?php if (empty($groups)): ?>
+
+            <div class="alert alert-light rounded-4">
+                No group chats yet.
+            </div>
+
+        <?php endif; ?>
+
+
+        <?php foreach ($groups as $group): ?>
+
+            <div class="card border-0 shadow-sm rounded-4 mb-3">
+
+                <div class="card-body d-flex align-items-center">
+
+                    <!-- Group Chat -->
+                    <a
+                        href="/AURA/01_front/php/group_chat.php?id=<?= urlencode($group['id']) ?>"
+                        class="text-decoration-none text-dark flex-grow-1 d-flex align-items-center"
+                    >
+
+                        <?php if (!empty($group['image'])): ?>
+
+                            <img
+                                src="/AURA/<?= htmlspecialchars(
+                                    $group['image'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>"
+                                alt="<?= htmlspecialchars(
+                                    $group['name'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>"
+                                class="chat-list-avatar me-3"
+                                style="object-fit: cover;"
+                            >
+
+                        <?php else: ?>
+
+                            <div class="chat-list-avatar chat-list-default-avatar me-3">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+
+                        <?php endif; ?>
+
+
+                        <div class="flex-grow-1">
+
+                            <h6 class="fw-bold mb-1">
+                                <?= htmlspecialchars(
+                                    $group['name'],
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+                            </h6>
+
+                            <small class="text-muted">
+
+                                <?= htmlspecialchars(
+                                    $group['last_message'] ?? 'No messages yet',
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>
+
+                            </small>
+
+                        </div>
+
+                    </a>
+
+
+                    <!-- Delete Group -->
+                    <form
+                        action="/AURA/01_front/php/delete_group.php"
+                        method="POST"
+                        class="ms-2"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<?= htmlspecialchars($group['id']) ?>"
+                        >
+
+                        <button
+                            type="submit"
+                            class="btn btn-link text-secondary p-1"
+                            onclick="return confirm('Delete this group?')"
+                            title="Delete Group"
+                        >
+
+                            <i class="bi bi-trash3 fs-5"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+        
 
     </div>
 

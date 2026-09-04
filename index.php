@@ -82,6 +82,50 @@ switch ($url) {
         require __DIR__ . '/01_front/php/question_list.php';
         break;
 
+    case 'group_chat':
+        require __DIR__ . '/01_front/php/group_chat.php';
+        break; 
+
+    case 'create_group':
+        require __DIR__ . '/01_front/php/create_group.php';
+        break;
+
+    case 'group_info':
+        require __DIR__ . '/01_front/php/group_info.php';
+        break; 
+
+    case 'group_members':
+        require __DIR__ . '/01_front/php/group_members.php';
+        break; 
+
+    case 'add_member':
+        require __DIR__ . '/01_front/php/add_member.php';
+        break;
+
+    case 'add_group_member':
+        require __DIR__ . '/01_front/php/add_group_member.php';
+        break; 
+
+    case 'remove_member':
+        require __DIR__ . '/01_front/php/remove_member.php';
+        break; 
+
+    case 'leave_group':
+        require __DIR__ . '/01_front/php/leave_group.php';
+        break;
+
+    case 'send_group_message':
+    require __DIR__ . '/01_front/php/send_group_message.php';
+    break;
+
+    case 'group_messages':
+        require __DIR__ . '/01_front/php/group_messages.php';
+        break;
+            
+    case 'delete_group':
+        require __DIR__ . '/01_front/php/delete_group.php';
+        break;    
+
     case 'question_detail':
         require __DIR__ . '/01_front/php/question_detail.php';
         break;
